@@ -12,33 +12,30 @@ interface ItemData {
 }
 
 export const itemData: ItemData[] = [
-    {
-      sno: "01",
-      text: "Microsoft Surpasses $3 Trillion Market Cap for the First Time",
-      bn: "BN",
-      time: "11:45",
-      content:
-        "Microsoft becomes the second company to cross the $3 trillion market cap milestone, driven by strong cloud growth, AI integration, and record-breaking revenue in its latest financial quarter.",
-    },
-    {
-      sno: "02",
-      text: "Bitcoin Hits $50,000 Amid Growing Institutional Interest",
-      bn: "BN",
-      time: "12:05",
-      content:
-        "Bitcoin surged past the $50,000 mark as institutional investors continued accumulating the cryptocurrency, citing it as a hedge against inflation and global economic uncertainties.",
-    },
-    {
-      sno: "03",
-      text: "Nvidia’s Stock Rises 10% Following AI Chip Breakthrough",
-      bn: "BN",
-      time: "12:15",
-      content:
-        "Nvidia's stock soared by 10% today after the company unveiled a groundbreaking AI chip, capable of delivering unparalleled performance for machine learning and data center applications.",
-    },
-  
-   
-  
+  {
+    sno: "01",
+    text: "S&P 500 Index Falls 1.8% ; Led by  Communication Services Sector",
+    bn: "BN",
+    time: "11:45",
+    content:
+      "Microsoft becomes the second company to cross the $3 trillion market cap milestone, driven by strong cloud growth, AI integration, and record-breaking revenue in its latest financial quarter.",
+  },
+  {
+    sno: "02",
+    text: "MSCI Nordic Index  Falls 0.3% ; H&M Drops",
+    bn: "BN",
+    time: "12:05",
+    content:
+      "Bitcoin surged past the $50,000 mark as institutional investors continued accumulating the cryptocurrency, citing it as a hedge against inflation and global economic uncertainties.",
+  },
+  {
+    sno: "03",
+    text: " Ukraine  1Q   Tourism Revenue  Falls  13%,  Most  Since  March  2016",
+    bn: "BN",
+    time: "12:15",
+    content:
+      "Nvidia's stock soared by 10% today after the company unveiled a groundbreaking AI chip, capable of delivering unparalleled performance for machine learning and data center applications.",
+  },
 ];
 
 const RankedNews: React.FC = () => {
@@ -57,16 +54,18 @@ const RankedNews: React.FC = () => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isPopupOpen) {
-      if (event.key === "ArrowRight" && currentIndex !== null && currentIndex < itemData.length - 1) {
-        setCurrentIndex(currentIndex + 1); // Go to the next item
+      if (
+        event.key === "ArrowRight" &&
+        currentIndex !== null &&
+        currentIndex < itemData.length - 1
+      ) {
+        setCurrentIndex(currentIndex + 1);
       }
       if (event.key === "Escape") {
-        handleClose(); // Close on Esc
+        handleClose();
       }
     }
   };
-
-  // Add event listener for keydown when popup is open
   useEffect(() => {
     if (isPopupOpen) {
       window.addEventListener("keydown", handleKeyDown);

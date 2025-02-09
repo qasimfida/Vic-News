@@ -6,7 +6,7 @@ import RankedNews from "./components/RankedNews";
 
 function App() {
   return (
-    <div className="bg-black min-h-screen px-[66px] relative text-white">
+    <div className="bg-black pb-[123px] px-[66px] relative text-white">
       <Navbar />
       <RankedNews />
       <OrderedNews />

@@ -3,80 +3,128 @@ import RowItem from "./RowItem";
 
 export const itemData = [
   {
-    sno: "01",
-    text: "S&P 500 Index Falls 1.8% ; Led by Communication Services Sector",
+    sno: "04",
+    text: "Square Social Media Volume Surges;      Somewhat Positive",
     bn: "BN",
     time: "12:00",
     content:
       "The S&P 500 dropped 1.8% today, primarily driven by a sharp decline in the communication services sector. Analysts attribute the fall to economic uncertainties and weaker-than-expected earnings results.",
   },
   {
-    sno: "02",
-    text: "Liberty Gold Soars 13% After Positive Drilling Results",
+    sno: "05",
+    text: "Liberty Gold Up 13%,  Most in 11 Weeks as Canada S&P  TSX Declines",
     bn: "BN",
     time: "12:10",
     content:
       "Liberty Gold Corp saw a significant 13% surge in stock value following positive drilling results from its latest gold exploration project, indicating a promising future for investors and stakeholders alike.",
   },
   {
-    sno: "03",
-    text: "Domatar Options Surge Amid Unexpected Earnings Growth",
+    sno: "06",
+    text: "Domatar Options  Surge ;  488,866 - Share lock Trades",
     bn: "BN",
     time: "12:20",
     content:
       "Domatar Inc. options activity spiked today as investors reacted to the company's unexpected earnings growth, which exceeded market expectations by a substantial margin, signaling potential strong future performance.",
   },
   {
-    sno: "04",
-    text: "Ranpak Holdings Declines 9% as Revenue Misses Expectations",
+    sno: "07",
+    text: "Alphatt Shares Drop to Lowet in Five Weks as S&P 500 Drops",
     bn: "BN",
     time: "12:30",
     content:
       "Ranpak Holdings Inc. shares plummeted by 9% as quarterly revenues fell short of Wall Street projections, raising concerns among investors about the company's profitability and long-term growth prospects.",
   },
   {
-    sno: "05",
-    text: "Pfizer Achieves Breakthrough in Cancer Drug Research",
+    sno: "08",
+    text: "Ranpak  Holdings Class A Falls Most in 15 Weeks as S&P 5oo Drops",
     bn: "BN",
     time: "12:40",
     content:
       "Pharmaceutical giant Pfizer has announced a major breakthrough in cancer drug research, with promising trial results showing high efficacy rates, potentially leading to a revolutionary treatment option.",
   },
   {
-    sno: "06",
-    text: "Amazon's Stock Rises 5% Following Strong Quarterly Results",
+    sno: "09",
+    text: "Brazil Curve Steady , CDS Spread Wider : Sovereign Updates",
     bn: "BN",
     time: "12:50",
     content:
       "Amazon's stock rose by 5% today as the company reported strong quarterly earnings, surpassing revenue and profit expectations, driven by e-commerce growth and increased demand for its cloud computing services.",
   },
   {
-    sno: "07",
-    text: "Tesla Announces New Electric Truck with Improved Range",
+    sno: "10",
+    text: "Alector  Shares Down 12%, More Than Three Months",
     bn: "BN",
     time: "01:00",
     content:
       "Tesla unveiled its new electric truck model, featuring an extended driving range, enhanced battery efficiency, and advanced self-driving capabilities, positioning itself ahead of competitors in the EV market.",
   },
   {
-    sno: "08",
-    text: "Meta Launches New Features to Improve User Privacy",
+    sno: "11",
+    text: " Office Depot Falls Most in Three Months; Put OptionsQuadruple",
     bn: "BN",
     time: "01:10",
     content:
       "Meta has introduced a series of new privacy features aimed at giving users greater control over their data, addressing regulatory concerns, and improving overall user trust in its platforms.",
   },
   {
-    sno: "09",
-    text: "Google AI Unit Unveils Next-Generation Language Model",
+    sno: "12",
+    text: "Contango Oil & Gas Down 20%,Most in 15 Weeks; Option Quarruple",
     bn: "BN",
     time: "01:20",
     content:
       "Google's AI research division has unveiled its latest language model, boasting unprecedented capabilities in natural language processing, making significant strides in machine learning advancements.",
   },
   {
-    sno: "10",
-    text: "Apple’s New MacBook Pro to Feature M3 Chip with AI Enhancements",
+    sno: "13",
+    text: "Wynn Resorts Social Media Volume Surges ;Sentiment Is Negative",
+    bn: "BN",
+    time: "01:30",
+    content:
+      "Apple announced its upcoming MacBook Pro lineup, featuring the new M3 chip with AI-powered enhancements, improved performance, and better battery life, making it a major leap in the laptop market.",
+  },
+  {
+    sno: "14",
+    text: "IAC interactivecorp Options Surges; 350,00 - Share Block Trades",
+    bn: "BN",
+    time: "01:30",
+    content:
+      "Apple announced its upcoming MacBook Pro lineup, featuring the new M3 chip with AI-powered enhancements, improved performance, and better battery life, making it a major leap in the laptop market.",
+  },
+  {
+    sno: "15",
+    text: " Riverview Bancorp Maintains Quarterly dividend at 5 Cents  Shr",
+    bn: "BN",
+    time: "01:30",
+    content:
+      "Apple announced its upcoming MacBook Pro lineup, featuring the new M3 chip with AI-powered enhancements, improved performance, and better battery life, making it a major leap in the laptop market.",
+  },
+  {
+    sno: "16",
+    text: " Cyber Option Share Down 10%, Most in More than 15 Weeks",
+    bn: "BN",
+    time: "01:30",
+    content:
+      "Apple announced its upcoming MacBook Pro lineup, featuring the new M3 chip with AI-powered enhancements, improved performance, and better battery life, making it a major leap in the laptop market.",
+  },
+  {
+    sno: "17",
+    text: "Pea Shares Down 9%, Most in 14 weeks; Trading Vlume Doubles",
+    bn: "BN",
+    time: "01:30",
+    content:
+      "Apple announced its upcoming MacBook Pro lineup, featuring the new M3 chip with AI-powered enhancements, improved performance, and better battery life, making it a major leap in the laptop market.",
+  },
+  {
+    sno: "18",
+    text: "Exon Socal Media Volume Quaruples; Sentiment Is Most Negaive",
+    bn: "BN",
+    time: "01:30",
+    content:
+      "Apple announced its upcoming MacBook Pro lineup, featuring the new M3 chip with AI-powered enhancements, improved performance, and better battery life, making it a major leap in the laptop market.",
+  },
+  {
+    sno: "19",
+    text: "Pfizer Social Media Volume Quadruples",
     bn: "BN",
     time: "01:30",
     content:
@@ -102,14 +150,14 @@ const OrderedNews = () => {
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isPopupOpen) {
       if (event.key === "Escape") {
-        handleClose(); 
+        handleClose();
       }
     }
   };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-      handleClose(); 
+      handleClose();
     }
   };
 
@@ -142,21 +190,23 @@ const OrderedNews = () => {
               time={item.time}
               bnColor={"red"}
               textColor={"orange"}
+              paraColor={"orange"}
             />
           </div>
         ))}
       </div>
 
       {isPopupOpen && currentIndex !== null && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0   bg-opacity-50 flex items-center justify-center z-50">
           <div
             ref={popupRef}
-            className="bg-gray-900 text-white rounded-lg shadow-lg p-6 w-4/5 max-w-lg relative"
+            className="bg-[#1E1E1E]  text-white border-[2px] border-white  shadow-lg py-[32px] px-[60px] w-4/5 max-w-4xl
+ relative"
           >
-            <h2 className="text-xl font-bold mb-4">
+            <h2 className="text-[32px]  font-medium mb-[30px]">
               {itemData[currentIndex].text}
             </h2>
-            <p className="text-sm leading-relaxed">
+            <p className="text-[20px] leading-relaxed text-[#E0AB74]">
               Breaking News ({itemData[currentIndex].bn} at{" "}
               {itemData[currentIndex].time}): {itemData[currentIndex].content}
             </p>

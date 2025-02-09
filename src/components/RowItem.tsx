@@ -8,6 +8,7 @@ interface RowItemProps {
   bnColor?: string;
   timeColor?: string;
   textColor?: string;
+  paraColor?: String;
   handleClick?: () => void;
 }
 
@@ -17,6 +18,7 @@ const RowItem: React.FC<RowItemProps> = ({
   text,
   bn,
   time,
+  paraColor,
   textColor,
   bnColor = "red",
   timeColor = "yellow",
@@ -29,7 +31,7 @@ const RowItem: React.FC<RowItemProps> = ({
       key={key}
     >
       <p className="mr-[7px]">{sno + ")"}</p>
-      <p className={`w-[85%]  `}>{text}</p>
+      <p className={`w-[85%] text-${paraColor}`}>{text}</p>
       <div className="w-[15%] flex justify-between">
         <p className={`text-red text-${bnColor}`}>{bn}</p>
         <p className={`text-yellow text-${timeColor}`}>{time}</p>
