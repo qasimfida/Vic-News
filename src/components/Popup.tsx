@@ -11,7 +11,7 @@ const Popup: React.FC<PopupProps> = ({ title, content, onClose }) => {
 
   const handleClickOutside = (event: MouseEvent) => {
     if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-      onClose(); // Close if clicked outside the popup
+      onClose();
     }
   };
 
