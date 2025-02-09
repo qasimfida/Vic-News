@@ -3,6 +3,7 @@
 @tailwind utilities;
 body {
     font-family: 'bloomberg', sans-serif;
+    background-color: black;
   }
 @font-face {
     font-family: 'bloomberg';
