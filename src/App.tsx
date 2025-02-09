@@ -1,24 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Navbar from "./components/Navbar";
+import OrderedNews from "./components/OrderedNews";
+import Popup from "./components/Popup";
+import RankedNews from "./components/RankedNews";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className='text-[20px]'>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="bg-black min-h-screen px-[66px] relative text-white">
+      <Navbar />
+      <RankedNews />
+      <OrderedNews />
     </div>
   );
 }
