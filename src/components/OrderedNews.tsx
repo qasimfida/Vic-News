@@ -175,7 +175,7 @@ const OrderedNews = () => {
 
   return (
     <div className="px-4">
-      <h2 className="text-[24px] font-medium my-[12px]">Time Ordered News</h2>
+      <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
       <div>
         {itemData.map((item, index) => (
           <div

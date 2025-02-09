@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+    font-family: 'bloomberg', sans-serif;
+  }
+@font-face {
+    font-family: 'bloomberg';
+    src: url('./assets/fonts/bloomberg-prop-unicode-k.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  

@@ -9,6 +9,9 @@ export default {
         orange: "rgb(224, 171, 116)",
         darkGrey: "#232323",
       },
+      fontFamily: {
+        custom: ['bloomberg', 'sans-serif'],
+      },
     },
   },
   plugins: [],
