@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import RowItem from "./RowItem";
 import MoreIcon from "../assets/icons/MoreIcon";
-import Popup from "./Popup"; // Import the Popup component
+import Popup from "./Popup";
 
 interface ItemData {
   sno: string;
@@ -78,7 +78,6 @@ const RankedNews: React.FC = () => {
 
   return (
     <div>
-      {/* Header */}
       <div className="flex px-4 items-center bg-black text-white mt-[32px] mb-[57px]">
         <h2 className="text-[20px] font-medium">Top Ranked News</h2>
 
