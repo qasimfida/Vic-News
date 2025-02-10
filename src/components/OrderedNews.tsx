@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import RowItem from "./RowItem";
+import Popup from "./Popup";
 
 export const itemData = [
   {
@@ -146,15 +147,25 @@ const OrderedNews = () => {
     setPopupOpen(false);
     setCurrentIndex(null);
   };
-
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isPopupOpen) {
       if (event.key === "Escape") {
         handleClose();
+      } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+        event.preventDefault(); // Prevents page scroll
+        setCurrentIndex((prevIndex) =>
+          prevIndex !== null && prevIndex < itemData.length - 1 ? prevIndex + 1 : prevIndex
+        );
+      } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+        event.preventDefault(); // Prevents page scroll
+        setCurrentIndex((prevIndex) =>
+          prevIndex !== null && prevIndex > 0 ? prevIndex - 1 : prevIndex
+        );
       }
     }
   };
-
+  
+  
   const handleClickOutside = (event: MouseEvent) => {
     if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
       handleClose();
@@ -175,7 +186,7 @@ const OrderedNews = () => {
 
   return (
     <div className="px-4">
-      <h2 className="text-[24px] font-medium my-[12px]">Time Ordered News</h2>
+      <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
       <div>
         {itemData.map((item, index) => (
           <div
@@ -197,22 +208,14 @@ const OrderedNews = () => {
       </div>
 
       {isPopupOpen && currentIndex !== null && (
-        <div className="fixed inset-0   bg-opacity-50 flex items-center justify-center z-50">
-          <div
-            ref={popupRef}
-            className="bg-[#1E1E1E]  text-white border-[2px] border-white  shadow-lg py-[32px] px-[60px] w-4/5 max-w-4xl
- relative"
-          >
-            <h2 className="text-[32px]  font-medium mb-[30px]">
-              {itemData[currentIndex].text}
-            </h2>
-            <p className="text-[20px] leading-relaxed text-[#E0AB74]">
-              Breaking News ({itemData[currentIndex].bn} at{" "}
-              {itemData[currentIndex].time}): {itemData[currentIndex].content}
-            </p>
-          </div>
-        </div>
+        <Popup
+          title={itemData[currentIndex].text}
+          content={`Breaking News (${itemData[currentIndex].bn} at ${itemData[currentIndex].time}): ${itemData[currentIndex].content}`}
+          onClose={handleClose}
+        />
       )}
+          <div className="text-orange"></div>
+
     </div>
   );
 };

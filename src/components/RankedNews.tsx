@@ -54,18 +54,22 @@ const RankedNews: React.FC = () => {
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isPopupOpen) {
-      if (
-        event.key === "ArrowRight" &&
-        currentIndex !== null &&
-        currentIndex < itemData.length - 1
-      ) {
-        setCurrentIndex(currentIndex + 1);
-      }
       if (event.key === "Escape") {
         handleClose();
+      } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+        event.preventDefault(); // Prevents page scroll
+        setCurrentIndex((prevIndex) =>
+          prevIndex !== null && prevIndex < itemData.length - 1 ? prevIndex + 1 : prevIndex
+        );
+      } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+        event.preventDefault(); // Prevents page scroll
+        setCurrentIndex((prevIndex) =>
+          prevIndex !== null && prevIndex > 0 ? prevIndex - 1 : prevIndex
+        );
       }
     }
   };
+  
   useEffect(() => {
     if (isPopupOpen) {
       window.addEventListener("keydown", handleKeyDown);

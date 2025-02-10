@@ -25,18 +25,21 @@ const RowItem: React.FC<RowItemProps> = ({
   handleClick,
 }) => {
   return (
+   <>
     <div
-      className={`flex sajid text-[20px] font-medium mb-[12px] text-${textColor}  `}
+      className={`flex sajid text-md font-medium mb-[12px] text-${textColor}  `}
       onClick={handleClick}
       key={key}
     >
       <p className="mr-[7px]">{sno + ")"}</p>
       <p className={`w-[85%] text-${paraColor}`}>{text}</p>
       <div className="w-[15%] flex justify-between">
-        <p className={`text-red text-${bnColor}`}>{bn}</p>
+        <p className={`text-red  text-${bnColor}`}>{bn}</p>
         <p className={`text-yellow text-${timeColor}`}>{time}</p>
       </div>
     </div>
+    </>
+    
   );
 };
 export default RowItem;

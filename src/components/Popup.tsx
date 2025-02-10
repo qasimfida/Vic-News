@@ -23,13 +23,12 @@ const Popup: React.FC<PopupProps> = ({ title, content, onClose }) => {
   }, []);
 
   return (
-    <div className="fixed inset-0   bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
         ref={popupRef}
-        className="bg-[#1E1E1E] text-white border-[2px] border-white  shadow-lg py-[32px] px-[60px] w-4/5 max-w-4xl
-        relative"
+        className="bg-[#1E1E1E] text-white border-[2px] border-white shadow-2xl py-[32px] px-[60px] w-4/5 max-w-4xl relative rounded-lg"
       >
-        <h2 className="text-[32px]  font-medium mb-[30px]">{title}</h2>
+        <h2 className="text-[32px] font-medium mb-[30px]">{title}</h2>
         <p className="text-[20px] leading-relaxed text-[#E0AB74]">{content}</p>
       </div>
     </div>
