@@ -152,20 +152,21 @@ const OrderedNews = () => {
       if (event.key === "Escape") {
         handleClose();
       } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-        event.preventDefault(); // Prevents page scroll
+        event.preventDefault();
         setCurrentIndex((prevIndex) =>
-          prevIndex !== null && prevIndex < itemData.length - 1 ? prevIndex + 1 : prevIndex
+          prevIndex !== null && prevIndex < itemData.length - 1
+            ? prevIndex + 1
+            : prevIndex
         );
       } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-        event.preventDefault(); // Prevents page scroll
+        event.preventDefault();
         setCurrentIndex((prevIndex) =>
           prevIndex !== null && prevIndex > 0 ? prevIndex - 1 : prevIndex
         );
       }
     }
   };
-  
-  
+
   const handleClickOutside = (event: MouseEvent) => {
     if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
       handleClose();
@@ -214,8 +215,7 @@ const OrderedNews = () => {
           onClose={handleClose}
         />
       )}
-          <div className="text-orange"></div>
-
+      <div className="text-orange"></div>
     </div>
   );
 };
