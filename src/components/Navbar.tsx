@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between gap-[60px] w-1/2">
+      <div className="flex justify-between gap-[30px] w-1/2">
         <Button text="Sources" icon={SourcesIcon} />
         <Button text="All Dates" icon={DateIcon} />
         <Button text="Time" icon={TimeIcon} />
