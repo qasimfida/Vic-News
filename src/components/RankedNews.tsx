@@ -84,21 +84,21 @@ const RankedNews: React.FC = () => {
 
   return (
     <div>
-      <div className="flex lg:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
-        <h2 className="md:text-[20px] text-[12px] font-medium">
+      <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
+        <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
         </h2>
 
         <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
 
         <div className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white">
-          <h2 className="md:text-[20px] text-[12px] font-medium">More</h2>
+          <h2 className="md:text-[20px] text-[16px] font-medium">More</h2>
           <MoreIcon stroke={"#737576"} />
         </div>
       </div>
 
       {/* News List */}
-      <div className="bg-[#232323] px-4 py-2">
+      <div className="bg-[#232323] px-2 lg:px-4 py-2">
         {itemData.map((item, index) => (
           <div
             key={index}

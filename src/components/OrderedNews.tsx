@@ -186,7 +186,7 @@ const OrderedNews = () => {
   }, [isPopupOpen]);
 
   return (
-    <div className="px-4">
+    <div className="px-2 md:px-4">
       <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
       <div>
         {itemData.map((item, index) => (
