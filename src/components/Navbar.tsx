@@ -15,13 +15,13 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="flex items-center bg-black text-white gap-[33px] pt-[22px]">
-      <div className="flex items-center bg-[#F39320] w-1/2  text-white px-2 py-[6.25px] ">
+    <nav className="md:flex items-center flex-col  bg-black text-white gap-[15px] md:gap-[33px] pt-[22px]">
+      <div className="flex items-center bg-[#F39320] md:w-1/2  text-white px-2 py-[10px] md:py-[6.25px] ">
         <input
           type="text"
           placeholder="Search"
           onChange={handleInputChange}
-          className="bg-transparent placeholder:text-white px-11  focus:outline-none text-white text-[16px] font-medium flex-grow"
+          className="bg-transparent placeholder:text-white md:px-11 px-[16px]  focus:outline-none text-white text-[16px] font-medium flex-grow"
         />
         <button
           className="text-black cursor-pointer"
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between gap-[30px] w-1/2">
+      <div className="flex justify-between gap-[15px] md:gap-[30px] max-sm:mt-[16px] md:w-1/2">
         <Button text="Sources" icon={SourcesIcon} />
         <Button text="All Dates" icon={DateIcon} />
         <Button text="Time" icon={TimeIcon} />

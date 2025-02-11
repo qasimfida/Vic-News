@@ -84,8 +84,10 @@ const RankedNews: React.FC = () => {
 
   return (
     <div>
-      <div className="flex px-4 items-center bg-black text-white mt-[32px] mb-[57px]">
-        <h2 className="text-[20px] font-medium">Top Ranked News</h2>
+      <div className="flex md:px-4 items-center bg-black text-white md:mt-[32px] md:mb-[57px] my-[16px]">
+        <h2 className="md:text-[20px] text-[12px] font-medium">
+          Top Ranked News
+        </h2>
 
         <div className="ml-[24px] mr-[12px] w-[2px] h-[30px] bg-[#747678]"></div>
 
