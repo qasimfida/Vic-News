@@ -15,8 +15,8 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="md:flex items-center max-sm:flex-col  bg-black text-white gap-[15px] md:gap-[33px] pt-[22px]">
-      <div className="flex items-center bg-[#F39320] md:w-1/2  text-white px-2 py-[10px] md:py-[6.25px] ">
+    <nav className="flex items-center max-md:flex-col  bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px]">
+      <div className="flex items-center bg-[#F39320] w-1/2 max-md:w-full  text-white px-2 py-[10px]  ">
         <input
           type="text"
           placeholder="Search"
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-between gap-[15px] md:gap-[30px] max-sm:mt-[16px] md:w-1/2">
+      <div className="flex justify-between gap-[15px] lg:gap-[30px] max-md:mt-[16px]  max-md:w-full w-1/2">
         <Button text="Sources" icon={SourcesIcon} />
         <Button text="All Dates" icon={DateIcon} />
         <Button text="Time" icon={TimeIcon} />
