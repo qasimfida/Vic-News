@@ -27,13 +27,13 @@ const RowItem: React.FC<RowItemProps> = ({
   return (
    <>
     <div
-      className={`flex sajid text-md font-medium mt-[12px] text-${textColor}  `}
+      className={`md:flex grid text-md font-medium mt-[12px]  grid-cols-[40px,1fr] grid-rows-[auto,auto,auto] text-${textColor}  `}
       onClick={handleClick}
       key={key}
     >
-      <p className="mr-[7px]">{sno + ")"}</p>
-      <p className={`w-[84%] text-${paraColor}`}>{text}</p>
-      <div className="w-[15%] flex justify-between">
+      <p className="md:mr-[7px] row-start-1 col-start-1 ">{sno + ")"}</p>
+      <p className={`w-[84%] row-start-1 col-start-2 text-${paraColor}`}>{text}</p>
+      <div className="md:w-[15%] col-span-2 flex justify-between">
         <p className={`text-red  text-${bnColor}`}>{bn}</p>
         <p className={`text-yellow text-${timeColor}`}>{time}</p>
       </div>
