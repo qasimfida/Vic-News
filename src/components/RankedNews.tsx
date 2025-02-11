@@ -14,7 +14,7 @@ interface ItemData {
 export const itemData: ItemData[] = [
   {
     sno: "01",
-    text: "S&P 500 Index Falls 1.8% ; Led by  Communication Services Sector",
+    text: "S&P 500 Index Falls 1.8% Led by  Communication Services Sector",
     bn: "BN",
     time: "11:45",
     content:
