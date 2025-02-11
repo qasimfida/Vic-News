@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="md:flex items-center flex-col  bg-black text-white gap-[15px] md:gap-[33px] pt-[22px]">
+    <nav className="md:flex items-center max-sm:flex-col  bg-black text-white gap-[15px] md:gap-[33px] pt-[22px]">
       <div className="flex items-center bg-[#F39320] md:w-1/2  text-white px-2 py-[10px] md:py-[6.25px] ">
         <input
           type="text"

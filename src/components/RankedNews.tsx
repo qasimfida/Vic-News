@@ -92,7 +92,7 @@ const RankedNews: React.FC = () => {
         <div className="ml-[24px] mr-[12px] w-[2px] h-[30px] bg-[#747678]"></div>
 
         <div className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white">
-          <h2 className="text-[20px] font-medium">More</h2>
+          <h2 className="md:text-[20px] text-[12px] font-medium">More</h2>
           <MoreIcon stroke={"#737576"} />
         </div>
       </div>
