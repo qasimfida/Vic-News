@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="bg-black relative text-white">
       <div
-        className="container max-md:px-[16px] mx-auto md:px-[30px] xl:px-0"
+        className="container max-md:px-[16px] mx-auto pb-[32px] md:px-[30px] xl:px-0"
         style={{ maxWidth: "1300px" }}
       >
         <Navbar />
@@ -18,7 +18,5 @@ function App() {
     </div>
   );
 }
-
-
 
 export default App;

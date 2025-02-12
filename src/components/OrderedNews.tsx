@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useNews from "../hooks/useNews";
-
+import SkeletonError from "./Loader";
 
 const OrderedNews = () => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const { news, loading, error } = useNews();
-
 
   const handleRowClick = (index: number) => {
     setCurrentIndex(index);
@@ -32,6 +31,7 @@ const OrderedNews = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isPopupOpen]);
+
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isPopupOpen) {
       if (event.key === "Escape") {
@@ -58,9 +58,22 @@ const OrderedNews = () => {
     }
   };
 
-  if (loading) return <p>Loading news...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) {
+    return (
+      <div className="px-2 md:px-4">
+        <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
+      </div>
+    );
+  }
 
+  if (error) {
+    return (
+      <div className="">
+        <h2 className="text-xl font-medium my-[12px]">Loading News</h2>
+        <SkeletonError />
+      </div>
+    );
+  }
 
   return (
     <div className="px-2 md:px-4">
