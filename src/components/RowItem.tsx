@@ -35,8 +35,8 @@ const RowItem: React.FC<RowItemProps> = ({
         <p className={`md:w-[84%] row-start-1 col-start-2 text-${paraColor}`}>
           {text}
         </p>
-        <div className="md:w-[15%] col-span-2 flex justify-between">
-          <p className={`text-red  text-${bnColor}`}>{bn}</p>
+        <div className="md:w-[15%] col-span-2 flex justify-between max-sm:justify-end">
+          <p className={`text-red max-sm:hidden text-${bnColor}`}>{bn}</p>
           <p className={`text-yellow text-${timeColor}`}>{time}</p>
         </div>
       </div>
