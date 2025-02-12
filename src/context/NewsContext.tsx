@@ -4,7 +4,7 @@ import { time } from "console";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-const API_URL = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&limit=19&tickers=AAPL&apikey=${API_KEY}`;
+const API_URL = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&apikey=${API_KEY}`;
 
 export const NewsContext = createContext<NewsContextType | undefined>(
   undefined
@@ -14,19 +14,19 @@ interface NewsProviderProps {
   children: ReactNode;
 }
 const mapSourceToShortCode = (source: string): string => {
-    const sourceMap: { [key: string]: string } = {
-        "Benzinga": "BN",
-        "Zacks Commentary": "ZC",
-        "Yahoo Finance": "YF",
-        "CNBC": "CN",
-        "Bloomberg": "BB",
-        "Forbes": "FB",
-        "Reuters": "RT",
-        "MarketWatch": "MW",
-        "Business Insider": "BI",
-    };
+  const sourceMap: { [key: string]: string } = {
+    Benzinga: "BN",
+    "Zacks Commentary": "ZC",
+    "Yahoo Finance": "YF",
+    CNBC: "CN",
+    Bloomberg: "BB",
+    Forbes: "FB",
+    Reuters: "RT",
+    MarketWatch: "MW",
+    "Business Insider": "BI",
+  };
 
-    return sourceMap[source] || "UNK"; // Default to "UNK" if not found
+  return sourceMap[source] || "UNK";
 };
 export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [news, setNews] = useState<NewsItem[]>([]);
@@ -37,7 +37,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     const minutes = timeString.substring(11, 13);
     return `${hours}:${minutes}`;
   };
-
 
   useEffect(() => {
     const fetchNews = async () => {
