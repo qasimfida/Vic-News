@@ -1,7 +1,7 @@
 import React from "react";
 interface RowItemProps {
   key?: number;
-  sno: string;
+  sno: any;
   text: string;
   bn: string;
   time: string;
