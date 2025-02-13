@@ -28,15 +28,20 @@ const Navbar: React.FC = () => {
     handleSearchChange(value); // Updates search as user types
   };
 
+  const toggleDropdown = (dropdown: string) => {
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  };
+
   return (
-    <nav className="flex items-center max-md:flex-col  bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px]">
-      <div className="flex items-center bg-[#F39320] w-1/2 max-md:w-full  text-white px-2 py-[10px]  ">
+    <nav className="flex items-center max-md:flex-col bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px] relative">
+      {/* Search Bar */}
+      <div className="flex items-center bg-[#F39320] w-1/2 max-md:w-full text-white px-2 py-[10px]">
         <input
           type="text"
           placeholder="Search"
           value={searchTerm}
           onChange={handleInputChange}
-          className="bg-transparent placeholder:text-white md:px-11 px-[16px]  focus:outline-none text-white text-[16px] font-medium flex-grow"
+          className="bg-transparent placeholder:text-white md:px-11 px-[16px] focus:outline-none text-white text-[16px] font-medium flex-grow"
         />
         {searchTerm !== "" && (
           <button
