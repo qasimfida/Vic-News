@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-interface NewsProviderProps {
+interface RankedNewsProviderProps {
   children: ReactNode;
 }
 
@@ -24,7 +24,7 @@ const mapSourceToShortCode = (source: string): string => {
   return sourceMap[source] || "UNK";
 };
 
-export const NewsContext = createContext<NewsContextType | undefined>(undefined);
+export const RankedNewsContext = createContext<NewsContextType | undefined>(undefined);
 
 const allTopics = [
   "blockchain", "earnings", "ipo", "mergers_and_acquisitions", "financial_markets",
@@ -32,8 +32,8 @@ const allTopics = [
   "finance", "life_sciences", "manufacturing", "real_estate", "retail_wholesale", "technology"
 ];
 
-export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
-  const [news, setNews] = useState<NewsItem[]>([]);
+export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children }) => {
+  const [rankednews, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [tickers, setTickers] = useState<string>("AAPL");
@@ -47,7 +47,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [startDate, endDate] = dateRange;
 
   const loadMoreTopics = () => {
-    setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
+    setVisibleTopicsIndex((prev) => (prev + 17 < rankednews.length ? prev + 17 : 0));
   };
   
   const formatDate = (date: Date | null): string => {
@@ -105,9 +105,9 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   };
 
   return (
-    <NewsContext.Provider 
+    <RankedNewsContext.Provider 
     value={{
-      news: news.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
+      rankednews: rankednews.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
       loading,
       error,
       setTickers,
@@ -124,12 +124,12 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       setVisibleTopicsIndex,
       allTopics,
       visibleTopics: allTopics,
-      rankednews: news
+      news: rankednews
     }}
   >
   
     {children}
   
-    </NewsContext.Provider>
+    </RankedNewsContext.Provider>
   );
 };

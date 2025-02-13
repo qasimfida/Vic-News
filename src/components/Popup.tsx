@@ -28,7 +28,7 @@ const Popup: React.FC<PopupProps> = ({ title, content, onClose }) => {
         ref={popupRef}
         className="bg-[#1E1E1E] text-white border-[2px] border-white shadow-2xl py-[16px] px-[12px] lg:py-[32px] lg:px-[60px] w-4/5 max-sm:w-[90%] max-w-4xl relative "
       >
-        <h2 className="md:text-[32px] text-[16px] font-medium mb-[10px] lg:mb-[30px]">
+        <h2 className="md:text-[18px] text-[16px] font-medium mb-[10px] lg:mb-[30px]">
           {title}
         </h2>
         <p className="md:text-[20px] text-[12px] leading-relaxed text-[#E0AB74]">

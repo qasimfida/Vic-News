@@ -3,6 +3,8 @@ import RowItem from "./RowItem";
 import MoreIcon from "../assets/icons/MoreIcon";
 import Popup from "./Popup";
 import { NewsContext } from "../context/NewsContext";
+import Loader from "./Loader";
+import useRankedNews from "../hooks/useRankedNews";
 
 interface ItemData {
   sno: string;
@@ -12,40 +14,18 @@ interface ItemData {
   content: string;
 }
 
-export const itemData: ItemData[] = [
-  {
-    sno: "01",
-    text: "S&P 500 Index Falls 1.8% Led by  Communication Services Sector",
-    bn: "BN",
-    time: "11:45",
-    content:
-      "Microsoft becomes the second company to cross the $3 trillion market cap milestone, driven by strong cloud growth, AI integration, and record-breaking revenue in its latest financial quarter.",
-  },
-  {
-    sno: "02",
-    text: "MSCI Nordic Index  Falls 0.3% ; H&M Drops",
-    bn: "BN",
-    time: "12:05",
-    content:
-      "Bitcoin surged past the $50,000 mark as institutional investors continued accumulating the cryptocurrency, citing it as a hedge against inflation and global economic uncertainties.",
-  },
-  {
-    sno: "03",
-    text: " Ukraine  1Q   Tourism Revenue  Falls  13%,  Most  Since  March  2016",
-    bn: "BN",
-    time: "12:15",
-    content:
-      "Nvidia's stock soared by 10% today after the company unveiled a groundbreaking AI chip, capable of delivering unparalleled performance for machine learning and data center applications.",
-  },
-];
-
 const RankedNews: React.FC = () => {
   const newsContext = useContext(NewsContext);
+  const { rankednews, loading, error } = useRankedNews();
 
- 
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
 
+  const [visibleTopicsIndex, setLocalVisibleTopicsIndex] = useState(0);
+
+  useEffect(() => {
+    setLocalVisibleTopicsIndex(visibleTopicsIndex);
+  }, []); // Empty dependency array ensures it only runs on mount
 
   useEffect(() => {
     if (isPopupOpen) {
@@ -57,7 +37,6 @@ const RankedNews: React.FC = () => {
     };
   }, [isPopupOpen, currentIndex]);
 
-  
   if (!newsContext) return null;
 
   const { loadMoreTopics } = newsContext;
@@ -79,7 +58,7 @@ const RankedNews: React.FC = () => {
       } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
         event.preventDefault();
         setCurrentIndex((prevIndex) =>
-          prevIndex !== null && prevIndex < itemData.length - 1
+          prevIndex !== null && prevIndex < rankednews.length - 1
             ? prevIndex + 1
             : prevIndex
         );
@@ -92,6 +71,25 @@ const RankedNews: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div>
+        <Loader rows={1} widths={["30%"]} />
+        <Loader rows={13} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="">
+        <h2 className="text-xl font-medium my-[12px]">Ordered News</h2>
+        <div className="text-rose-600 mb-12 text-center flex items-center justify-center">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -113,19 +111,19 @@ const RankedNews: React.FC = () => {
 
       {/* News List */}
       <div className="bg-[#232323] px-2 lg:px-4 py-2">
-        {itemData.map((item, index) => (
+        {rankednews.slice(0, 3).map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(index)}
             className="cursor-pointer"
           >
             <RowItem
-              sno={item.sno}
+              sno={index + 3}
               text={item.text}
               bn={item.bn}
               time={item.time}
               bnColor={"yellow"}
-              textColor="yellow"
+              textColor={"yellow"}
             />
           </div>
         ))}
@@ -134,8 +132,8 @@ const RankedNews: React.FC = () => {
       {/* Popup */}
       {isPopupOpen && currentIndex !== null && (
         <Popup
-          title={itemData[currentIndex].text}
-          content={`Breaking News (${itemData[currentIndex].bn} at ${itemData[currentIndex].time}): ${itemData[currentIndex].content}`}
+          title={rankednews[currentIndex].text}
+          content={`Breaking News (${rankednews[currentIndex].bn} at ${rankednews[currentIndex].time}): ${rankednews[currentIndex].content}`}
           onClose={handleClose}
         />
       )}
