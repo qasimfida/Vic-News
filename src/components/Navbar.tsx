@@ -28,9 +28,9 @@ const Navbar: React.FC = () => {
     handleSearchChange(value); // Updates search as user types
   };
 
-  const toggleDropdown = (dropdown: string) => {
-    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
-  };
+  // const toggleDropdown = (dropdown: string) => {
+  //   setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  // };
 
   return (
     <nav className="flex items-center max-md:flex-col bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px] relative">
