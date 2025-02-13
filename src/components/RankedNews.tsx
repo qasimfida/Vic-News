@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RowItem from "./RowItem";
 import MoreIcon from "../assets/icons/MoreIcon";
 import Popup from "./Popup";
+import { NewsContext } from "../context/NewsContext";
 
 interface ItemData {
   sno: string;
@@ -39,8 +40,27 @@ export const itemData: ItemData[] = [
 ];
 
 const RankedNews: React.FC = () => {
+  const newsContext = useContext(NewsContext);
+
+ 
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
+
+
+  useEffect(() => {
+    if (isPopupOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPopupOpen, currentIndex]);
+
+  
+  if (!newsContext) return null;
+
+  const { loadMoreTopics } = newsContext;
 
   const handleRowClick = (index: number) => {
     setCurrentIndex(index);
@@ -72,15 +92,6 @@ const RankedNews: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    if (isPopupOpen) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isPopupOpen, currentIndex]);
 
   return (
     <div>
@@ -91,7 +102,10 @@ const RankedNews: React.FC = () => {
 
         <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
 
-        <div className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white">
+        <div
+          onClick={loadMoreTopics}
+          className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
+        >
           <h2 className="md:text-[20px] text-[16px] font-medium">More</h2>
           <MoreIcon stroke={"#737576"} />
         </div>

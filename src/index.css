@@ -4,6 +4,7 @@
 body {
   font-family: "bloomberg", sans-serif;
   background-color: black;
+  color: white;
 }
 @font-face {
   font-family: "bloomberg";

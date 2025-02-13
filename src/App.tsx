@@ -1,8 +1,9 @@
 import "./App.css";
+import DateSelector from "./components/DateSelector";
 import Navbar from "./components/Navbar";
 import OrderedNews from "./components/OrderedNews";
-import Popup from "./components/Popup";
 import RankedNews from "./components/RankedNews";
+import NewsControls from "./components/NewsControls";
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
         <Navbar />
         <RankedNews />
         <OrderedNews />
+        <NewsControls/>
+        <DateSelector/>
       </div>
     </div>
   );

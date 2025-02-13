@@ -14,13 +14,14 @@ const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`flex items-center justify-center max-sm:text-[10px] lg:gap-[19px]  gap-[10px]  bg-[#2C2528] text-white py-[6px] md:py-[10px] w-full cursor-pointer  ${className}`}
+      className={`flex relative items-center justify-center max-sm:text-[10px] lg:gap-[19px]  gap-[10px]  bg-[#2C2528] text-white py-[6px] md:py-[10px] w-full cursor-pointer  ${className}`}
       {...props}
     >
       {Icon && (
         <Icon className="text-white  leading-[20px] text-[16px] font-medium" />
       )}
       {text}
+      
     </button>
   );
 };

@@ -3,6 +3,7 @@ import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useNews from "../hooks/useNews";
 import SkeletonError from "./Loader";
+import Loader from "./Loader";
 
 const OrderedNews = () => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
@@ -60,17 +61,21 @@ const OrderedNews = () => {
 
   if (loading) {
     return (
-      <div className="px-2 md:px-4">
-        <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
-      </div>
+     <div >
+       <Loader rows={1} widths={["30%"]} />
+       <Loader rows={17} />
+     </div>
+
     );
   }
 
   if (error) {
     return (
       <div className="">
-        <h2 className="text-xl font-medium my-[12px]">Loading News</h2>
-        <SkeletonError />
+        <h2 className="text-xl font-medium my-[12px]">Ordered News</h2>
+        <div className="text-rose-600 mb-12 text-center flex items-center justify-center">
+          {error}
+        </div>
       </div>
     );
   }

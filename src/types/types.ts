@@ -9,8 +9,47 @@ export interface NewsItem {
     summary: string;
 }
 
+
+
 export interface NewsContextType {
+
     news: NewsItem[];
+  
     loading: boolean;
+  
     error: string | null;
-}
+  
+    setTickers: (tickers: string) => void;
+    selectedTopic: string;
+    setSelectedTopic: (topic: string) => void;
+
+    setTopics: (topics: string) => void;
+  
+    setKeywords: any;
+    handleSearchChange:(searchTerm: string) => void;
+  
+    setDateRange: (dateRange: [Date | null, Date | null]) => void;
+  
+    setSort: (sort: "LATEST" | "EARLIEST" | "RELEVANCE") => void;
+  
+    setLimit: (limit: number) => void;
+  
+    visibleTopics: string[]; 
+
+    setVisibleTopicsIndex: (index: number) => void;
+  
+    allTopics: string[];
+  
+    loadMoreTopics: () => void;
+  
+    dateRange: [Date | null, Date | null];
+  
+  };
+
+  export type ModalKey = "dateSelector" | "topicSelector" | "sortSelector";
+
+  export interface ModalContextType {
+    openModal: (modal: ModalKey) => void;
+    closeModal: (modal: ModalKey) => void;
+    isModalOpen: (modal: ModalKey) => boolean;
+  }
