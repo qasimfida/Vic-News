@@ -15,8 +15,8 @@ function App() {
         <Navbar />
         <RankedNews />
         <OrderedNews />
-        <NewsControls/>
-        <DateSelector/>
+        {/* <NewsControls/>
+        <DateSelector/> */}
       </div>
     </div>
   );
