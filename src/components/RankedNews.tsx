@@ -118,7 +118,7 @@ const RankedNews: React.FC = () => {
             className="cursor-pointer"
           >
             <RowItem
-              sno={index + 3}
+              sno={index + 1}
               text={item.text}
               bn={item.bn}
               time={item.time}

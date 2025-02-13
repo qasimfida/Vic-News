@@ -42,7 +42,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
   const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
   const [limit, setLimit] = useState<number>(50);
-  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(3);
+  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(0);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [startDate, endDate] = dateRange;
 
@@ -107,7 +107,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
   return (
     <RankedNewsContext.Provider 
     value={{
-      rankednews: rankednews.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
+      rankednews: rankednews.slice(visibleTopicsIndex, visibleTopicsIndex + 3),
       loading,
       error,
       setTickers,
