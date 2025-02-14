@@ -151,34 +151,10 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         setVisibleTopicsIndex,
         allTopics,
         visibleTopics: allTopics,
+        rankednews: news,
       }}
     >
       {children}
-    <NewsContext.Provider 
-    value={{
-      news: news.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
-      loading,
-      error,
-      setTickers,
-      setTopics,
-      setKeywords,
-      setDateRange,
-      setSort,
-      setLimit,
-      selectedTopic,
-      setSelectedTopic,
-      loadMoreTopics,
-      dateRange,
-      handleSearchChange,
-      setVisibleTopicsIndex,
-      allTopics,
-      visibleTopics: allTopics,
-      rankednews: news
-    }}
-  >
-  
-    {children}
-  
     </NewsContext.Provider>
   );
 };
