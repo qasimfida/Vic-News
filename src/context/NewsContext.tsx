@@ -24,12 +24,26 @@ const mapSourceToShortCode = (source: string): string => {
   return sourceMap[source] || "UNK";
 };
 
-export const NewsContext = createContext<NewsContextType | undefined>(undefined);
+export const NewsContext = createContext<NewsContextType | undefined>(
+  undefined
+);
 
 const allTopics = [
-  "blockchain", "earnings", "ipo", "mergers_and_acquisitions", "financial_markets",
-  "economy_fiscal", "economy_monetary", "economy_macro", "energy_transportation",
-  "finance", "life_sciences", "manufacturing", "real_estate", "retail_wholesale", "technology"
+  "blockchain",
+  "earnings",
+  "ipo",
+  "mergers_and_acquisitions",
+  "financial_markets",
+  "economy_fiscal",
+  "economy_monetary",
+  "economy_macro",
+  "energy_transportation",
+  "finance",
+  "life_sciences",
+  "manufacturing",
+  "real_estate",
+  "retail_wholesale",
+  "technology",
 ];
 
 export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
@@ -39,25 +53,30 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [tickers, setTickers] = useState<string>("AAPL");
   const [topics, setTopics] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
+    "LATEST"
+  );
   const [limit, setLimit] = useState<number>(50);
   const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(0);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [startDate, endDate] = dateRange;
 
-//   const loadMoreTopics = () => {
-//     setVisibleTopicsIndex((prev) => {
-//       if (prev + 17 >= allTopics.length) {
-//         return 0;
-//       }
-//       return prev + 17;
-//     });
-//   };
+  //   const loadMoreTopics = () => {
+  //     setVisibleTopicsIndex((prev) => {
+  //       if (prev + 17 >= allTopics.length) {
+  //         return 0;
+  //       }
+  //       return prev + 17;
+  //     });
+  //   };
   const loadMoreTopics = () => {
     setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
   };
-  
+
   const formatDate = (date: Date | null): string => {
     if (!date) return "";
     const year = date.getFullYear();
@@ -113,30 +132,28 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   };
 
   return (
-    <NewsContext.Provider 
-    value={{
-      news: news.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
-      loading,
-      error,
-      setTickers,
-      setTopics,
-      setKeywords,
-      setDateRange,
-      setSort,
-      setLimit,
-      selectedTopic,
-      setSelectedTopic,
-      loadMoreTopics,
-      dateRange,
-      handleSearchChange,
-      setVisibleTopicsIndex,
-      allTopics,
-      visibleTopics: allTopics
-    }}
-  >
-  
-    {children}
-  
+    <NewsContext.Provider
+      value={{
+        news: news.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
+        loading,
+        error,
+        setTickers,
+        setTopics,
+        setKeywords,
+        setDateRange,
+        setSort,
+        setLimit,
+        selectedTopic,
+        setSelectedTopic,
+        loadMoreTopics,
+        dateRange,
+        handleSearchChange,
+        setVisibleTopicsIndex,
+        allTopics,
+        visibleTopics: allTopics,
+      }}
+    >
+      {children}
     </NewsContext.Provider>
   );
 };
