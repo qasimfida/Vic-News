@@ -24,23 +24,42 @@ const mapSourceToShortCode = (source: string): string => {
   return sourceMap[source] || "UNK";
 };
 
-export const NewsContext = createContext<NewsContextType | undefined>(undefined);
+export const NewsContext = createContext<NewsContextType | undefined>(
+  undefined
+);
 
 const allTopics = [
-  "blockchain", "earnings", "ipo", "mergers_and_acquisitions", "financial_markets",
-  "economy_fiscal", "economy_monetary", "economy_macro", "energy_transportation",
-  "finance", "life_sciences", "manufacturing", "real_estate", "retail_wholesale", "technology"
+  "blockchain",
+  "earnings",
+  "ipo",
+  "mergers_and_acquisitions",
+  "financial_markets",
+  "economy_fiscal",
+  "economy_monetary",
+  "economy_macro",
+  "energy_transportation",
+  "finance",
+  "life_sciences",
+  "manufacturing",
+  "real_estate",
+  "retail_wholesale",
+  "technology",
 ];
 
 export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [tickers, setTickers] = useState<string>("AAPL");
+  const [tickers, setTickers] = useState<string>("");
   const [topics, setTopics] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
+    "LATEST"
+  );
   const [limit, setLimit] = useState<number>(50);
   const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(3);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
@@ -49,7 +68,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const loadMoreTopics = () => {
     setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
   };
-  
+
   const formatDate = (date: Date | null): string => {
     if (!date) return "";
     const year = date.getFullYear();
@@ -67,7 +86,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        let apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${tickers}&apikey=${API_KEY}&sort=${sort}&limit=${limit}`;
+        let apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${keywords}&apikey=${API_KEY}&sort=${sort}&limit=${limit}`;
         if (topics) apiUrl += `&topics=${topics}`;
         if (keywords) apiUrl += `&keywords=${keywords}`;
         if (startDate) apiUrl += `&time_from=${formatDate(startDate)}`;
@@ -86,7 +105,14 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
           }));
           setNews(formattedNews);
         } else if (data) {
-          setError(data.Information);
+          if (
+            data.Information !=
+            "Invalid inputs. Please refer to the API documentation https://www.alphavantage.co/documentation#newsapi and try again."
+          ) {
+            setError(data.Information);
+          } else {
+            setTickers("");
+          }
         } else {
           throw new Error("Failed to fetch API");
         }
@@ -105,31 +131,29 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   };
 
   return (
-    <NewsContext.Provider 
-    value={{
-      news: news.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
-      loading,
-      error,
-      setTickers,
-      setTopics,
-      setKeywords,
-      setDateRange,
-      setSort,
-      setLimit,
-      selectedTopic,
-      setSelectedTopic,
-      loadMoreTopics,
-      dateRange,
-      handleSearchChange,
-      setVisibleTopicsIndex,
-      allTopics,
-      visibleTopics: allTopics,
-      rankednews: news
-    }}
-  >
-  
-    {children}
-  
+    <NewsContext.Provider
+      value={{
+        news: news.slice(visibleTopicsIndex, visibleTopicsIndex + 17),
+        loading,
+        error,
+        setTickers,
+        setTopics,
+        setKeywords,
+        setDateRange,
+        setSort,
+        setLimit,
+        selectedTopic,
+        setSelectedTopic,
+        loadMoreTopics,
+        dateRange,
+        handleSearchChange,
+        setVisibleTopicsIndex,
+        allTopics,
+        visibleTopics: allTopics,
+        rankednews: news,
+      }}
+    >
+      {children}
     </NewsContext.Provider>
   );
 };
