@@ -65,6 +65,14 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [startDate, endDate] = dateRange;
 
+  //   const loadMoreTopics = () => {
+  //     setVisibleTopicsIndex((prev) => {
+  //       if (prev + 17 >= allTopics.length) {
+  //         return 0;
+  //       }
+  //       return prev + 17;
+  //     });
+  //   };
   const loadMoreTopics = () => {
     setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
   };
