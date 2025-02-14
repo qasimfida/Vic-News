@@ -14,7 +14,7 @@ export interface NewsItem {
 export interface NewsContextType {
 
     news: NewsItem[];
-  
+    rankednews: NewsItem[];
     loading: boolean;
   
     error: string | null;

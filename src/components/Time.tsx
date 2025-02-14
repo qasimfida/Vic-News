@@ -1,27 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { NewsContext } from "../context/NewsContext";
+
+type SortOption = "LATEST" | "EARLIEST" | "RELEVANCE";
 
 const SortDropdown: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("Latest");
+  const [selectedOption, setSelectedOption] = useState<SortOption>("LATEST");
+  const newsContext = useContext(NewsContext);
 
-  const options = ["Latest", "Earliest", "Relevance"];
+  if (!newsContext) return null;
+  const { setSort } = newsContext;
 
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
+  const options: { label: string; value: SortOption }[] = [
+    { label: "Latest", value: "LATEST" },
+    { label: "Earliest", value: "EARLIEST" },
+    { label: "Relevance", value: "RELEVANCE" }
+  ];
+
+  const handleSelect = (optionValue: SortOption) => {
+    setSelectedOption(optionValue);
+    setSort(optionValue);
   };
 
   return (
-    <div className=" text-[12px] text-white  p-3 rounded-[3px]">
-      {options.map((option) => (
+    <div className="text-[12px] text-white p-3 rounded-[3px]">
+      {options.map(({ label, value }) => (
         <div
-          key={option}
+          key={value}
           className={`py-2 px-3 cursor-pointer rounded-md max-md:text-center ${
-            selectedOption === option
-              ? "bg-[#6B6D70] border border-white"
-              : "hover:[#6B6D70]"
+            selectedOption === value ? "bg-[#6B6D70] border border-white" : "hover:bg-[#6B6D70]"
           }`}
-          onClick={() => handleSelect(option)}
+          onClick={() => handleSelect(value)}
         >
-          {option}
+          {label}
         </div>
       ))}
     </div>

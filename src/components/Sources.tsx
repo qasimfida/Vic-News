@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { NewsContext } from "../context/NewsContext";
 
 interface DropdownOption {
   id: number;
@@ -7,6 +8,11 @@ interface DropdownOption {
 
 const Dropdown: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const newsContext = useContext(NewsContext);
+
+  if (!newsContext) return null;
+
+  const { allTopics, selectedTopic, setTopics } = newsContext;
 
   const options: DropdownOption[] = [
     { id: 1, label: "Blockchain" },
@@ -31,18 +37,17 @@ const Dropdown: React.FC = () => {
 
         {/* Options */}
         <div className="space-y-3">
-          {options.map((option) => (
+          {allTopics.map((topic) => (
             <div
-              key={option.id}
               className={`cursor-pointer max-md:text-center hover:bg-[#6B6D70] py-2 px-4 hover:border hover:rounded-md 
               ${
-                selectedOption === option.label
+                selectedOption === topic.replace("_", " ")
                   ? "bg-[#6B6D70] rounded-md border"
                   : ""
               }`}
-              onClick={() => handleSelect(option.label)}
-            >
-              {option.label}
+              onClick={(e) => setTopics(topic.replace("_", " "))}
+              >
+              {topic.replace("_", " ")}
             </div>
           ))}
         </div>
