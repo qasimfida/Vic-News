@@ -9,7 +9,6 @@ import Dropdown from "./Sources";
 import SortDropdown from "./Time";
 import Calendar from "./AllData";
 import { NewsContext } from "../context/NewsContext";
-import useNews from "../hooks/useNews";
 import SearchIcon from "../assets/icons/SearchIcon";
 
 const Navbar: React.FC = () => {
