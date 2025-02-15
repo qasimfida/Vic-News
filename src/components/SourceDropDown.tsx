@@ -6,7 +6,7 @@ interface DropdownOption {
   label: string;
 }
 
-const Dropdown: React.FC = () => {
+const SourceDropDown: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const newsContext = useContext(NewsContext);
 
@@ -46,7 +46,7 @@ const Dropdown: React.FC = () => {
                   : ""
               }`}
               onClick={(e) => setTopics(topic.replace("_", " "))}
-              >
+            >
               {topic.replace("_", " ")}
             </div>
           ))}
@@ -56,4 +56,4 @@ const Dropdown: React.FC = () => {
   );
 };
 
-export default Dropdown;
+export default SourceDropDown;
