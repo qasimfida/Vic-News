@@ -106,6 +106,8 @@ const OrderedNews = () => {
       {isPopupOpen && currentIndex !== null && (
         <Popup
           title={news[currentIndex].text}
+          contentImage={news[currentIndex].contentImage}
+          orgUrl={news[currentIndex].orgUrl}
           content={`Breaking News (${news[currentIndex].bn} at ${news[currentIndex].time}): ${news[currentIndex].content}`}
           onClose={handleClose}
         />

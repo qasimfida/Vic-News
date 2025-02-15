@@ -109,6 +109,8 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
             url: item.url,
             bn: mapSourceToShortCode(item?.source),
             content: item.summary,
+            contentImage: item.banner_image,
+            orgUrl: item.url,
             time: formatTime(item.time_published),
           }));
           setNews(formattedNews);

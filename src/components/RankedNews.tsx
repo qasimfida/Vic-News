@@ -134,6 +134,8 @@ const RankedNews: React.FC = () => {
         <Popup
           title={rankednews[currentIndex].text}
           content={`Breaking News (${rankednews[currentIndex].bn} at ${rankednews[currentIndex].time}): ${rankednews[currentIndex].content}`}
+          orgUrl={rankednews[currentIndex].orgUrl}
+          contentImage={rankednews[currentIndex].contentImage}
           onClose={handleClose}
         />
       )}
