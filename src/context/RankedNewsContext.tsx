@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const API_URL = process.env.REACT_APP_API_URL;
 
 interface RankedNewsProviderProps {
   children: ReactNode;
@@ -67,7 +68,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
     const fetchNews = async () => {
       try {
         setLoading(true);
-        let apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${tickers}&apikey=${API_KEY}&sort=${sort}&limit=${limit}`;
+        let apiUrl = API_URL || "";
         if (topics) apiUrl += `&topics=${topics}`;
         if (keywords) apiUrl += `&keywords=${keywords}`;
         if (startDate) apiUrl += `&time_from=${formatDate(startDate)}`;
@@ -76,14 +77,16 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        if (data && data.feed) {
-          const formattedNews: NewsItem[] = data.feed.map((item: any) => ({
-            text: item.title,
-            url: item.url,
-            bn: mapSourceToShortCode(item?.source),
-            content: item.summary,
-            time: formatTime(item.time_published),
-          }));
+        if (data && data.items) {
+           const formattedNews: NewsItem[] = data.items.map((item: any) => ({
+                      text: item.title,
+                      url: item.url,
+                      bn:"BN",
+                      content: item.content_text,
+                      contentImage: item.image,
+                      orgUrl: item.url,
+                      time: formatTime(item.date_published),
+                    }));
           setNews(formattedNews);
         } else if (data) {
           setError(data.Information);

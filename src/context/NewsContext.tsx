@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const API_URL = process.env.REACT_APP_API_URL;
 
 interface NewsProviderProps {
   children: ReactNode;
@@ -65,14 +66,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [startDate, endDate] = dateRange;
 
-  //   const loadMoreTopics = () => {
-  //     setVisibleTopicsIndex((prev) => {
-  //       if (prev + 17 >= allTopics.length) {
-  //         return 0;
-  //       }
-  //       return prev + 17;
-  //     });
-  //   };
+
   const loadMoreTopics = () => {
     setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
   };
@@ -85,16 +79,17 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     return `${year}${month}${day}T0000`;
   };
   const formatTime = (timeString: string): string => {
-    const hours = timeString.substring(9, 11);
-    const minutes = timeString.substring(11, 13);
+    const timePart = timeString.split('T')[1]; // Extracts "16:34:03.000Z"
+    const hours = timePart.substring(0, 2);
+    const minutes = timePart.substring(3, 5);
     return `${hours}:${minutes}`;
   };
-
+  
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        let apiUrl = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${keywords}&apikey=${API_KEY}&sort=${sort}&limit=${limit}`;
+        let apiUrl = API_URL || "";
         if (topics) apiUrl += `&topics=${topics}`;
         if (keywords) apiUrl += `&keywords=${keywords}`;
         if (startDate) apiUrl += `&time_from=${formatDate(startDate)}`;
@@ -102,16 +97,17 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
 
         const response = await fetch(apiUrl);
         const data = await response.json();
+        console.log(data)
 
-        if (data && data.feed) {
-          const formattedNews: NewsItem[] = data.feed.map((item: any) => ({
+        if (data && data.items) {
+          const formattedNews: NewsItem[] = data.items.map((item: any) => ({
             text: item.title,
             url: item.url,
-            bn: mapSourceToShortCode(item?.source),
-            content: item.summary,
-            contentImage: item.banner_image,
+            bn:"BN",
+            content: item.content_text,
+            contentImage: item.image,
             orgUrl: item.url,
-            time: formatTime(item.time_published),
+            time: formatTime(item.date_published),
           }));
           setNews(formattedNews);
         } else if (data) {

@@ -57,7 +57,7 @@ const RankedNews = () => {
   if (error) {
     return (
       <div className="">
-        <h2 className="text-xl font-medium my-[12px]">Ordered News</h2>
+        <h2 className="text-xl font-medium my-[12px]">Top Ranked News</h2>
         <div className="text-rose-600 mb-12 text-center flex items-center justify-center">
           {error}
         </div>
