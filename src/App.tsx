@@ -2,6 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import OrderedNews from "./components/OrderedNews";
 import RankedNews from "./components/RankedNews";
+import { SelectionProvider } from "./context/SelectionContext";
 
 function App() {
   return (
@@ -11,8 +12,12 @@ function App() {
         style={{ maxWidth: "1300px" }}
       >
         <Navbar />
-        <RankedNews />
-        <OrderedNews />
+       <SelectionProvider>
+
+       <RankedNews />
+       <OrderedNews />
+       </SelectionProvider>
+     
       </div>
     </div>
   );

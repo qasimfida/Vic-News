@@ -1,81 +1,55 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import RowItem from "./RowItem";
-import MoreIcon from "../assets/icons/MoreIcon";
 import Popup from "./Popup";
-import { NewsContext } from "../context/NewsContext";
-import Loader from "./Loader";
 import useRankedNews from "../hooks/useRankedNews";
+import { useSelection } from "../context/SelectionContext";
+import Loader from "./Loader";
+import MoreIcon from "../assets/icons/MoreIcon";
+import { NewsContext } from "../context/NewsContext";
+import useNews from "../hooks/useNews";
 
-interface ItemData {
-  sno: string;
-  text: string;
-  bn: string;
-  time: string;
-  content: string;
-}
-
-const RankedNews: React.FC = () => {
-  const newsContext = useContext(NewsContext);
+const RankedNews = () => {
+  const { currentIndex, setCurrentIndex, activeList, setActiveList, handleKeyDown } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
-
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const [isPopupOpen, setPopupOpen] = useState(false);
-
-  const [visibleTopicsIndex, setLocalVisibleTopicsIndex] = useState(0);
-
-  useEffect(() => {
-    setLocalVisibleTopicsIndex(visibleTopicsIndex);
-  }, []); // Empty dependency array ensures it only runs on mount
+  const [isPopupOpen, setPopupOpen] = React.useState(false);
+  const newsContext = useContext(NewsContext);
+  const loadMoreTopics = newsContext?.loadMoreTopics;
+  const { news } = useNews();
 
   useEffect(() => {
-    if (isPopupOpen) {
-      window.addEventListener("keydown", handleKeyDown);
-    }
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
+    const keyListener = (event: KeyboardEvent) => {
+      handleKeyDown(event, news.length, rankednews.length, () => {
+        if (currentIndex !== null) {
+          activeList === "ranked" && handleRowClick(currentIndex as number);
+        }
+      });
+      if (event.key === "Escape") {
+        setPopupOpen(false);
+        setCurrentIndex(null);
+      }
     };
-  }, [isPopupOpen, currentIndex]);
 
-  if (!newsContext) return null;
-
-  const { loadMoreTopics } = newsContext;
+    document.addEventListener("keydown", keyListener);
+    return () => document.removeEventListener("keydown", keyListener);
+  }, [rankednews.length, currentIndex]);
 
   const handleRowClick = (index: number) => {
-    setCurrentIndex(index);
-    setPopupOpen(true);
+    setActiveList("ranked");
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setPopupOpen(true);
+    }, 0);
   };
-
+  
   const handleClose = () => {
     setPopupOpen(false);
     setCurrentIndex(null);
   };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (isPopupOpen) {
-      if (event.key === "Escape") {
-        handleClose();
-      } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-        event.preventDefault();
-        setCurrentIndex((prevIndex) =>
-          prevIndex !== null && prevIndex < rankednews.length - 1
-            ? prevIndex + 1
-            : prevIndex
-        );
-      } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-        event.preventDefault();
-        setCurrentIndex((prevIndex) =>
-          prevIndex !== null && prevIndex > 0 ? prevIndex - 1 : prevIndex
-        );
-      }
-    }
-  };
-
   if (loading) {
     return (
       <div>
         <Loader rows={1} widths={["30%"]} />
-        <Loader rows={13} />
+        <Loader rows={3} />
       </div>
     );
   }
@@ -109,14 +83,14 @@ const RankedNews: React.FC = () => {
         </div>
       </div>
 
-      {/* News List */}
       <div className="bg-[#232323] px-2 lg:px-4 py-2">
-        {rankednews.slice(0, 3).map((item, index) => (
+        {rankednews.map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(index)}
-            className="cursor-pointer"
-          >
+            className={`cursor-pointer transition ${
+              activeList === "ranked" && currentIndex === index ? "bg-[#6B6D70] border border-[#6B6D70]" : "hover:bg-[#6B6D70]"
+            }`}          >
             <RowItem
               sno={index + 1}
               text={item.text}
@@ -130,7 +104,7 @@ const RankedNews: React.FC = () => {
       </div>
 
       {/* Popup */}
-      {isPopupOpen && currentIndex !== null && (
+      {isPopupOpen && currentIndex !== null && activeList === "ranked" && (
         <Popup
           title={rankednews[currentIndex].text}
           content={`Breaking News (${rankednews[currentIndex].bn} at ${rankednews[currentIndex].time}): ${rankednews[currentIndex].content}`}

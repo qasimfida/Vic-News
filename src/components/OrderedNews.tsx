@@ -1,17 +1,36 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useNews from "../hooks/useNews";
-import SkeletonError from "./Loader";
+import { useSelection } from "../context/SelectionContext";
 import Loader from "./Loader";
+import useRankedNews from "../hooks/useRankedNews";
 
 const OrderedNews = () => {
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null);
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const popupRef = useRef<HTMLDivElement | null>(null);
+  const { currentIndex, setCurrentIndex, activeList, setActiveList, handleKeyDown } = useSelection();
   const { news, loading, error } = useNews();
+  const { rankednews} = useRankedNews();
+  const [isPopupOpen, setPopupOpen] = React.useState(false);
+
+  useEffect(() => {
+    const keyListener = (event: KeyboardEvent) => {
+      handleKeyDown(event, news.length, rankednews.length, () => {
+        if (currentIndex !== null) {
+          activeList === "ordered" && handleRowClick(currentIndex as number);
+        }
+      });
+      if (event.key === "Escape") {
+        setPopupOpen(false);
+        setCurrentIndex(null);
+      }
+    };
+
+    document.addEventListener("keydown", keyListener);
+    return () => document.removeEventListener("keydown", keyListener);
+  }, [news.length, currentIndex]);
 
   const handleRowClick = (index: number) => {
+    setActiveList("ordered");
     setCurrentIndex(index);
     setPopupOpen(true);
   };
@@ -20,52 +39,12 @@ const OrderedNews = () => {
     setPopupOpen(false);
     setCurrentIndex(null);
   };
-
-  useEffect(() => {
-    if (isPopupOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isPopupOpen]);
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (isPopupOpen) {
-      if (event.key === "Escape") {
-        handleClose();
-      } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-        event.preventDefault();
-        setCurrentIndex((prevIndex) =>
-          prevIndex !== null && prevIndex < news.length - 1
-            ? prevIndex + 1
-            : prevIndex
-        );
-      } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-        event.preventDefault();
-        setCurrentIndex((prevIndex) =>
-          prevIndex !== null && prevIndex > 0 ? prevIndex - 1 : prevIndex
-        );
-      }
-    }
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-      handleClose();
-    }
-  };
-
   if (loading) {
     return (
-     <div >
-       <Loader rows={1} widths={["30%"]} />
-       <Loader rows={17} />
-     </div>
-
+      <div>
+        <Loader rows={1} widths={["30%"]} />
+        <Loader rows={13} />
+      </div>
     );
   }
 
@@ -79,7 +58,6 @@ const OrderedNews = () => {
       </div>
     );
   }
-
   return (
     <div className="px-2 md:px-4">
       <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
@@ -88,7 +66,9 @@ const OrderedNews = () => {
           <div
             key={index}
             onClick={() => handleRowClick(index)}
-            className="cursor-pointer"
+            className={`cursor-pointer  transition ${
+              activeList === "ordered" && currentIndex === index ? "bg-[#6B6D70] border border-[#6B6D70]" : "hover:bg-[#6B6D70]"
+            }`}
           >
             <RowItem
               sno={index + 3}
@@ -103,7 +83,7 @@ const OrderedNews = () => {
         ))}
       </div>
 
-      {isPopupOpen && currentIndex !== null && (
+      {isPopupOpen && currentIndex !== null && activeList === "ordered" && (
         <Popup
           title={news[currentIndex].text}
           contentImage={news[currentIndex].contentImage}
