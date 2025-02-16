@@ -7,9 +7,15 @@ import Loader from "./Loader";
 import useRankedNews from "../hooks/useRankedNews";
 
 const OrderedNews = () => {
-  const { currentIndex, setCurrentIndex, activeList, setActiveList, handleKeyDown } = useSelection();
+  const {
+    currentIndex,
+    setCurrentIndex,
+    activeList,
+    setActiveList,
+    handleKeyDown,
+  } = useSelection();
   const { news, loading, error } = useNews();
-  const { rankednews} = useRankedNews();
+  const { rankednews } = useRankedNews();
   const [isPopupOpen, setPopupOpen] = React.useState(false);
 
   useEffect(() => {
@@ -67,7 +73,9 @@ const OrderedNews = () => {
             key={index}
             onClick={() => handleRowClick(index)}
             className={`cursor-pointer  transition ${
-              activeList === "ordered" && currentIndex === index ? "bg-[#6B6D70] border border-[#6B6D70]" : "hover:bg-[#6B6D70]"
+              activeList === "ordered" && currentIndex === index
+                ? "bg-[#6B6D70] border border-[#6B6D70]"
+                : "hover:border-[#6B6D70]"
             }`}
           >
             <RowItem
