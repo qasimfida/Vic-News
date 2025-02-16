@@ -11,12 +11,12 @@ const OrderedNews = () => {
     currentIndex,
     setCurrentIndex,
     activeList,
+    isPopupOpen,setPopupOpen,
     setActiveList,
     handleKeyDown,
   } = useSelection();
   const { news, loading, error } = useNews();
   const { rankednews } = useRankedNews();
-  const [isPopupOpen, setPopupOpen] = React.useState(false);
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -31,6 +31,7 @@ const OrderedNews = () => {
       }
     };
 
+    console.log(isPopupOpen, "ordered");
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
   }, [news.length, currentIndex]);

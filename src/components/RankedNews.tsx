@@ -9,9 +9,8 @@ import { NewsContext } from "../context/NewsContext";
 import useNews from "../hooks/useNews";
 
 const RankedNews = () => {
-  const { currentIndex, setCurrentIndex, activeList, setActiveList, handleKeyDown } = useSelection();
+  const { currentIndex,isPopupOpen,setPopupOpen, setCurrentIndex, activeList, setActiveList, handleKeyDown } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
-  const [isPopupOpen, setPopupOpen] = React.useState(false);
   const newsContext = useContext(NewsContext);
   const loadMoreTopics = newsContext?.loadMoreTopics;
   const { news } = useNews();
@@ -29,6 +28,7 @@ const RankedNews = () => {
       }
     };
 
+    console.log(isPopupOpen, "ranked")
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
   }, [rankednews.length, currentIndex]);

@@ -5,6 +5,8 @@ interface SelectionContextType {
   setCurrentIndex: (index: number | null) => void;
   activeList: "ordered" | "ranked";
   setActiveList: (list: "ordered" | "ranked") => void;
+  setPopupOpen: any;
+  isPopupOpen: boolean;
   handleKeyDown: (event: KeyboardEvent, orderedLength: number, rankedLength: number, onEnter: () => void) => void;
 }
 
@@ -14,6 +16,8 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [activeList, setActiveList] = useState<"ordered" | "ranked">("ordered");
 
+  const [isPopupOpen, setPopupOpen] = React.useState(false);
+
 
   const handleKeyDown = (
     event: KeyboardEvent,
@@ -21,8 +25,6 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     rankedLength: number,
     onEnter: () => void
   ) => {
-    console.log("Key Pressed:", event.key);
-    console.log("Before Update - currentIndex:", currentIndex, " activeList:", activeList);
   
     if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
       if (activeList === "ordered" && currentIndex !== null && currentIndex >= orderedLength - 1) {
@@ -50,12 +52,11 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }, 10); 
     }
   
-    console.log("After Update - currentIndex:", currentIndex, " activeList:", activeList);
   };
   
   
   return (
-    <SelectionContext.Provider value={{ currentIndex, setCurrentIndex, activeList, setActiveList, handleKeyDown }}>
+    <SelectionContext.Provider value={{ currentIndex,setPopupOpen,isPopupOpen, setCurrentIndex, activeList, setActiveList, handleKeyDown }}>
       {children}
     </SelectionContext.Provider>
   );
