@@ -1,6 +1,5 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 import React from "react";
-import CrossIcon from "../assets/icons/CrossIcon";
 import Button from "./Buttons";
 import DateIcon from "../assets/icons/DateIcon";
 import SourcesIcon from "../assets/icons/SourcesIcon";
@@ -22,7 +21,7 @@ const Navbar: React.FC = () => {
         setActiveDropdown(null);
       }
     };
-    if (searchTerm == "") {
+    if (searchTerm === "") {
       handleSearchChange("");
     }
     const handleKeyDown = (e: KeyboardEvent) => {

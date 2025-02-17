@@ -1,9 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { NewsItem, NewsContextType } from "../types/types";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
 const API_URL = process.env.REACT_APP_API_URL;
 
 interface RankedNewsProviderProps {
