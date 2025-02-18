@@ -22,17 +22,27 @@ const RankedNews = () => {
           activeList === "ranked" && handleRowClick(currentIndex as number);
         }
       });
+  
       if (event.key === "Escape") {
         setPopupOpen(false);
         setCurrentIndex(null);
       }
     };
-
-    console.log(isPopupOpen, "ranked")
+  
+    console.log(isPopupOpen, "ranked");
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
-  }, [rankednews.length, currentIndex]);
-
+  }, [
+    handleKeyDown,
+    isPopupOpen,
+    news.length,
+    rankednews.length,
+    setCurrentIndex,
+    setPopupOpen,
+    currentIndex,
+    activeList,
+  ]);
+  
   const handleRowClick = (index: number) => {
     setActiveList("ranked");
     setTimeout(() => {

@@ -21,9 +21,7 @@ const Navbar: React.FC = () => {
         setActiveDropdown(null);
       }
     };
-    if (searchTerm === "") {
-      handleSearchChange("");
-    }
+   
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         handleSearch();
@@ -40,8 +38,8 @@ const Navbar: React.FC = () => {
   }, [searchTerm]);
 
   if (!newsContext) return null;
-
   const { handleSearchChange } = newsContext;
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

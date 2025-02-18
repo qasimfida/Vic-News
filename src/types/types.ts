@@ -7,6 +7,7 @@ export interface NewsItem {
     title: string;
     url: string;
     summary: string;
+    date_published: any;
     orgUrl: string;
     contentImage: string;
 }

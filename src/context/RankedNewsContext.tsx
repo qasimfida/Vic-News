@@ -8,47 +8,56 @@ interface RankedNewsProviderProps {
   children: ReactNode;
 }
 
-const mapSourceToShortCode = (source: string): string => {
-  const sourceMap: { [key: string]: string } = {
-    Benzinga: "BN",
-    "Zacks Commentary": "ZC",
-    "Yahoo Finance": "YF",
-    CNBC: "CN",
-    Bloomberg: "BB",
-    Forbes: "FB",
-    Reuters: "RT",
-    MarketWatch: "MW",
-    "Business Insider": "BI",
-  };
-  return sourceMap[source] || "UNK";
-};
 
-export const RankedNewsContext = createContext<NewsContextType | undefined>(undefined);
+export const RankedNewsContext = createContext<NewsContextType | undefined>(
+  undefined
+);
 
 const allTopics = [
-  "blockchain", "earnings", "ipo", "mergers_and_acquisitions", "financial_markets",
-  "economy_fiscal", "economy_monetary", "economy_macro", "energy_transportation",
-  "finance", "life_sciences", "manufacturing", "real_estate", "retail_wholesale", "technology"
+  "blockchain",
+  "earnings",
+  "ipo",
+  "mergers_and_acquisitions",
+  "financial_markets",
+  "economy_fiscal",
+  "economy_monetary",
+  "economy_macro",
+  "energy_transportation",
+  "finance",
+  "life_sciences",
+  "manufacturing",
+  "real_estate",
+  "retail_wholesale",
+  "technology",
 ];
 
-export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children }) => {
+export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
+  children,
+}) => {
   const [rankednews, setNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [tickers, setTickers] = useState<string>("AAPL");
   const [topics, setTopics] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
+    "LATEST"
+  );
   const [limit, setLimit] = useState<number>(50);
   const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(0);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [startDate, endDate] = dateRange;
 
   const loadMoreTopics = () => {
-    setVisibleTopicsIndex((prev) => (prev + 17 < rankednews.length ? prev + 17 : 0));
+    setVisibleTopicsIndex((prev) =>
+      prev + 17 < rankednews.length ? prev + 17 : 0
+    );
   };
-  
+
   const formatDate = (date: Date | null): string => {
     if (!date) return "";
     const year = date.getFullYear();
@@ -57,8 +66,9 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
     return `${year}${month}${day}T0000`;
   };
   const formatTime = (timeString: string): string => {
-    const hours = timeString.substring(9, 11);
-    const minutes = timeString.substring(11, 13);
+    const timePart = timeString.split("T")[1];
+    const hours = timePart.substring(0, 2);
+    const minutes = timePart.substring(3, 5);
     return `${hours}:${minutes}`;
   };
 
@@ -76,15 +86,15 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
         const data = await response.json();
 
         if (data && data.items) {
-           const formattedNews: NewsItem[] = data.items.map((item: any) => ({
-                      text: item.title,
-                      url: item.url,
-                      bn:"BN",
-                      content: item.content_text,
-                      contentImage: item.image,
-                      orgUrl: item.url,
-                      time: formatTime(item.date_published),
-                    }));
+          const formattedNews: NewsItem[] = data.items.map((item: any) => ({
+            text: item.title,
+            url: item.url,
+            bn: item.authors[0].name,
+            content: item.content_text,
+            contentImage: item.image,
+            orgUrl: item.url,
+            time: formatTime(item.date_published),
+          }));
           setNews(formattedNews);
         } else if (data) {
           setError(data.Information);
@@ -106,31 +116,32 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({ children
   };
 
   return (
-    <RankedNewsContext.Provider 
-    value={{
-      rankednews: rankednews.slice(visibleTopicsIndex, visibleTopicsIndex + 3),
-      loading,
-      error,
-      setTickers,
-      setTopics,
-      setKeywords,
-      setDateRange,
-      setSort,
-      setLimit,
-      selectedTopic,
-      setSelectedTopic,
-      loadMoreTopics,
-      dateRange,
-      handleSearchChange,
-      setVisibleTopicsIndex,
-      allTopics,
-      visibleTopics: allTopics,
-      news: rankednews
-    }}
-  >
-  
-    {children}
-  
+    <RankedNewsContext.Provider
+      value={{
+        rankednews: rankednews.slice(
+          visibleTopicsIndex,
+          visibleTopicsIndex + 3
+        ),
+        loading,
+        error,
+        setTickers,
+        setTopics,
+        setKeywords,
+        setDateRange,
+        setSort,
+        setLimit,
+        selectedTopic,
+        setSelectedTopic,
+        loadMoreTopics,
+        dateRange,
+        handleSearchChange,
+        setVisibleTopicsIndex,
+        allTopics,
+        visibleTopics: allTopics,
+        news: rankednews,
+      }}
+    >
+      {children}
     </RankedNewsContext.Provider>
   );
 };

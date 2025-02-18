@@ -1,10 +1,7 @@
 import React, { useContext, useState } from "react";
 import { NewsContext } from "../context/NewsContext";
 
-interface DropdownOption {
-  id: number;
-  label: string;
-}
+
 
 const SourceDropDown: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>("");
@@ -12,20 +9,8 @@ const SourceDropDown: React.FC = () => {
 
   if (!newsContext) return null;
 
-  const { allTopics, selectedTopic, setTopics } = newsContext;
+  const { allTopics, setTopics } = newsContext;
 
-  const options: DropdownOption[] = [
-    { id: 1, label: "Blockchain" },
-    { id: 2, label: "Earning" },
-    { id: 3, label: "IPO" },
-    { id: 4, label: "Mergers" },
-    { id: 5, label: "Financial Market" },
-    { id: 6, label: "Financial Market" },
-  ];
-
-  const handleSelect = (option: string) => {
-    setSelectedOption(option);
-  };
 
   return (
     <div className="relative bg-[#464646]">

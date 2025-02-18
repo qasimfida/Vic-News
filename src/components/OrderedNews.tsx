@@ -31,10 +31,9 @@ const OrderedNews = () => {
       }
     };
 
-    console.log(isPopupOpen, "ordered");
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
-  }, [news.length, currentIndex]);
+  }, [news.length, handleKeyDown, activeList, currentIndex]);
 
   const handleRowClick = (index: number) => {
     setActiveList("ordered");
@@ -69,7 +68,8 @@ const OrderedNews = () => {
     <div className="px-2 md:px-4">
       <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
       <div>
-        {news.map((item, index) => (
+       {
+        news.length > 3 ? ( news.map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(index)}
@@ -89,7 +89,12 @@ const OrderedNews = () => {
               paraColor={"orange"}
             />
           </div>
-        ))}
+        )) ) : (
+          <div className="text-center text-rose-600">
+            No news available
+          </div>
+        )
+       }
       </div>
 
       {isPopupOpen && currentIndex !== null && activeList === "ordered" && (
