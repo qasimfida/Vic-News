@@ -8,16 +8,15 @@ interface NewsProviderProps {
   children: ReactNode;
 }
 
-
 export const NewsContext = createContext<NewsContextType | undefined>(
   undefined
 );
 
-let allTopics:string[] = [];
+let allTopics: string[] = [];
 
 export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
-  const [news, setNews] = useState<NewsItem[]>([]); // Full dataset
-  const [filteredNews, setFilteredNews] = useState<NewsItem[]>([]); // Filtered list for UI
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [filteredNews, setFilteredNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [tickers, setTickers] = useState<string>("");
@@ -39,15 +38,12 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
   };
 
- 
-
   const formatTime = (timeString: string): string => {
     const timePart = timeString.split("T")[1];
     const hours = timePart.substring(0, 2);
     const minutes = timePart.substring(3, 5);
     return `${hours}:${minutes}`;
   };
-
 
   const handleSearchChange = (searchTerm: string) => {
     setKeywords(searchTerm);
@@ -73,7 +69,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
             time: formatTime(item.date_published),
           }));
           setNews(formattedNews);
-          setFilteredNews(formattedNews); // Initialize filteredNews with full data
+          setFilteredNews(formattedNews);
         } else if (data) {
           if (
             data.Information !==
@@ -95,15 +91,15 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
 
     fetchNews();
   }, [tickers, topics, startDate, endDate, sort, limit]);
-  const allAuthors = new Set(news.flatMap(item => item.bn)); // A Set ensures unique authors
-  allTopics = Array.from(allAuthors); // This creates an array with unique author names
+  const allAuthors = new Set(news.flatMap((item) => item.bn));
+  allTopics = Array.from(allAuthors);
 
   //   if (!keywords) {
   //     setFilteredNews(news); // Reset when search is cleared
   //   } else {
   //     let filteredItems = news.filter((item) =>
   //       item.text.toLowerCase().includes(keywords.toLowerCase())
-  //     );      
+  //     );
   //     const emptyItem = {
   //       content: "",
   //       time: "",
@@ -116,11 +112,10 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   //       orgUrl: "",
   //       contentImage: ""
   //     };
-  
-      
+
   //     // Add empty objects based on how many items are missing to reach 3
   //     const itemsNeeded = 4 - filteredItems.length;
-  
+
   //     // If fewer than 3 items, add the required number of empty items
   //     if (itemsNeeded > 0) {
   //       const emptyItems = new Array(itemsNeeded).fill(emptyItem);
@@ -136,20 +131,23 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     } else {
       let filteredItems = news.filter((item) => {
         const itemDate = new Date(item.date_published);
-  
-        const isWithinDateRange = (dateRange[0] && dateRange[1])
-          ? itemDate >= dateRange[0] && itemDate <= dateRange[1]
-          : dateRange[0]
-          ? itemDate >= dateRange[0] 
-          : dateRange[1]
-          ? itemDate <= dateRange[1] 
-          : true;
-  
-        const matchesKeywords = item.text.toLowerCase().includes(keywords.toLowerCase());
-  
+
+        const isWithinDateRange =
+          dateRange[0] && dateRange[1]
+            ? itemDate >= dateRange[0] && itemDate <= dateRange[1]
+            : dateRange[0]
+            ? itemDate >= dateRange[0]
+            : dateRange[1]
+            ? itemDate <= dateRange[1]
+            : true;
+
+        const matchesKeywords = item.text
+          .toLowerCase()
+          .includes(keywords.toLowerCase());
+
         return matchesKeywords && isWithinDateRange;
       });
-  
+
       switch (sort) {
         case "LATEST":
           filteredItems.sort((a, b) => {
@@ -167,15 +165,23 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
           break;
         case "RELEVANCE":
           filteredItems.sort((a, b) => {
-            const aMatches = a.text.toLowerCase().includes(keywords.toLowerCase()) ? 1 : 0;
-            const bMatches = b.text.toLowerCase().includes(keywords.toLowerCase()) ? 1 : 0;
+            const aMatches = a.text
+              .toLowerCase()
+              .includes(keywords.toLowerCase())
+              ? 1
+              : 0;
+            const bMatches = b.text
+              .toLowerCase()
+              .includes(keywords.toLowerCase())
+              ? 1
+              : 0;
             return bMatches - aMatches;
           });
           break;
         default:
           break;
       }
-  
+
       const emptyItem = {
         content: "",
         time: "",
@@ -186,21 +192,20 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         url: "",
         summary: "",
         orgUrl: "",
-        contentImage: ""
+        contentImage: "",
       };
-  
+
       const itemsNeeded = 4 - filteredItems.length;
-  
+
       if (itemsNeeded > 0) {
         const emptyItems = new Array(itemsNeeded).fill(emptyItem);
         filteredItems = [...emptyItems, ...filteredItems];
       }
-  
+
       console.log(filteredItems);
       setFilteredNews(filteredItems);
     }
   }, [keywords, news, dateRange, sort]);
-  
 
   return (
     <NewsContext.Provider
