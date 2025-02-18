@@ -9,7 +9,15 @@ import { NewsContext } from "../context/NewsContext";
 import useNews from "../hooks/useNews";
 
 const RankedNews = () => {
-  const { currentIndex,isPopupOpen,setPopupOpen, setCurrentIndex, activeList, setActiveList, handleKeyDown } = useSelection();
+  const {
+    currentIndex,
+    isPopupOpen,
+    setPopupOpen,
+    setCurrentIndex,
+    activeList,
+    setActiveList,
+    handleKeyDown,
+  } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
   const newsContext = useContext(NewsContext);
   const loadMoreTopics = newsContext?.loadMoreTopics;
@@ -22,13 +30,13 @@ const RankedNews = () => {
           activeList === "ranked" && handleRowClick(currentIndex as number);
         }
       });
-  
+
       if (event.key === "Escape") {
         setPopupOpen(false);
         setCurrentIndex(null);
       }
     };
-  
+
     console.log(isPopupOpen, "ranked");
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
@@ -42,7 +50,7 @@ const RankedNews = () => {
     currentIndex,
     activeList,
   ]);
-  
+
   const handleRowClick = (index: number) => {
     setActiveList("ranked");
     setTimeout(() => {
@@ -50,7 +58,7 @@ const RankedNews = () => {
       setPopupOpen(true);
     }, 0);
   };
-  
+
   const handleClose = () => {
     setPopupOpen(false);
     setCurrentIndex(null);
@@ -77,20 +85,10 @@ const RankedNews = () => {
 
   return (
     <div>
-      <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
+      <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[32px] my-[16px]">
         <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
         </h2>
-
-        <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
-
-        <div
-          onClick={loadMoreTopics}
-          className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
-        >
-          <h2 className="md:text-[20px] text-[16px] font-medium">More</h2>
-          <MoreIcon stroke={"#737576"} />
-        </div>
       </div>
 
       <div className="bg-[#232323] px-2 lg:px-4 py-2">
@@ -99,8 +97,11 @@ const RankedNews = () => {
             key={index}
             onClick={() => handleRowClick(index)}
             className={`cursor-pointer transition ${
-              activeList === "ranked" && currentIndex === index ? "bg-[#6B6D70] border border-[#6B6D70]" : "hover:bg-[#6B6D70]"
-            }`}          >
+              activeList === "ranked" && currentIndex === index
+                ? "bg-[#6B6D70] border border-[#6B6D70]"
+                : "hover:bg-[#6B6D70]"
+            }`}
+          >
             <RowItem
               sno={index + 1}
               text={item.text}

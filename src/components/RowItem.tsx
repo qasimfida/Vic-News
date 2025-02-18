@@ -17,6 +17,7 @@ const RowItem: React.FC<RowItemProps> = ({
   sno,
   text,
   bn,
+
   time,
   paraColor,
   textColor,
@@ -32,7 +33,9 @@ const RowItem: React.FC<RowItemProps> = ({
         key={key}
       >
         <p className="md:mr-[7px] row-start-1 col-start-1 ">{sno + ")"}</p>
-        <p className={`md:w-[84%] line-clamp-1 overflow-hidden text-ellipsis row-start-1 col-start-2 text-${paraColor}`}>
+        <p
+          className={`md:w-[84%] line-clamp-1 overflow-hidden text-ellipsis row-start-1 col-start-2 text-${paraColor}`}
+        >
           {text}
         </p>
         <div className="md:w-[15%] col-span-2 flex justify-between max-sm:justify-end">
