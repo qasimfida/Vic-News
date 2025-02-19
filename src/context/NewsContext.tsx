@@ -100,18 +100,18 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   //     let filteredItems = news.filter((item) =>
   //       item.text.toLowerCase().includes(keywords.toLowerCase())
   //     );
-  //     const emptyItem = {
-  //       content: "",
-  //       time: "",
-  //       bn: "",
-  //       text: "",
-  //       sno: "",
-  //       title: "",
-  //       url: "",
-  //       summary: "",
-  //       orgUrl: "",
-  //       contentImage: ""
-  //     };
+  // const emptyItem = {
+  //   content: "",
+  //   time: "",
+  //   bn: "",
+  //   text: "",
+  //   sno: "",
+  //   title: "",
+  //   url: "",
+  //   summary: "",
+  //   orgUrl: "",
+  //   contentImage: ""
+  // };
 
   //     // Add empty objects based on how many items are missing to reach 3
   //     const itemsNeeded = 4 - filteredItems.length;
@@ -126,26 +126,30 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   //   }
   // }, [keywords, news]);
   useEffect(() => {
-    if (!keywords && !dateRange[0] && !dateRange[1]) {
+    if (!keywords && !topics) {
       setFilteredNews(news);
     } else {
       let filteredItems = news.filter((item) => {
         const itemDate = new Date(item.date_published);
 
-        const isWithinDateRange =
-          dateRange[0] && dateRange[1]
-            ? itemDate >= dateRange[0] && itemDate <= dateRange[1]
-            : dateRange[0]
-            ? itemDate >= dateRange[0]
-            : dateRange[1]
-            ? itemDate <= dateRange[1]
-            : true;
+        // const isWithinDateRange =
+        //   dateRange[0] && dateRange[1]
+        //     ? itemDate >= dateRange[0] && itemDate <= dateRange[1]
+        //     : dateRange[0]
+        //     ? itemDate >= dateRange[0]
+        //     : dateRange[1]
+        //     ? itemDate <= dateRange[1]
+        //     : true;
 
         const matchesKeywords = item.text
           .toLowerCase()
           .includes(keywords.toLowerCase());
 
-        return matchesKeywords && isWithinDateRange;
+        const matchesTopics = item.bn
+          .toLowerCase()
+          .includes(topics.toLowerCase());
+
+        return matchesKeywords && matchesTopics;
       });
 
       switch (sort) {
@@ -195,17 +199,16 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         contentImage: "",
       };
 
-      const itemsNeeded = 4 - filteredItems.length;
+      const itemsNeeded = 3;
 
       if (itemsNeeded > 0) {
         const emptyItems = new Array(itemsNeeded).fill(emptyItem);
         filteredItems = [...emptyItems, ...filteredItems];
       }
 
-      console.log(filteredItems);
       setFilteredNews(filteredItems);
     }
-  }, [keywords, news, dateRange, sort]);
+  }, [keywords, news, topics, dateRange, sort]);
 
   return (
     <NewsContext.Provider

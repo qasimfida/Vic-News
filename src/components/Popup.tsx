@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-
+import MyImage from "./LazyLoaderImage";
 interface PopupProps {
   title: string;
   content: string;
@@ -34,24 +34,22 @@ const Popup: React.FC<PopupProps> = ({
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
         ref={popupRef}
-        className="bg-[#1E1E1E] text-white border-[2px] border-white shadow-2xl py-[16px] px-[12px] lg:py-[32px] lg:px-[60px] w-4/5 max-sm:w-[90%] max-w-4xl relative "
+        className="bg-[#1E1E1E] text-white border-[2px] border-white shadow-2xl py-[16px] px-[12px] lg:py-[32px] lg:px-[60px] w-4/5 max-sm:w-[90%] max-w-4xl relative"
       >
-        <h2 className="md:text-[24px] text-[16px] font-medium mb-2 ">
-          {title}
-        </h2>
+        <h2 className="md:text-[20px] text-[16px] font-medium mb-2">{title}</h2>
         {contentImage && (
-          <img
-            width=""
-            className="w-full object-contain mb-2 h-[200px]"
-            src={contentImage || ""}
-            alt=""
+          <MyImage
+            image={{
+              src: contentImage,
+              alt: title || "Popup Image",
+            }}
           />
         )}
 
-        <p className="md:text-[18px] text-[12px] leading-relaxed text-[#E0AB74]">
+        <p className="md:text-[16px] text-[12px] leading-relaxed text-[#E0AB74]">
           {content}
         </p>
-        {contentImage && (
+        {orgUrl && (
           <a
             href={orgUrl}
             target="_blank"

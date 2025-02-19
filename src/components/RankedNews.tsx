@@ -37,7 +37,6 @@ const RankedNews = () => {
       }
     };
 
-    console.log(isPopupOpen, "ranked");
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
   }, [

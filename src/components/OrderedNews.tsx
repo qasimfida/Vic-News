@@ -11,7 +11,8 @@ const OrderedNews = () => {
     currentIndex,
     setCurrentIndex,
     activeList,
-    isPopupOpen,setPopupOpen,
+    isPopupOpen,
+    setPopupOpen,
     setActiveList,
     handleKeyDown,
   } = useSelection();
@@ -68,8 +69,7 @@ const OrderedNews = () => {
     <div className="px-2 md:px-4">
       <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
       <div>
-       {
-        news.length > 3 ? ( news.map((item, index) => (
+        {news.map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(index)}
@@ -89,12 +89,7 @@ const OrderedNews = () => {
               paraColor={"orange"}
             />
           </div>
-        )) ) : (
-          <div className="text-center text-rose-600">
-            No news available
-          </div>
-        )
-       }
+        ))}
       </div>
 
       {isPopupOpen && currentIndex !== null && activeList === "ordered" && (

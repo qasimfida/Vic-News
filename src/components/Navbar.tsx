@@ -1,11 +1,9 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 import React from "react";
 import Button from "./Buttons";
-import DateIcon from "../assets/icons/DateIcon";
 import SourcesIcon from "../assets/icons/SourcesIcon";
 import TimeIcon from "../assets/icons/TimeIcon";
 import SortDropdown from "./Time";
-import Calendar from "./AllData";
 import { NewsContext } from "../context/NewsContext";
 import SearchIcon from "../assets/icons/SearchIcon";
 import SourceDropDown from "./SourceDropDown";
@@ -21,7 +19,7 @@ const Navbar: React.FC = () => {
         setActiveDropdown(null);
       }
     };
-   
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         handleSearch();
@@ -39,7 +37,6 @@ const Navbar: React.FC = () => {
 
   if (!newsContext) return null;
   const { handleSearchChange } = newsContext;
-
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -91,7 +88,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* All Dates Calendar */}
-        <div className="md:relative w-full dropdown-container">
+        {/* <div className="md:relative w-full dropdown-container">
           <Button
             text="All Dates"
             className={`${
@@ -105,7 +102,7 @@ const Navbar: React.FC = () => {
               <Calendar />
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Time Sorting Dropdown */}
         <div className="md:relative w-full dropdown-container">
