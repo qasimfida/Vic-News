@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useContext, useEffect } from "react";
+import { useState, ChangeEvent, useContext, useEffect, useCallback } from "react";
 import React from "react";
 import Button from "./Buttons";
 import SourcesIcon from "../assets/icons/SourcesIcon";
@@ -11,32 +11,36 @@ import SourceDropDown from "./SourceDropDown";
 const Navbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const newsContext = useContext(NewsContext);
+  const newsContext = useContext(NewsContext) ?? { handleSearchChange: () => {} };
+  const { handleSearchChange } = newsContext;
 
+  const handleSearch = useCallback(() => {
+    handleSearchChange(searchTerm);
+  }, [handleSearchChange, searchTerm]);
+  
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (!(e.target as HTMLElement).closest(".dropdown-container")) {
         setActiveDropdown(null);
       }
     };
-
+  
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         handleSearch();
       }
     };
-
+  
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("keydown", handleKeyDown);
-
+  
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [searchTerm]);
+  }, [searchTerm, handleSearch]); // Now `handleSearch` is stable and won’t trigger unnecessary re-renders
+  
 
-  if (!newsContext) return null;
-  const { handleSearchChange } = newsContext;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -47,9 +51,9 @@ const Navbar: React.FC = () => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
 
-  const handleSearch = () => {
-    handleSearchChange(searchTerm);
-  };
+  // const handleSearch = () => {
+  //   handleSearchChange(searchTerm);
+  // };
 
   return (
     <nav className="flex items-center max-md:flex-col bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px] relative">

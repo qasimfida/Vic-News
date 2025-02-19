@@ -4,7 +4,7 @@ import { NewsContext } from "../context/NewsContext";
 
 
 const SourceDropDown: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [selectedOption] = useState<string>("");
   const newsContext = useContext(NewsContext);
 
   if (!newsContext) return null;

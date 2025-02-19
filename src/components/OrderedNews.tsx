@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useNews from "../hooks/useNews";
@@ -18,6 +18,15 @@ const OrderedNews = () => {
   } = useSelection();
   const { news, loading, error } = useNews();
   const { rankednews } = useRankedNews();
+  
+  const handleRowClick = useCallback(
+    (index: number) => {
+      setActiveList("ordered");
+      setCurrentIndex(index);
+      setPopupOpen(true);
+    },
+    [setActiveList, setCurrentIndex, setPopupOpen]
+  );
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
@@ -31,16 +40,17 @@ const OrderedNews = () => {
         setCurrentIndex(null);
       }
     };
-
+  
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
-  }, [news.length, handleKeyDown, activeList, currentIndex]);
+  }, [news.length,setCurrentIndex, setPopupOpen, rankednews.length, handleKeyDown, activeList, currentIndex, handleRowClick]);
+  
 
-  const handleRowClick = (index: number) => {
-    setActiveList("ordered");
-    setCurrentIndex(index);
-    setPopupOpen(true);
-  };
+  // const handleRowClick = (index: number) => {
+  //   setActiveList("ordered");
+  //   setCurrentIndex(index);
+  //   setPopupOpen(true);
+  // };
 
   const handleClose = () => {
     setPopupOpen(false);
@@ -92,7 +102,7 @@ const OrderedNews = () => {
         ))}
       </div>
 
-      {isPopupOpen && currentIndex !== null && activeList === "ordered" && (
+{isPopupOpen && currentIndex !== null && activeList === "ordered" && news[currentIndex] && (
         <Popup
           title={news[currentIndex].text}
           contentImage={news[currentIndex].contentImage}
