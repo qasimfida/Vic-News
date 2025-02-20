@@ -1,6 +1,4 @@
-import React from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import React, { useState, useEffect } from "react";
 
 interface ImageProps {
   image: {
@@ -11,22 +9,41 @@ interface ImageProps {
   style?: React.CSSProperties;
 }
 
-const MyImage: React.FC<ImageProps> = ({ image, className, style }) => (
-  <LazyLoadImage
-    alt={image.alt}
-    effect="blur"
-    wrapperProps={{
-      style: {
-        transitionDelay: "1s",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        ...style,
-      },
-    }}
-    className={className}
-    src={image.src}
-  />
-);
+const MyImage: React.FC<ImageProps> = ({ image, className, style }) => {
+  const [loaded, setLoaded] = useState(false);
+  const [blurSrc, setBlurSrc] = useState("");
+
+  useEffect(() => {
+    // Generate a low-quality blurred placeholder
+    const smallImg = new Image();
+    smallImg.src = image.src;
+    smallImg.onload = () => setBlurSrc(image.src);
+  }, [image.src]);
+
+  return (
+    <div className="relative w-full h-auto overflow-hidden flex items-center justify-center">
+      <img
+        src={blurSrc}
+        alt={image.alt}
+        className={`absolute inset-0 w-full h-full object-cover blur-md  ${
+          loaded ? "opacity-0" : "opacity-100"
+        } transition-opacity duration-500`}
+        loading="lazy"
+      />
+
+      {/* Full Image (Appears when fully loaded) */}
+      <img
+        src={image.src}
+        alt={image.alt}
+        className={`${className} transition-opacity duration-500 ${
+          loaded ? "opacity-100" : "opacity-0"
+        }`}
+        style={style}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
+  );
+};
 
 export default MyImage;
