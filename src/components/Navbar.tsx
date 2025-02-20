@@ -14,7 +14,9 @@ const Navbar: React.FC = () => {
   const newsContext = useContext(NewsContext) ?? { handleSearchChange: () => {} };
   const { handleSearchChange } = newsContext;
 
-  const handleSearch = useCallback(() => {
+  const handleSearch = useCallback((e:any) => {
+    const value = e.target.value;
+    setSearchTerm(value);
     handleSearchChange(searchTerm);
   }, [handleSearchChange, searchTerm]);
   
@@ -25,18 +27,12 @@ const Navbar: React.FC = () => {
       }
     };
   
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        handleSearch();
-      }
-    };
+
   
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleKeyDown);
   
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [searchTerm, handleSearch]); // Now `handleSearch` is stable and won’t trigger unnecessary re-renders
   
@@ -62,7 +58,7 @@ const Navbar: React.FC = () => {
           type="text"
           placeholder="Search"
           value={searchTerm}
-          onChange={handleInputChange}
+          onChange={handleSearch}
           className="bg-transparent placeholder:text-white px-[16px] focus:outline-none text-white text-[16px] font-medium flex-grow"
         />
         {
