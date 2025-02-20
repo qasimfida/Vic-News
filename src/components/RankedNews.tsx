@@ -19,7 +19,6 @@ const RankedNews = () => {
   const { rankednews, loading, error } = useRankedNews();
   const { news } = useNews();
 
-  // Wrap handleRowClick in useCallback
   const handleRowClick = useCallback(
     (index: number) => {
       setActiveList("ranked");
