@@ -1,4 +1,4 @@
-import  {  useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useRankedNews from "../hooks/useRankedNews";
@@ -18,13 +18,19 @@ const RankedNews = () => {
   } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
   const { news } = useNews();
-  const handleRowClick = (index: number) => {
-    setActiveList("ranked");
-    setTimeout(() => {
-      setCurrentIndex(index);
-      setPopupOpen(true);
-    }, 0);
-  };
+
+  // Wrap handleRowClick in useCallback
+  const handleRowClick = useCallback(
+    (index: number) => {
+      setActiveList("ranked");
+      setTimeout(() => {
+        setCurrentIndex(index);
+        setPopupOpen(true);
+      }, 0);
+    },
+    [setActiveList, setCurrentIndex, setPopupOpen]
+  );
+
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
       handleKeyDown(event, news.length, rankednews.length, () => {
@@ -53,12 +59,11 @@ const RankedNews = () => {
     activeList,
   ]);
 
-
-
   const handleClose = () => {
     setPopupOpen(false);
     setCurrentIndex(null);
   };
+
   if (loading) {
     return (
       <div>
