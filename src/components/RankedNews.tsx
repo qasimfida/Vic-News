@@ -115,7 +115,7 @@ const RankedNews = () => {
       </div>
 
       {/* Popup */}
-      {isPopupOpen && currentIndex !== null && activeList === "ranked" && rankednews[currentIndex]  && (
+      {isPopupOpen && currentIndex !== null && activeList === "ranked" && (
         <Popup
           title={rankednews[currentIndex]?.text}
           content={`Breaking News (${rankednews[currentIndex]?.bn} at ${rankednews[currentIndex]?.time}): ${rankednews[currentIndex]?.content}`}

@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
 import { useSwipeable } from "react-swipeable";
+import useRankedNews from "../hooks/useRankedNews";
+import useNews from "../hooks/useNews";
 
 interface SelectionContextType {
   currentIndex: number | null;
@@ -17,6 +19,8 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [activeList, setActiveList] = useState<"ordered" | "ranked">("ordered");
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const { news, loading, error } = useNews();
+  const { rankednews } = useRankedNews();
 
   const navigateNext = (orderedLength: number, rankedLength: number) => {
     if (activeList === "ordered" && currentIndex !== null && currentIndex >= orderedLength - 1) {
@@ -56,8 +60,8 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // Swipe handlers for mobile navigation
   const swipeHandlers = useSwipeable({
-    onSwipedUp: () => navigateNext(5, 5), // Adjust lengths dynamically
-    onSwipedDown: () => navigatePrev(5, 5),
+    onSwipedUp: () => navigateNext(news.length, rankednews.length), // Adjust lengths dynamically
+    onSwipedDown: () => navigatePrev(news.length, rankednews.length),
     preventScrollOnSwipe: true,
     trackTouch: true,
   });
