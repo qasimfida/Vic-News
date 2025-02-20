@@ -32,8 +32,15 @@ const Popup: React.FC<PopupProps> = ({
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+
+    // Disable background scroll when popup is open
+    document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      
+      // Restore scrolling when popup is closed
+      document.body.style.overflow = "";
     };
   }, [handleClickOutside]);
 

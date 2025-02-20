@@ -40,7 +40,7 @@ const RankedNews = () => {
 
       if (event.key === "Escape") {
         setPopupOpen(false);
-        setCurrentIndex(null);
+        setCurrentIndex(3);
       }
     };
 
@@ -60,7 +60,7 @@ const RankedNews = () => {
 
   const handleClose = () => {
     setPopupOpen(false);
-    setCurrentIndex(null);
+    setCurrentIndex(0);
   };
 
   if (loading) {
@@ -104,7 +104,7 @@ const RankedNews = () => {
           >
             <RowItem
               sno={index + 1}
-              text={item.text}
+              text={item?.text}
               bn={item.bn}
               time={item.time}
               bnColor={"yellow"}
@@ -115,12 +115,12 @@ const RankedNews = () => {
       </div>
 
       {/* Popup */}
-      {isPopupOpen && currentIndex !== null && activeList === "ranked" && (
+      {isPopupOpen && currentIndex !== null && activeList === "ranked" && rankednews[currentIndex]  && (
         <Popup
-          title={rankednews[currentIndex].text}
-          content={`Breaking News (${rankednews[currentIndex].bn} at ${rankednews[currentIndex].time}): ${rankednews[currentIndex].content}`}
-          orgUrl={rankednews[currentIndex].orgUrl}
-          contentImage={rankednews[currentIndex].contentImage}
+          title={rankednews[currentIndex]?.text}
+          content={`Breaking News (${rankednews[currentIndex]?.bn} at ${rankednews[currentIndex]?.time}): ${rankednews[currentIndex]?.content}`}
+          orgUrl={rankednews[currentIndex]?.orgUrl}
+          contentImage={rankednews[currentIndex]?.contentImage}
           onClose={handleClose}
         />
       )}

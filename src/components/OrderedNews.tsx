@@ -27,7 +27,18 @@ const OrderedNews = () => {
     },
     [setActiveList, setCurrentIndex, setPopupOpen]
   );
-
+  useEffect(() => {
+    if (isPopupOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  
+    return () => {
+      document.body.style.overflow = "auto"; // Cleanup when component unmounts
+    };
+  }, [isPopupOpen]);
+  
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
       handleKeyDown(event, news.length, rankednews.length, () => {
