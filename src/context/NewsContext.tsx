@@ -130,7 +130,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       setFilteredNews(news);
     } else {
       let filteredItems = news.filter((item) => {
-        const itemDate = new Date(item.date_published);
+        // const itemDate = new Date(item.date_published);
 
         // const isWithinDateRange =
         //   dateRange[0] && dateRange[1]

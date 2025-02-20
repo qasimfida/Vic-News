@@ -1,11 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import  {  useEffect } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useRankedNews from "../hooks/useRankedNews";
 import { useSelection } from "../context/SelectionContext";
 import Loader from "./Loader";
-import MoreIcon from "../assets/icons/MoreIcon";
-import { NewsContext } from "../context/NewsContext";
 import useNews from "../hooks/useNews";
 
 const RankedNews = () => {
@@ -19,10 +17,14 @@ const RankedNews = () => {
     handleKeyDown,
   } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
-  const newsContext = useContext(NewsContext);
-  const loadMoreTopics = newsContext?.loadMoreTopics;
   const { news } = useNews();
-
+  const handleRowClick = (index: number) => {
+    setActiveList("ranked");
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setPopupOpen(true);
+    }, 0);
+  };
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
       handleKeyDown(event, news.length, rankednews.length, () => {
@@ -45,18 +47,13 @@ const RankedNews = () => {
     news.length,
     rankednews.length,
     setCurrentIndex,
+    handleRowClick,
     setPopupOpen,
     currentIndex,
     activeList,
   ]);
 
-  const handleRowClick = (index: number) => {
-    setActiveList("ranked");
-    setTimeout(() => {
-      setCurrentIndex(index);
-      setPopupOpen(true);
-    }, 0);
-  };
+
 
   const handleClose = () => {
     setPopupOpen(false);
