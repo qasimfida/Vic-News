@@ -76,7 +76,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
     const fetchNews = async () => {
       try {
         setLoading(true);
-        let apiUrl = API_URL || "";
+        let apiUrl = API_URL + "/3eGNoAav9HTQVA0T.json" || "";
         if (topics) apiUrl += `&topics=${topics}`;
         if (keywords) apiUrl += `&keywords=${keywords}`;
         if (startDate) apiUrl += `&time_from=${formatDate(startDate)}`;

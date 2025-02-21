@@ -52,43 +52,51 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        let apiUrl = API_URL || "";
+    
+        // List of API URLs
+        const apiUrls = [
+          `${API_URL}/HT0JSFWTWAj9nUz7.json`,
+          `${API_URL}/3eGNoAav9HTQVA0T.json`,
+          `${API_URL}/ZSur507lWxtcLfZO.json`,
+          `${API_URL}/6ucBztHUPyyUBmxj.json`,
 
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        if (data && data.items) {
-          const formattedNews: NewsItem[] = data.items.map((item: any) => ({
-            text: item.title,
-            url: item.url,
-            bn: item.authors[0]?.name || "Unknown",
-            content: item.content_text,
-            contentImage: item.image,
-            orgUrl: item.url,
-            date_published: item.date_published,
-            time: formatTime(item.date_published),
-          }));
-          setNews(formattedNews);
-          setFilteredNews(formattedNews);
-        } else if (data) {
-          if (
-            data.Information !==
-            "Invalid inputs. Please refer to the API documentation https://www.alphavantage.co/documentation#newsapi and try again."
-          ) {
-            setError(data.Information);
-          } else {
-            setTickers("");
+        ]; 
+    
+        // Fetch all URLs simultaneously
+        const responses = await Promise.all(apiUrls.map((url) => fetch(url)));
+        
+        // Parse JSON from all responses
+        const dataArr = await Promise.all(responses.map((res) => res.json()));
+    
+        // Merge all news items from different sources
+        let allNews: NewsItem[] = [];
+    
+        dataArr.forEach((data) => {
+          if (data && data.items) {
+            const formattedNews: NewsItem[] = data.items.map((item: any) => ({
+              text: item.title,
+              url: item.url,
+              bn: item.authors[0]?.name || "Unknown",
+              content: item.content_text,
+              contentImage: item.image,
+              orgUrl: item.url,
+              date_published: item.date_published,
+              time: formatTime(item.date_published),
+            }));
+    
+            allNews = [...allNews, ...formattedNews]; // Merge news items
           }
-        } else {
-          throw new Error("Failed to fetch API");
-        }
+        });
+    
+        setNews(allNews);
+        setFilteredNews(allNews);
       } catch (error) {
         setError(error instanceof Error ? error.message : "Unknown error");
       } finally {
         setLoading(false);
       }
     };
-
+    
     fetchNews();
   }, [tickers, topics, startDate, endDate, sort, limit]);
   const allAuthors = new Set(news.flatMap((item) => item.bn));

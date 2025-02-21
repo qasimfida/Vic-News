@@ -1,10 +1,12 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useContext } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useRankedNews from "../hooks/useRankedNews";
 import { useSelection } from "../context/SelectionContext";
 import Loader from "./Loader";
 import useNews from "../hooks/useNews";
+import MoreIcon from "../assets/icons/MoreIcon";
+import { NewsContext } from "../context/NewsContext";
 
 const RankedNews = () => {
   const {
@@ -18,6 +20,8 @@ const RankedNews = () => {
   } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
   const { news } = useNews();
+  const newsContext = useContext(NewsContext);
+  const loadMoreTopics = newsContext?.loadMoreTopics;
 
   const handleRowClick = useCallback(
     (index: number) => {
@@ -83,14 +87,24 @@ const RankedNews = () => {
     );
   }
 
+  console.log(news);
   return (
     <div>
-      <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[32px] my-[16px]">
+       <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
         <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
         </h2>
-      </div>
 
+        <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
+
+        <div
+          onClick={loadMoreTopics}
+          className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
+        >
+          <h2 className="md:text-[20px] text-[16px] font-medium">More</h2>
+          <MoreIcon stroke={"#737576"} />
+        </div>
+      </div>
       <div className=" flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4 ">
         {rankednews.map((item, index) => (
           <div
