@@ -54,7 +54,7 @@ const Popup: React.FC<PopupProps> = ({
                 src: contentImage,
                 alt: title || "Popup Image",
               }}
-              className="w-full max-w-[300px] sm:min-w-[500px] object-contain" // Ensure responsive image styling
+              className="w-full max-w-[300px] sm:min-w-[500px] object-contain"
             />
           </div>
         )}
