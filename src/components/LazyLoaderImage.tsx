@@ -11,35 +11,59 @@ interface ImageProps {
 
 const MyImage: React.FC<ImageProps> = ({ image, className, style }) => {
   const [loaded, setLoaded] = useState(false);
-  const [blurSrc, setBlurSrc] = useState("");
+  const [error, setError] = useState(false);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
-    const smallImg = new Image();
-    smallImg.src = image.src;
-    smallImg.onload = () => setBlurSrc(image.src);
+    const img = new Image();
+    img.src = image.src;
+
+    img.onload = () => {
+      setLoaded(true);
+      setError(false);
+      setLoader(false);
+    };
+
+    img.onerror = () => {
+      setError(true);
+      setLoaded(false);
+      setLoader(false);
+    };
   }, [image.src]);
 
   return (
-    <div className="relative w-full max-h-[300px] overflow-hidden flex items-center justify-center">
-      <img
-        src={blurSrc}
-        alt={image.alt}
-        className={`absolute inset-0 w-full max-h-[300px] object-cover blur-md  ${
-          loaded ? "opacity-0" : "opacity-100"
-        } transition-opacity duration-500`}
-        loading="lazy"
-      />
+    <div className="flex flex-col  w-full max-h-[300px] overflow-hidden items-center justify-center">
+      {loader && (
+        <div className="  flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      )}
 
-      <img
-        src={image.src}
-        alt={image.alt}
-        className={`${className} transition-opacity duration-500 max-h-[300px] ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
-        style={style}
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-      />
+      {error && (
+        <div className=" flex items-center justify-center">
+          <span className="text-red-500 font-medium">Image failed to load</span>
+        </div>
+      )}
+
+      {!error && (
+        <img
+          src={image.src}
+          alt={image.alt}
+          className={`${className} transition-opacity duration-500 max-h-[300px] ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
+          style={style}
+          loading="lazy"
+          onLoad={() => {
+            setLoaded(true);
+            setLoader(false);
+          }}
+          onError={() => {
+            setError(true);
+            setLoader(false);
+          }}
+        />
+      )}
     </div>
   );
 };
