@@ -39,12 +39,17 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   };
 
   const formatTime = (timeString: string): string => {
-    const timePart = timeString.split("T")[1];
-    const hours = timePart.substring(0, 2);
-    const minutes = timePart.substring(3, 5);
-    return `${hours}:${minutes}`;
+    const date = new Date(timeString);
+  
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Los_Angeles", 
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, 
+    }).format(date);
   };
-
+  
+  
   const handleSearchChange = (searchTerm: string) => {
     setKeywords(searchTerm);
   };
@@ -70,10 +75,11 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     
         // Merge all news items from different sources
         let allNews: NewsItem[] = [];
-    
+        let sno = 1; 
         dataArr.forEach((data) => {
           if (data && data.items) {
-            const formattedNews: NewsItem[] = data.items.map((item: any) => ({
+            const formattedNews: NewsItem[] = data.items.map((item: any, index: number) => ({
+              sno: sno++, // Increment S.No starting from 3
               text: item.title,
               url: item.url,
               bn: item.authors[0]?.name || "Unknown",
