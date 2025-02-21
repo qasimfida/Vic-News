@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useSwipeable } from "react-swipeable";
+import useNews from "../hooks/useNews";
+import useRankedNews from "../hooks/useRankedNews";
 
 interface SelectionContextType {
   currentIndex: number | null;
@@ -8,21 +10,40 @@ interface SelectionContextType {
   setActiveList: (list: "ordered" | "ranked") => void;
   setPopupOpen: any;
   isPopupOpen: boolean;
-  handleKeyDown: (event: KeyboardEvent, orderedLength: number, rankedLength: number, onEnter: () => void) => void;
+  handleKeyDown: (
+    event: KeyboardEvent,
+    orderedLength: number,
+    rankedLength: number,
+    onEnter: () => void
+  ) => void;
 }
 
-const SelectionContext = createContext<SelectionContextType | undefined>(undefined);
+const SelectionContext = createContext<SelectionContextType | undefined>(
+  undefined
+);
 
-export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [activeList, setActiveList] = useState<"ordered" | "ranked">("ordered");
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const { news } = useNews();
+  const { rankednews } = useRankedNews();
 
   const navigateNext = (orderedLength: number, rankedLength: number) => {
-    if (activeList === "ordered" && currentIndex !== null && currentIndex >= orderedLength - 1) {
+    if (
+      activeList === "ordered" &&
+      currentIndex !== null &&
+      currentIndex >= orderedLength - 1
+    ) {
       setActiveList("ranked");
       setCurrentIndex(0);
-    } else if (activeList === "ranked" && currentIndex !== null && currentIndex >= rankedLength - 1) {
+    } else if (
+      activeList === "ranked" &&
+      currentIndex !== null &&
+      currentIndex >= rankedLength - 1
+    ) {
       setActiveList("ordered");
       setCurrentIndex(0);
     } else {
@@ -42,7 +63,12 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
-  const handleKeyDown = (event: KeyboardEvent, orderedLength: number, rankedLength: number, onEnter: () => void) => {
+  const handleKeyDown = (
+    event: KeyboardEvent,
+    orderedLength: number,
+    rankedLength: number,
+    onEnter: () => void
+  ) => {
     if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
       navigateNext(orderedLength, rankedLength);
     } else if (event.key === "ArrowUp" || event.key === "ArrowRight") {
@@ -54,17 +80,24 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
-  // Swipe handlers for mobile navigation
   const swipeHandlers = useSwipeable({
-    onSwipedUp: () => navigateNext(5, 5), // Adjust lengths dynamically
-    onSwipedDown: () => navigatePrev(5, 5),
+    onSwipedUp: () => navigateNext(news.length, rankednews.length),
+    onSwipedDown: () => navigatePrev(news.length, rankednews.length),
     preventScrollOnSwipe: true,
-    trackTouch: true,
+    trackTouch: isPopupOpen,
   });
 
   return (
     <SelectionContext.Provider
-      value={{ currentIndex, setCurrentIndex, activeList, setActiveList, setPopupOpen, isPopupOpen, handleKeyDown }}
+      value={{
+        currentIndex,
+        setCurrentIndex,
+        activeList,
+        setActiveList,
+        setPopupOpen,
+        isPopupOpen,
+        handleKeyDown,
+      }}
     >
       <div {...swipeHandlers}>{children}</div>
     </SelectionContext.Provider>

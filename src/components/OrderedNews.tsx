@@ -33,12 +33,12 @@ const OrderedNews = () => {
     } else {
       document.body.style.overflow = "auto";
     }
-  
+
     return () => {
-      document.body.style.overflow = "auto"; // Cleanup when component unmounts
+      document.body.style.overflow = "auto";
     };
   }, [isPopupOpen]);
-  
+
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
       handleKeyDown(event, news.length, rankednews.length, () => {
@@ -105,7 +105,7 @@ const OrderedNews = () => {
             className={`cursor-pointer  transition mb-[10px] ${
               activeList === "ordered" && currentIndex === index
                 ? "bg-[#6B6D70] border border-[#6B6D70]"
-                : "hover:border-[#6B6D70]"
+                : "hover:border hover:border-white"
             }`}
           >
             <RowItem

@@ -96,10 +96,10 @@ const RankedNews = () => {
           <div
             key={index}
             onClick={() => handleRowClick(index)}
-            className={`cursor-pointer transition bg-[#232323] max-sm:px-[7px]   max-sm:py-[16px] ${
+            className={`cursor-pointer transition bg-[#232323] max-sm:px-[7px] w-full ${
               activeList === "ranked" && currentIndex === index
                 ? "bg-[#6B6D70] border border-[#6B6D70]"
-                : "hover:bg-[#6B6D70]"
+                : "hover:border hover:border-"
             }`}
           >
             <RowItem
@@ -115,15 +115,18 @@ const RankedNews = () => {
       </div>
 
       {/* Popup */}
-      {isPopupOpen && currentIndex !== null && activeList === "ranked" && rankednews[currentIndex]  && (
-        <Popup
-          title={rankednews[currentIndex]?.text}
-          content={`Breaking News (${rankednews[currentIndex]?.bn} at ${rankednews[currentIndex]?.time}): ${rankednews[currentIndex]?.content}`}
-          orgUrl={rankednews[currentIndex]?.orgUrl}
-          contentImage={rankednews[currentIndex]?.contentImage}
-          onClose={handleClose}
-        />
-      )}
+      {isPopupOpen &&
+        currentIndex !== null &&
+        activeList === "ranked" &&
+        rankednews[currentIndex] && (
+          <Popup
+            title={rankednews[currentIndex]?.text}
+            content={`Breaking News (${rankednews[currentIndex]?.bn} at ${rankednews[currentIndex]?.time}): ${rankednews[currentIndex]?.content}`}
+            orgUrl={rankednews[currentIndex]?.orgUrl}
+            contentImage={rankednews[currentIndex]?.contentImage}
+            onClose={handleClose}
+          />
+        )}
     </div>
   );
 };

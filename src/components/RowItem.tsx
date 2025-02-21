@@ -28,13 +28,13 @@ const RowItem: React.FC<RowItemProps> = ({
   return (
     <>
       <div
-        className={`flex hover:border hover:border-white max-sm:items-center max-sm:justify-center  text-sm md:text-md font-medium py-[6px] md:px-[16px]  grid-cols-[40px,1fr] grid-rows-[auto,auto,auto] text-${textColor}  `}
+        className={`flex  max-sm:items-center max-sm:justify-center  text-sm md:text-md font-medium py-[6px] md:px-[16px]  grid-cols-[40px,1fr] grid-rows-[auto,auto,auto] text-${textColor}  `}
         onClick={handleClick}
         key={key}
       >
         <p className="row-start-1 mr-[7px] col-start-1 ">{sno + ")"}</p>
         <p
-          className={`md:w-[84%] line-clamp-2 overflow-hidden text-ellipsis row-start-1 col-start-2 text-${paraColor}`}
+          className={`md:w-[84%] line-clamp-2 md:line-clamp-1 overflow-hidden text-ellipsis row-start-1 col-start-2 text-${paraColor}`}
         >
           {text}
         </p>

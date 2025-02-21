@@ -30,7 +30,6 @@ const MyImage: React.FC<ImageProps> = ({ image, className, style }) => {
         loading="lazy"
       />
 
-      {/* Full Image (Appears when fully loaded) */}
       <img
         src={image.src}
         alt={image.alt}
