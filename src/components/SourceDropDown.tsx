@@ -1,8 +1,6 @@
 import React, { useContext, useState } from "react";
 import { NewsContext } from "../context/NewsContext";
 
-
-
 const SourceDropDown: React.FC = () => {
   const [selectedOption] = useState<string>("");
   const newsContext = useContext(NewsContext);
@@ -11,16 +9,13 @@ const SourceDropDown: React.FC = () => {
 
   const { allTopics, setTopics } = newsContext;
 
-
   return (
     <div className="relative bg-[#464646]">
       <div className="text-[12px] font-medium py-3 px-3 text-white">
-        {/* Title */}
         <p className="text-[12px] md:ml-[16px] max-md:text-center text-[#C6CACB] mb-3">
           Source
         </p>
 
-        {/* Options */}
         <div className="space-y-3">
           {allTopics.map((topic) => (
             <div

@@ -32,8 +32,11 @@ const Popup: React.FC<PopupProps> = ({
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+    document.body.style.overflow = "hidden";
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
     };
   }, [handleClickOutside]);
 
@@ -44,17 +47,19 @@ const Popup: React.FC<PopupProps> = ({
         className="bg-[#1E1E1E] text-white border-[2px] border-white shadow-2xl py-[10px] px-[10px] lg:py-[32px] lg:px-[60px] w-4/5 max-sm:w-[90%] max-w-4xl relative pointer-events-auto overflow-auto max-h-screen"
       >
         <h2 className="md:text-[20px] text-[16px] font-medium mb-2">{title}</h2>
-
         {contentImage && (
-          <MyImage
-            image={{
-              src: contentImage,
-              alt: title || "Popup Image",
-            }}
-          />
+          <div className="flex justify-center items-center mb-4">
+            <MyImage
+              image={{
+                src: contentImage,
+                alt: title || "Popup Image",
+              }}
+              className="w-full max-w-[300px] sm:min-w-[500px] object-contain"
+            />
+          </div>
         )}
 
-        <p className="md:text-[16px] text-[12px] leading-relaxed text-[#E0AB74]">
+        <p className="md:text-[16px] text-[12px] leading-relaxed text-[#E0AB74] mb-4">
           {content}
         </p>
 

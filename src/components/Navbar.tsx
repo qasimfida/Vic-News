@@ -1,10 +1,4 @@
-import {
-  useState,
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useCallback,
-} from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import React from "react";
 import Button from "./Buttons";
 import SourcesIcon from "../assets/icons/SourcesIcon";
@@ -80,7 +74,6 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex justify-between gap-[15px] lg:gap-[30px] max-md:mt-[16px] max-md:w-full w-1/2">
-        {/* Sources Dropdown */}
         <div className="md:relative w-full dropdown-container">
           <Button
             text="Sources"
@@ -95,7 +88,6 @@ const Navbar: React.FC = () => {
           )}
         </div>
 
-        {/* Time Sorting Dropdown */}
         <div className="md:relative w-full dropdown-container">
           <Button
             text="Time"
