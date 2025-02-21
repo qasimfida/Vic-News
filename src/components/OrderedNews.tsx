@@ -18,7 +18,7 @@ const OrderedNews = () => {
   } = useSelection();
   const { news, loading, error } = useNews();
   const { rankednews } = useRankedNews();
-  
+
   const handleRowClick = useCallback(
     (index: number) => {
       setActiveList("ordered");
@@ -40,11 +40,19 @@ const OrderedNews = () => {
         setCurrentIndex(null);
       }
     };
-  
+
     document.addEventListener("keydown", keyListener);
     return () => document.removeEventListener("keydown", keyListener);
-  }, [news.length,setCurrentIndex, setPopupOpen, rankednews.length, handleKeyDown, activeList, currentIndex, handleRowClick]);
-  
+  }, [
+    news.length,
+    setCurrentIndex,
+    setPopupOpen,
+    rankednews.length,
+    handleKeyDown,
+    activeList,
+    currentIndex,
+    handleRowClick,
+  ]);
 
   // const handleRowClick = (index: number) => {
   //   setActiveList("ordered");
@@ -76,14 +84,14 @@ const OrderedNews = () => {
     );
   }
   return (
-    <div className="px-2 md:px-4">
+    <div className=" md:px-4">
       <h2 className="text-xl font-medium my-[12px]">Time Ordered News</h2>
       <div>
         {news.map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(index)}
-            className={`cursor-pointer  transition ${
+            className={`cursor-pointer  transition mb-[10px] ${
               activeList === "ordered" && currentIndex === index
                 ? "bg-[#6B6D70] border border-[#6B6D70]"
                 : "hover:border-[#6B6D70]"
@@ -102,15 +110,18 @@ const OrderedNews = () => {
         ))}
       </div>
 
-{isPopupOpen && currentIndex !== null && activeList === "ordered" && news[currentIndex] && (
-        <Popup
-          title={news[currentIndex].text}
-          contentImage={news[currentIndex].contentImage}
-          orgUrl={news[currentIndex].orgUrl}
-          content={`Breaking News (${news[currentIndex].bn} at ${news[currentIndex].time}): ${news[currentIndex].content}`}
-          onClose={handleClose}
-        />
-      )}
+      {isPopupOpen &&
+        currentIndex !== null &&
+        activeList === "ordered" &&
+        news[currentIndex] && (
+          <Popup
+            title={news[currentIndex].text}
+            contentImage={news[currentIndex].contentImage}
+            orgUrl={news[currentIndex].orgUrl}
+            content={`Breaking News (${news[currentIndex].bn} at ${news[currentIndex].time}): ${news[currentIndex].content}`}
+            onClose={handleClose}
+          />
+        )}
       <div className="text-orange"></div>
     </div>
   );

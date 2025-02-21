@@ -1,4 +1,10 @@
-import { useState, ChangeEvent, useContext, useEffect, useCallback } from "react";
+import {
+  useState,
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useCallback,
+} from "react";
 import React from "react";
 import Button from "./Buttons";
 import SourcesIcon from "../assets/icons/SourcesIcon";
@@ -7,49 +13,47 @@ import SortDropdown from "./Time";
 import { NewsContext } from "../context/NewsContext";
 import SearchIcon from "../assets/icons/SearchIcon";
 import SourceDropDown from "./SourceDropDown";
+import CrossIcon from "../assets/icons/CrossIcon";
 
 const Navbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const newsContext = useContext(NewsContext) ?? { handleSearchChange: () => {} };
+  const newsContext = useContext(NewsContext) ?? {
+    handleSearchChange: () => {},
+  };
   const { handleSearchChange } = newsContext;
 
-  const handleSearch = useCallback((e:any) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    handleSearchChange(searchTerm);
-  }, [handleSearchChange, searchTerm]);
-  
+  const handleSearch = useCallback(
+    (e: any) => {
+      const value = e.target.value;
+      setSearchTerm(value);
+      handleSearchChange(value);
+    },
+    [handleSearchChange]
+  );
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    handleSearchChange("");
+  };
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (!(e.target as HTMLElement).closest(".dropdown-container")) {
         setActiveDropdown(null);
       }
     };
-  
 
-  
     document.addEventListener("mousedown", handleClickOutside);
-  
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [searchTerm, handleSearch]); // Now `handleSearch` is stable and won’t trigger unnecessary re-renders
-  
-
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-  };
+  }, []);
 
   const toggleDropdown = (dropdown: string) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
-
-  // const handleSearch = () => {
-  //   handleSearchChange(searchTerm);
-  // };
 
   return (
     <nav className="flex items-center max-md:flex-col bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px] relative">
@@ -61,14 +65,18 @@ const Navbar: React.FC = () => {
           onChange={handleSearch}
           className="bg-transparent placeholder:text-white px-[16px] focus:outline-none text-white text-[16px] font-medium flex-grow"
         />
-        {
-          <button className="text-black cursor-pointer" onClick={handleSearch}>
-            {" "}
-            <div className="pr-4">
-              <SearchIcon stroke="white" />
-            </div>
-          </button>
-        }
+        <div className="pr-4 flex items-center gap-2">
+          {!searchTerm ? (
+            <SearchIcon stroke="white" />
+          ) : (
+            <button
+              className="text-black cursor-pointer"
+              onClick={handleClearSearch}
+            >
+              <CrossIcon stroke="white" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex justify-between gap-[15px] lg:gap-[30px] max-md:mt-[16px] max-md:w-full w-1/2">
@@ -86,23 +94,6 @@ const Navbar: React.FC = () => {
             </div>
           )}
         </div>
-
-        {/* All Dates Calendar */}
-        {/* <div className="md:relative w-full dropdown-container">
-          <Button
-            text="All Dates"
-            className={`${
-              activeDropdown === "all-dates" ? "bg-[#464646]" : ""
-            }`}
-            icon={DateIcon}
-            onClick={() => toggleDropdown("all-dates")}
-          />
-          {activeDropdown === "all-dates" && (
-            <div className="absolute left-0 top-full mt-[12px] z-10 w-full rounded-[3px] bg-[#464646]">
-              <Calendar />
-            </div>
-          )}
-        </div> */}
 
         {/* Time Sorting Dropdown */}
         <div className="md:relative w-full dropdown-container">

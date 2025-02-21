@@ -14,7 +14,6 @@ const MyImage: React.FC<ImageProps> = ({ image, className, style }) => {
   const [blurSrc, setBlurSrc] = useState("");
 
   useEffect(() => {
-    // Generate a low-quality blurred placeholder
     const smallImg = new Image();
     smallImg.src = image.src;
     smallImg.onload = () => setBlurSrc(image.src);

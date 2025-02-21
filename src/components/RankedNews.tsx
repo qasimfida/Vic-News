@@ -91,12 +91,12 @@ const RankedNews = () => {
         </h2>
       </div>
 
-      <div className="bg-[#232323] px-2 lg:px-4 py-2">
+      <div className=" flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4 ">
         {rankednews.map((item, index) => (
           <div
             key={index}
             onClick={() => handleRowClick(index)}
-            className={`cursor-pointer transition ${
+            className={`cursor-pointer transition bg-[#232323] max-sm:px-[7px]   max-sm:py-[16px] ${
               activeList === "ranked" && currentIndex === index
                 ? "bg-[#6B6D70] border border-[#6B6D70]"
                 : "hover:bg-[#6B6D70]"
