@@ -20,9 +20,13 @@ const RankedNews = () => {
   } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
   const { news } = useNews();
-  const newsContext = useContext(NewsContext);
-  const loadMoreTopics = newsContext?.loadMoreTopics;
 
+  // Ensure hooks are always called before any conditionals
+  const newsContext = useContext(NewsContext);
+  const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
+  const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
+
+  // Define useCallback outside of any conditions
   const handleRowClick = useCallback(
     (index: number) => {
       setActiveList("ranked");
@@ -37,8 +41,8 @@ const RankedNews = () => {
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
       handleKeyDown(event, news.length, rankednews.length, () => {
-        if (currentIndex !== null) {
-          activeList === "ranked" && handleRowClick(currentIndex as number);
+        if (currentIndex !== null && activeList === "ranked") {
+          handleRowClick(currentIndex);
         }
       });
 
@@ -49,17 +53,18 @@ const RankedNews = () => {
     };
 
     document.addEventListener("keydown", keyListener);
-    return () => document.removeEventListener("keydown", keyListener);
+    return () => {
+      document.removeEventListener("keydown", keyListener);
+    };
   }, [
     handleKeyDown,
-    isPopupOpen,
     news.length,
     rankednews.length,
-    setCurrentIndex,
-    handleRowClick,
     setPopupOpen,
+    setCurrentIndex,
     currentIndex,
     activeList,
+    handleRowClick,
   ]);
 
   const handleClose = () => {
@@ -78,7 +83,7 @@ const RankedNews = () => {
 
   if (error) {
     return (
-      <div className="">
+      <div>
         <h2 className="text-xl font-medium my-[12px]">Top Ranked News</h2>
         <div className="text-rose-600 mb-12 text-center flex items-center justify-center">
           {error}
@@ -87,9 +92,9 @@ const RankedNews = () => {
     );
   }
 
-  console.log(news);
   return (
     <div>
+      {/* Header Section */}
       <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
         <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
@@ -97,15 +102,29 @@ const RankedNews = () => {
 
         <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
 
+        {/* Newer Button */}
+        <div
+          onClick={loadNewerTopics}
+          className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
+        >
+          <h2 className="md:text-[20px] text-[16px] font-medium">Newer</h2>
+          <MoreIcon stroke={"#737576"} />
+        </div>
+
+        <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
+
+        {/* Older Button */}
         <div
           onClick={loadMoreTopics}
           className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
         >
-          <h2 className="md:text-[20px] text-[16px] font-medium">More</h2>
+          <h2 className="md:text-[20px] text-[16px] font-medium">Older</h2>
           <MoreIcon stroke={"#737576"} />
         </div>
       </div>
-      <div className=" flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4 ">
+
+      {/* News Items List */}
+      <div className="flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4">
         {rankednews.map((item, index) => (
           <div
             key={index}

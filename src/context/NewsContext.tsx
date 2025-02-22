@@ -38,62 +38,61 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
   };
 
+  const loadNewerTopics = () => {
+    setVisibleTopicsIndex((prev) => (prev - 17 >= 0 ? prev - 17 : 3));
+  };
+
   const formatTime = (timeString: string): string => {
     const date = new Date(timeString);
-  
     return new Intl.DateTimeFormat("en-US", {
-      timeZone: "America/Los_Angeles", 
+      timeZone: "America/Los_Angeles",
       hour: "2-digit",
       minute: "2-digit",
-      hour12: false, 
+      hour12: false,
     }).format(date);
   };
-  
-  
+
   const handleSearchChange = (searchTerm: string) => {
     setKeywords(searchTerm);
   };
+
   useEffect(() => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-    
-        // List of API URLs
+
         const apiUrls = [
           `${API_URL}/HT0JSFWTWAj9nUz7.json`,
           `${API_URL}/3eGNoAav9HTQVA0T.json`,
           `${API_URL}/ZSur507lWxtcLfZO.json`,
           `${API_URL}/6ucBztHUPyyUBmxj.json`,
+        ];
 
-        ]; 
-    
-        // Fetch all URLs simultaneously
         const responses = await Promise.all(apiUrls.map((url) => fetch(url)));
-        
-        // Parse JSON from all responses
         const dataArr = await Promise.all(responses.map((res) => res.json()));
-    
-        // Merge all news items from different sources
+
         let allNews: NewsItem[] = [];
-        let sno = 1; 
+        let sno = 1;
         dataArr.forEach((data) => {
           if (data && data.items) {
-            const formattedNews: NewsItem[] = data.items.map((item: any, index: number) => ({
-              sno: sno++, // Increment S.No starting from 3
-              text: item.title,
-              url: item.url,
-              bn: item.authors[0]?.name || "Unknown",
-              content: item.content_text,
-              contentImage: item.image,
-              orgUrl: item.url,
-              date_published: item.date_published,
-              time: formatTime(item.date_published),
-            }));
-    
-            allNews = [...allNews, ...formattedNews]; // Merge news items
+            const formattedNews: NewsItem[] = data.items.map(
+              (item: any, index: number) => ({
+                sno: sno++,
+                text: item.title,
+                url: item.url,
+                bn: item.authors[0]?.name || "Unknown",
+                content: item.content_text,
+                contentImage: item.image,
+                orgUrl: item.url,
+                date_published: item.date_published,
+                time: formatTime(item.date_published),
+              })
+            );
+
+            allNews = [...allNews, ...formattedNews];
           }
         });
-    
+
         setNews(allNews);
         setFilteredNews(allNews);
       } catch (error) {
@@ -102,59 +101,18 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         setLoading(false);
       }
     };
-    
+
     fetchNews();
   }, [tickers, topics, startDate, endDate, sort, limit]);
+
   const allAuthors = new Set(news.flatMap((item) => item.bn));
   allTopics = Array.from(allAuthors);
 
-  //   if (!keywords) {
-  //     setFilteredNews(news); // Reset when search is cleared
-  //   } else {
-  //     let filteredItems = news.filter((item) =>
-  //       item.text.toLowerCase().includes(keywords.toLowerCase())
-  //     );
-  // const emptyItem = {
-  //   content: "",
-  //   time: "",
-  //   bn: "",
-  //   text: "",
-  //   sno: "",
-  //   title: "",
-  //   url: "",
-  //   summary: "",
-  //   orgUrl: "",
-  //   contentImage: ""
-  // };
-
-  //     // Add empty objects based on how many items are missing to reach 3
-  //     const itemsNeeded = 4 - filteredItems.length;
-
-  //     // If fewer than 3 items, add the required number of empty items
-  //     if (itemsNeeded > 0) {
-  //       const emptyItems = new Array(itemsNeeded).fill(emptyItem);
-  //       filteredItems = [...emptyItems, ...filteredItems]; // Prepend the empty items
-  //     }
-  //     console.log(filteredItems);
-  //     setFilteredNews(filteredItems);
-  //   }
-  // }, [keywords, news]);
   useEffect(() => {
     if (!keywords && !topics) {
       setFilteredNews(news);
     } else {
       let filteredItems = news.filter((item) => {
-        // const itemDate = new Date(item.date_published);
-
-        // const isWithinDateRange =
-        //   dateRange[0] && dateRange[1]
-        //     ? itemDate >= dateRange[0] && itemDate <= dateRange[1]
-        //     : dateRange[0]
-        //     ? itemDate >= dateRange[0]
-        //     : dateRange[1]
-        //     ? itemDate <= dateRange[1]
-        //     : true;
-
         const matchesKeywords = item.text
           .toLowerCase()
           .includes(keywords.toLowerCase());
@@ -238,6 +196,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         setLimit,
         selectedTopic,
         setSelectedTopic,
+        loadNewerTopics,
         loadMoreTopics,
         dateRange,
         handleSearchChange,
