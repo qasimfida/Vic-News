@@ -35,7 +35,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [startDate, endDate] = dateRange;
 
   const loadMoreTopics = () => {
-    setVisibleTopicsIndex((prev) => (prev + 17 < news.length ? prev + 17 : 0));
+    setVisibleTopicsIndex((prev) => (prev + 17 < filteredNews.length ? prev + 17 : 0));
   };
 
   const loadNewerTopics = () => {
@@ -112,7 +112,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     if (!keywords && !topics) {
       setFilteredNews(news);
     } else {
-      let filteredItems = news.filter((item) => {
+      let filteredItems = filteredNews.filter((item) => {
         const matchesKeywords = item.text
           .toLowerCase()
           .includes(keywords.toLowerCase());
@@ -181,6 +181,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       setFilteredNews(filteredItems);
     }
   }, [keywords, news, topics, dateRange, sort]);
+  console.log("news", news);
 
   return (
     <NewsContext.Provider

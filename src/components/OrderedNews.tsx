@@ -108,15 +108,17 @@ const OrderedNews = () => {
                 : "hover:border hover:border-white"
             }`}
           >
-            <RowItem
-              sno={item.sno}
-              text={item.text}
-              bn={item.bn}
-              time={item.time}
-              bnColor={"red"}
-              textColor={"orange"}
-              paraColor={"orange"}
-            />
+            {item.sno && (
+              <RowItem
+                sno={item.sno}
+                text={item.text}
+                bn={item.bn}
+                time={item.time}
+                bnColor={"red"}
+                textColor={"orange"}
+                paraColor={"orange"}
+              />
+            )}
           </div>
         ))}
       </div>
