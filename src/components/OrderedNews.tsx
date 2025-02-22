@@ -109,7 +109,7 @@ const OrderedNews = () => {
             }`}
           >
             <RowItem
-              sno={index + 3}
+              sno={index + 4}
               text={item.text}
               bn={item.bn}
               time={item.time}

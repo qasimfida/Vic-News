@@ -90,7 +90,7 @@ const RankedNews = () => {
   console.log(news);
   return (
     <div>
-       <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
+      <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
         <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
         </h2>

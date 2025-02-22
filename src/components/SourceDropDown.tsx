@@ -1,13 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { NewsContext } from "../context/NewsContext";
 
 const SourceDropDown: React.FC = () => {
-  const [selectedOption] = useState<string>("");
   const newsContext = useContext(NewsContext);
 
   if (!newsContext) return null;
 
-  const { allTopics, setTopics } = newsContext;
+  const { allTopics, setTopics, selectedTopic, setSelectedTopic } = newsContext;
+
+  const handleTopicClick = (topic: string) => {
+    if (selectedTopic === topic) {
+      setTopics("");
+      setSelectedTopic("");
+    } else {
+      setTopics(topic);
+      setSelectedTopic(topic);
+    }
+  };
 
   return (
     <div className="relative bg-[#464646]">
@@ -17,15 +26,14 @@ const SourceDropDown: React.FC = () => {
         </p>
 
         <div className="space-y-3">
-          {allTopics.map((topic) => (
+          {allTopics.map((topic, index) => (
             <div
+              key={index}
               className={`cursor-pointer max-md:text-center hover:bg-[#6B6D70] py-2 px-4 hover:border hover:rounded-md 
               ${
-                selectedOption === topic.replace("_", " ")
-                  ? "bg-[#6B6D70] rounded-md border"
-                  : ""
+                selectedTopic === topic ? "bg-[#6B6D70] rounded-md border" : ""
               }`}
-              onClick={(e) => setTopics(topic.replace("_", " "))}
+              onClick={() => handleTopicClick(topic)}
             >
               {topic.replace("_", " ")}
             </div>
