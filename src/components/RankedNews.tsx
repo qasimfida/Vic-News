@@ -21,12 +21,10 @@ const RankedNews = () => {
   const { rankednews, loading, error } = useRankedNews();
   const { news } = useNews();
 
-  // Ensure hooks are always called before any conditionals
   const newsContext = useContext(NewsContext);
   const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
   const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
 
-  // Define useCallback outside of any conditions
   const handleRowClick = useCallback(
     (index: number) => {
       setActiveList("ranked");
@@ -94,7 +92,6 @@ const RankedNews = () => {
 
   return (
     <div>
-      {/* Header Section */}
       <div className="flex md:px-4 items-center bg-black text-white lg:mt-[32px] md:mb-[24px] lg:mb-[57px] my-[16px]">
         <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
@@ -102,7 +99,6 @@ const RankedNews = () => {
 
         <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
 
-        {/* Newer Button */}
         <div
           onClick={loadNewerTopics}
           className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
@@ -113,7 +109,6 @@ const RankedNews = () => {
 
         <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
 
-        {/* Older Button */}
         <div
           onClick={loadMoreTopics}
           className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
@@ -123,7 +118,6 @@ const RankedNews = () => {
         </div>
       </div>
 
-      {/* News Items List */}
       <div className="flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4">
         {rankednews.map((item, index) => (
           <div
@@ -147,7 +141,6 @@ const RankedNews = () => {
         ))}
       </div>
 
-      {/* Popup */}
       {isPopupOpen &&
         currentIndex !== null &&
         activeList === "ranked" &&
