@@ -108,6 +108,11 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const allAuthors = new Set(news.flatMap((item) => item.bn));
   allTopics = Array.from(allAuthors);
 
+  const handleSelectTopic = (topic: string) => {
+    setSelectedTopic(topic);
+    setTopics(topic);
+  };
+
   useEffect(() => {
     if (!keywords && !topics) {
       setFilteredNews(news);
@@ -196,7 +201,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         setSort,
         setLimit,
         selectedTopic,
-        setSelectedTopic,
+        handleSelectTopic,
         loadNewerTopics,
         loadMoreTopics,
         dateRange,

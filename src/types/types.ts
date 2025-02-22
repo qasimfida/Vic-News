@@ -21,7 +21,7 @@ export interface NewsContextType {
 
   setTickers: (tickers: string) => void;
   selectedTopic: string;
-  setSelectedTopic: (topic: string) => void;
+  handleSelectTopic: (topic: string) => void;
 
   setTopics: (topics: string) => void;
 

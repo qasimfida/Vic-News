@@ -12,10 +12,12 @@ import CrossIcon from "../assets/icons/CrossIcon";
 const Navbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const newsContext = useContext(NewsContext) ?? {
-    handleSearchChange: () => {},
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    handleSearchChange("");
+    setTopics("")
   };
-  const { handleSearchChange } = newsContext;
 
   const handleSearch = useCallback(
     (e: any) => {
@@ -23,13 +25,8 @@ const Navbar: React.FC = () => {
       setSearchTerm(value);
       handleSearchChange(value);
     },
-    [handleSearchChange]
+    []
   );
-
-  const handleClearSearch = () => {
-    setSearchTerm("");
-    handleSearchChange("");
-  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -48,6 +45,11 @@ const Navbar: React.FC = () => {
   const toggleDropdown = (dropdown: string) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
+  const newsContext = useContext(NewsContext);
+  if (!newsContext) return null;
+
+  const { handleSearchChange, setTopics,selectedTopic } = newsContext;
+
 
   return (
     <nav className="flex items-center max-md:flex-col bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px] relative">

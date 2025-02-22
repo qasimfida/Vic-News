@@ -6,15 +6,16 @@ const SourceDropDown: React.FC = () => {
 
   if (!newsContext) return null;
 
-  const { allTopics, setTopics, selectedTopic, setSelectedTopic } = newsContext;
+  const { allTopics, setTopics, selectedTopic, handleSelectTopic } = newsContext;
 
   const handleTopicClick = (topic: string) => {
     if (selectedTopic === topic) {
       setTopics("");
-      setSelectedTopic("");
+      handleSelectTopic("");
+      
     } else {
       setTopics(topic);
-      setSelectedTopic(topic);
+      handleSelectTopic(topic);
     }
   };
 

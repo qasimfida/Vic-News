@@ -131,7 +131,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
         setSort,
         setLimit,
         selectedTopic,
-        setSelectedTopic,
+        handleSelectTopic:()=>{},
         loadMoreTopics,
         dateRange,
         handleSearchChange,
