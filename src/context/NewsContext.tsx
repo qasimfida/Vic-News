@@ -62,6 +62,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         setLoading(true);
 
         const apiUrls = [
+          `${API_URL}/cPYquBGvvKRmMEaI.json`,
           `${API_URL}/HT0JSFWTWAj9nUz7.json`,
           `${API_URL}/3eGNoAav9HTQVA0T.json`,
           `${API_URL}/ZSur507lWxtcLfZO.json`,
@@ -75,23 +76,29 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         let sno = 1;
         dataArr.forEach((data) => {
           if (data && data.items) {
-            const formattedNews: NewsItem[] = data.items.map(
-              (item: any, index: number) => ({
-                sno: sno++,
-                text: item.title,
-                url: item.url,
-                bn: item.authors[0]?.name || "Unknown",
-                content: item.content_text,
-                contentImage: item.image,
-                orgUrl: item.url,
-                date_published: item.date_published,
-                time: formatTime(item.date_published),
+            const formattedNews: NewsItem[] = data.items
+              .map((item: any) => {
+                const author = item.authors[0]?.name || "Unknown";
+                if (author === "@jbartash") return null; 
+        
+                return {
+                  sno: sno++,
+                  text: item.title,
+                  url: item.url,
+                  bn: author.replace(/@/g, ""),
+                  content: item.content_text,
+                  contentImage: item.image,
+                  orgUrl: item.url,
+                  date_published: item.date_published,
+                  time: formatTime(item.date_published),
+                };
               })
-            );
-
+              .filter(Boolean); 
+        
             allNews = [...allNews, ...formattedNews];
           }
         });
+        
 
         setNews(allNews);
         setFilteredNews(allNews);
@@ -105,8 +112,14 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     fetchNews();
   }, [tickers, topics, startDate, endDate, sort, limit]);
 
-  const allAuthors = new Set(news.flatMap((item) => item.bn));
+  const allAuthors = new Set(
+    news
+      .map((item) => item.bn)
+      .map((bn) => bn.replace(/@/g, "")) 
+  );
+  
   allTopics = Array.from(allAuthors);
+  
 
   const handleSelectTopic = (topic: string) => {
     setSelectedTopic(topic);
@@ -186,7 +199,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       setFilteredNews(filteredItems);
     }
   }, [keywords, news, topics, dateRange, sort]);
-  console.log("news", news);
 
   return (
     <NewsContext.Provider

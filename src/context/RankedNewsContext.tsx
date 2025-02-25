@@ -76,7 +76,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
     const fetchNews = async () => {
       try {
         setLoading(true);
-        let apiUrl = API_URL + "/3eGNoAav9HTQVA0T.json" || "";
+        let apiUrl = API_URL + "/cPYquBGvvKRmMEaI.json" || "";
         if (topics) apiUrl += `&topics=${topics}`;
         if (keywords) apiUrl += `&keywords=${keywords}`;
         if (startDate) apiUrl += `&time_from=${formatDate(startDate)}`;
@@ -89,7 +89,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
           const formattedNews: NewsItem[] = data.items.map((item: any) => ({
             text: item.title,
             url: item.url,
-            bn: item.authors[0].name,
+            bn: item.authors[0].name.replace(/@/g, ""),
             content: item.content_text,
             contentImage: item.image,
             orgUrl: item.url,
