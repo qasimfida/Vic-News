@@ -35,7 +35,9 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [startDate, endDate] = dateRange;
 
   const loadMoreTopics = () => {
-    setVisibleTopicsIndex((prev) => (prev + 17 < filteredNews.length ? prev + 17 : 0));
+    setVisibleTopicsIndex((prev) =>
+      prev + 17 < filteredNews.length ? prev + 17 : 0
+    );
   };
 
   const loadNewerTopics = () => {
@@ -130,32 +132,30 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     if (!keywords && !topics) {
       setFilteredNews(news);
     } else {
-      let filteredItems = filteredNews.filter((item) => {
+      let filteredItems = news.filter((item) => {
         const matchesKeywords = item.text
           .toLowerCase()
           .includes(keywords.toLowerCase());
-
         const matchesTopics = item.bn
           .toLowerCase()
           .includes(topics.toLowerCase());
-
         return matchesKeywords && matchesTopics;
       });
 
       switch (sort) {
         case "LATEST":
-          filteredItems.sort((a, b) => {
-            const aDate = new Date(a.date_published);
-            const bDate = new Date(b.date_published);
-            return bDate.getTime() - aDate.getTime();
-          });
+          filteredItems.sort(
+            (a, b) =>
+              new Date(b.date_published).getTime() -
+              new Date(a.date_published).getTime()
+          );
           break;
         case "EARLIEST":
-          filteredItems.sort((a, b) => {
-            const aDate = new Date(a.date_published);
-            const bDate = new Date(b.date_published);
-            return aDate.getTime() - bDate.getTime();
-          });
+          filteredItems.sort(
+            (a, b) =>
+              new Date(a.date_published).getTime() -
+              new Date(b.date_published).getTime()
+          );
           break;
         case "RELEVANCE":
           filteredItems.sort((a, b) => {
@@ -172,28 +172,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
             return bMatches - aMatches;
           });
           break;
-        default:
-          break;
-      }
-
-      const emptyItem = {
-        content: "",
-        time: "",
-        bn: "",
-        text: "",
-        sno: "",
-        title: "",
-        url: "",
-        summary: "",
-        orgUrl: "",
-        contentImage: "",
-      };
-
-      const itemsNeeded = 3;
-
-      if (itemsNeeded > 0) {
-        const emptyItems = new Array(itemsNeeded).fill(emptyItem);
-        filteredItems = [...emptyItems, ...filteredItems];
       }
 
       setFilteredNews(filteredItems);

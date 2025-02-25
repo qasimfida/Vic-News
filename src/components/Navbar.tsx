@@ -13,19 +13,15 @@ const Navbar: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  const handleClearSearch = () => {
-    setSearchTerm("");
-    handleSearchChange("");
-    setTopics("")
-  };
+  const newsContext = useContext(NewsContext);
 
   const handleSearch = useCallback(
     (e: any) => {
       const value = e.target.value;
       setSearchTerm(value);
-      handleSearchChange(value);
+      newsContext?.handleSearchChange(value);
     },
-    []
+    [newsContext]
   );
 
   useEffect(() => {
@@ -42,14 +38,19 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
+  if (!newsContext) return null;
+
+  const { handleSearchChange, setTopics } = newsContext;
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    handleSearchChange("");
+    setTopics("");
+  };
+
   const toggleDropdown = (dropdown: string) => {
     setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
-  const newsContext = useContext(NewsContext);
-  if (!newsContext) return null;
-
-  const { handleSearchChange, setTopics,selectedTopic } = newsContext;
-
 
   return (
     <nav className="flex items-center max-md:flex-col bg-black text-white gap-[15px] lg:gap-[33px] pt-[22px] relative">
