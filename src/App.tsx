@@ -12,12 +12,10 @@ function App() {
         style={{ maxWidth: "1300px" }}
       >
         <Navbar />
-       <SelectionProvider>
-
-       <RankedNews />
-       <OrderedNews />
-       </SelectionProvider>
-     
+        <SelectionProvider>
+          <RankedNews />
+          <OrderedNews />
+        </SelectionProvider>
       </div>
     </div>
   );

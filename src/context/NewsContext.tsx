@@ -81,8 +81,8 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
             const formattedNews: NewsItem[] = data.items
               .map((item: any) => {
                 const author = item.authors[0]?.name || "Unknown";
-                if (author === "@jbartash") return null; 
-        
+                if (author === "@jbartash") return null;
+
                 return {
                   sno: sno++,
                   text: item.title,
@@ -95,12 +95,11 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
                   time: formatTime(item.date_published),
                 };
               })
-              .filter(Boolean); 
-        
+              .filter(Boolean);
+
             allNews = [...allNews, ...formattedNews];
           }
         });
-        
 
         setNews(allNews);
         setFilteredNews(allNews);
@@ -114,14 +113,12 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     fetchNews();
   }, [tickers, topics, startDate, endDate, sort, limit]);
 
+  console.log(filteredNews, "sdfdf");
   const allAuthors = new Set(
-    news
-      .map((item) => item.bn)
-      .map((bn) => bn.replace(/@/g, "")) 
+    news.map((item) => item.bn).map((bn) => bn.replace(/@/g, ""))
   );
-  
+
   allTopics = Array.from(allAuthors);
-  
 
   const handleSelectTopic = (topic: string) => {
     setSelectedTopic(topic);
@@ -132,7 +129,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     if (!keywords && !topics) {
       setFilteredNews(news);
     } else {
-      let filteredItems = news.filter((item) => {
+      let filteredItems = filteredNews.filter((item) => {
         const matchesKeywords = item.text
           .toLowerCase()
           .includes(keywords.toLowerCase());
@@ -172,6 +169,25 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
             return bMatches - aMatches;
           });
           break;
+      }
+      const emptyItem = {
+        content: "",
+        time: "",
+        bn: "",
+        text: "",
+        sno: "",
+        title: "",
+        url: "",
+        summary: "",
+        orgUrl: "",
+        contentImage: "",
+      };
+
+      const itemsNeeded = 3;
+
+      if (itemsNeeded > 0) {
+        const emptyItems = new Array(itemsNeeded).fill(emptyItem);
+        filteredItems = [...emptyItems, ...filteredItems];
       }
 
       setFilteredNews(filteredItems);
