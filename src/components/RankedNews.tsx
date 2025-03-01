@@ -64,7 +64,44 @@ const RankedNews = () => {
     activeList,
     handleRowClick,
   ]);
-
+  useEffect(() => {
+    const keyListener = (event: KeyboardEvent) => {
+      handleKeyDown(event, news.length, rankednews.length, () => {
+        if (currentIndex !== null && activeList === "ranked") {
+          handleRowClick(currentIndex);
+        }
+      });
+  
+      if (event.key === "Escape") {
+        setPopupOpen(false);
+        setCurrentIndex(3);
+      }
+  
+      // Handle left and right arrow keys to load newer/older topics
+      if (event.key === "ArrowRight") {
+        loadMoreTopics();
+      } else if (event.key === "ArrowLeft") {
+        loadNewerTopics();
+      }
+    };
+  
+    document.addEventListener("keydown", keyListener);
+    return () => {
+      document.removeEventListener("keydown", keyListener);
+    };
+  }, [
+    handleKeyDown,
+    news.length,
+    rankednews.length,
+    setPopupOpen,
+    setCurrentIndex,
+    currentIndex,
+    activeList,
+    handleRowClick,
+    loadMoreTopics,
+    loadNewerTopics,
+  ]);
+  
   const handleClose = () => {
     setPopupOpen(false);
     setCurrentIndex(0);

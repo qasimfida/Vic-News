@@ -69,9 +69,9 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({
     rankedLength: number,
     onEnter: () => void
   ) => {
-    if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
+    if (event.key === "ArrowDown" ) {
       navigateNext(orderedLength, rankedLength);
-    } else if (event.key === "ArrowUp" || event.key === "ArrowRight") {
+    } else if (event.key === "ArrowUp" ) {
       navigatePrev(orderedLength, rankedLength);
     } else if (event.key === "Enter") {
       setTimeout(() => {
