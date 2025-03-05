@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useContext } from "react";
+import { useEffect, useCallback, useContext, useState } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import useRankedNews from "../hooks/useRankedNews";
@@ -20,10 +20,11 @@ const RankedNews = () => {
   } = useSelection();
   const { rankednews, loading, error } = useRankedNews();
   const { news } = useNews();
-
   const newsContext = useContext(NewsContext);
   const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
   const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
+
+  const [lastUpdated, setLastUpdated] = useState<number>(0);
 
   const handleRowClick = useCallback(
     (index: number) => {
@@ -48,43 +49,14 @@ const RankedNews = () => {
         setPopupOpen(false);
         setCurrentIndex(3);
       }
-    };
 
-    document.addEventListener("keydown", keyListener);
-    return () => {
-      document.removeEventListener("keydown", keyListener);
-    };
-  }, [
-    handleKeyDown,
-    news.length,
-    rankednews.length,
-    setPopupOpen,
-    setCurrentIndex,
-    currentIndex,
-    activeList,
-    handleRowClick,
-  ]);
-  useEffect(() => {
-    const keyListener = (event: KeyboardEvent) => {
-      handleKeyDown(event, news.length, rankednews.length, () => {
-        if (currentIndex !== null && activeList === "ranked") {
-          handleRowClick(currentIndex);
-        }
-      });
-  
-      if (event.key === "Escape") {
-        setPopupOpen(false);
-        setCurrentIndex(3);
-      }
-  
-      // Handle left and right arrow keys to load newer/older topics
       if (event.key === "ArrowRight") {
         loadMoreTopics();
       } else if (event.key === "ArrowLeft") {
         loadNewerTopics();
       }
     };
-  
+
     document.addEventListener("keydown", keyListener);
     return () => {
       document.removeEventListener("keydown", keyListener);
@@ -101,7 +73,16 @@ const RankedNews = () => {
     loadMoreTopics,
     loadNewerTopics,
   ]);
-  
+
+  useEffect(() => {
+    setLastUpdated(0);
+    const interval = setInterval(() => {
+      setLastUpdated((prev) => prev + 1);
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [rankednews]);
+
   const handleClose = () => {
     setPopupOpen(false);
     setCurrentIndex(0);
@@ -133,9 +114,7 @@ const RankedNews = () => {
         <h2 className="md:text-[20px] text-[16px] font-medium">
           Top Ranked News
         </h2>
-
-        <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
-
+        <div className="md:ml-[24px] ml-[10px] mr-[5px] md:mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
         <div
           onClick={loadNewerTopics}
           className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
@@ -143,9 +122,7 @@ const RankedNews = () => {
           <h2 className="md:text-[20px] text-[16px] font-medium">Newer</h2>
           <MoreIcon stroke={"#737576"} />
         </div>
-
-        <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
-
+        <div className="md:ml-[24px] ml-[10px] mr-[5px] md:mr-[12px]  w-[2px] h-[18px] md:h-[30px] bg-[#747678]"></div>
         <div
           onClick={loadMoreTopics}
           className="flex items-baseline text-[#747678] gap-[8px] cursor-pointer hover:text-white"
@@ -153,6 +130,13 @@ const RankedNews = () => {
           <h2 className="md:text-[20px] text-[16px] font-medium">Older</h2>
           <MoreIcon stroke={"#737576"} />
         </div>
+        <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678] max-sm:hidden"></div>
+        <div className="ml-2 max-sm:hidden">
+          Last updated {lastUpdated} minutes ago
+        </div>
+      </div>
+      <div className="ml-2 flex items-center justify-center max-sm:mb-[6px] md:hidden">
+        Last updated {lastUpdated} minutes ago
       </div>
 
       <div className="flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4">
