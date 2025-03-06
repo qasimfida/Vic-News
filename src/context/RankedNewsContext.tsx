@@ -130,6 +130,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
         setDateRange,
         setSort,
         setLimit,
+        setRefreshInterval:()=>{},
         selectedTopic,
         handleSelectTopic:()=>{},
         loadMoreTopics,
@@ -137,6 +138,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
         handleSearchChange,
         setVisibleTopicsIndex,
         allTopics,
+        refreshInterval: 0,
         visibleTopics: allTopics,
         news: rankednews,
       }}

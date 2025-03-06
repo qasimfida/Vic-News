@@ -5,7 +5,6 @@ import useNews from "../hooks/useNews";
 import { useSelection } from "../context/SelectionContext";
 import Loader from "./Loader";
 import useRankedNews from "../hooks/useRankedNews";
-
 const OrderedNews = () => {
   const {
     currentIndex,
@@ -64,12 +63,6 @@ const OrderedNews = () => {
     currentIndex,
     handleRowClick,
   ]);
-
-  // const handleRowClick = (index: number) => {
-  //   setActiveList("ordered");
-  //   setCurrentIndex(index);
-  //   setPopupOpen(true);
-  // };
 
   const handleClose = () => {
     setPopupOpen(false);

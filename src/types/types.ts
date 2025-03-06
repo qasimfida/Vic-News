@@ -16,9 +16,9 @@ export interface NewsContextType {
   news: NewsItem[];
   rankednews: NewsItem[];
   loading: boolean;
-
+  setRefreshInterval: (interval: number) => void;
   error: string | null;
-
+  refreshInterval: number;
   setTickers: (tickers: string) => void;
   selectedTopic: string;
   handleSelectTopic: (topic: string) => void;
