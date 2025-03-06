@@ -198,7 +198,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       setFilteredNews(filteredItems);
     }
   }, [keywords, news, topics, dateRange, sort]);
-  console.log("news", news);
 
   return (
     <NewsContext.Provider
