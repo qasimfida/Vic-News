@@ -7,14 +7,12 @@ const TimerDisplay: React.FC = () => {
     Number(localStorage.getItem("lastUpdated")) || Date.now()
   );
 
-  // Format timeLeft into MM:SS
   const formatTime = (ms: number) => {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  // Calculate minutes since last update
   const getElapsedMinutes = () => {
     const elapsed = Math.floor((Date.now() - lastUpdated) / 60000);
     return elapsed === 0 ? "just now" : `${elapsed} min ago`;
@@ -24,13 +22,24 @@ const TimerDisplay: React.FC = () => {
     if (timeLeft === 0) {
       setLastUpdated(Date.now());
       localStorage.setItem("lastUpdated", Date.now().toString());
-      setIntervalValue(600000); // Reset timer to 10 minutes
+      setIntervalValue(600000); // 10 minutes
+      window.location.reload(); // Immediate reload when timer hits 0
     }
-  }, [timeLeft]);
+  }, [timeLeft, setIntervalValue]);
 
-  return (      <p className="text-gray-500">Last updated {getElapsedMinutes()}</p>
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() === "r") {
+        window.location.reload();
+      }
+    };
+    window.addEventListener("keydown", handleKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, []);
 
-  );
+  return <p className="text-gray-500">Last updated {getElapsedMinutes()}</p>;
 };
 
 export default TimerDisplay;
