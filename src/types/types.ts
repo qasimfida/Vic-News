@@ -16,9 +16,9 @@ export interface NewsContextType {
   news: NewsItem[];
   rankednews: NewsItem[];
   loading: boolean;
-  setRefreshInterval: (interval: number) => void;
+
   error: string | null;
-  refreshInterval: number;
+
   setTickers: (tickers: string) => void;
   selectedTopic: string;
   handleSelectTopic: (topic: string) => void;
@@ -39,10 +39,10 @@ export interface NewsContextType {
   setVisibleTopicsIndex: (index: number) => void;
 
   allTopics: string[];
-
+  setReload: (reload: boolean) => void;
   loadMoreTopics: () => void;
   loadNewerTopics?: () => void;
-
+  setRankedReload: (reload: boolean) => void;
   dateRange: [Date | null, Date | null];
 }
 

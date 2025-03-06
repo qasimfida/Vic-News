@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import { NewsItem, NewsContextType } from "../types/types";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTimer } from "./TimerContext";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -44,6 +45,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
     null,
     null,
   ]);
+  const [reload, setReload] = useState<boolean>(false);
   const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
     "LATEST"
   );
@@ -51,6 +53,7 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
   const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(0);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [startDate, endDate] = dateRange;
+  const { timeLeft, setIntervalValue } = useTimer();
 
   const loadMoreTopics = () => {
     setVisibleTopicsIndex((prev) =>
@@ -96,6 +99,8 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
             time: formatTime(item.date_published),
           }));
           setNews(formattedNews);
+          setReload(false);
+
         } else if (data) {
           setError(data.Information);
         } else {
@@ -109,7 +114,15 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
     };
 
     fetchNews();
-  }, [tickers, topics, keywords, startDate, endDate, sort, limit]);
+  }, [tickers,reload, topics, keywords, startDate, endDate, sort, limit]);
+
+    useEffect(() => () => {
+      if (timeLeft == 1000) {
+        setReload(true);
+        setIntervalValue(600000);
+        
+      }},
+       [timeLeft]);
 
   const handleSearchChange = (searchTerm: string) => {
     setKeywords(searchTerm);
@@ -130,7 +143,6 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
         setDateRange,
         setSort,
         setLimit,
-        setRefreshInterval:()=>{},
         selectedTopic,
         handleSelectTopic:()=>{},
         loadMoreTopics,
@@ -138,9 +150,10 @@ export const RankedNewsProvider: React.FC<RankedNewsProviderProps> = ({
         handleSearchChange,
         setVisibleTopicsIndex,
         allTopics,
-        refreshInterval: 0,
         visibleTopics: allTopics,
         news: rankednews,
+        setReload:()=>{},
+        setRankedReload:setReload
       }}
     >
       {children}
