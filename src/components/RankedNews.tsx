@@ -20,7 +20,7 @@ const RankedNews = () => {
     handleKeyDown,
   } = useSelection();
   const { rankednews, loading, error, setRankedReload } = useRankedNews();
-  const { news , setReload} = useNews();
+  const { news, setReload } = useNews();
   const newsContext = useContext(NewsContext);
   const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
   const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
@@ -55,9 +55,10 @@ const RankedNews = () => {
         loadMoreTopics();
       } else if (event.key === "ArrowLeft") {
         loadNewerTopics();
-      }if(event.key === "r" || event.key === "R"){
+      }
+      if (event.key === "r" || event.key === "R") {
         setReload(true);
-        setRankedReload(true)
+        setRankedReload(true);
       }
     };
 
@@ -136,12 +137,13 @@ const RankedNews = () => {
         </div>
         <div className="ml-[24px] mr-[12px] w-[2px] h-[18px] md:h-[30px] bg-[#747678] max-sm:hidden"></div>
         <div className="ml-2 max-sm:hidden">
-          <Timer/>
-       </div>
+          <Timer />
+        </div>
       </div>
       {/* <div className="ml-2 flex items-center justify-center max-sm:mb-[6px] md:hidden">
         Last updated {lastUpdated} minutes ago
       </div> */}
+      {/* fff */}
 
       <div className="flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4">
         {rankednews.map((item, index) => (
