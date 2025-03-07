@@ -14,7 +14,7 @@ const TimerDisplay: React.FC = () => {
   };
 
   const getElapsedMinutes = () => {
-    const elapsed = Math.floor((Date.now() - lastUpdated) / 6000);
+    const elapsed = Math.floor((Date.now() - lastUpdated) / 60000);
     return elapsed === 0 ? "just now" : `${elapsed} min ago`;
   };
 
@@ -25,6 +25,18 @@ const TimerDisplay: React.FC = () => {
       localStorage.setItem("lastUpdated", now.toString());
     }
   }, [timeLeft]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - lastUpdated) / 60000);
+      if (elapsed >= 10) {
+        localStorage.removeItem("lastUpdated");
+        window.location.reload();
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [lastUpdated]);
 
   return (
     <div>
