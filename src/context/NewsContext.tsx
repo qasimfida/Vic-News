@@ -37,6 +37,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [startDate, endDate] = dateRange;
   const [reload, setReload] = useState<boolean>(false);
   const { timeLeft, setIntervalValue } = useTimer();
+  const allowedSources = new Set(["@MarketWatch", "@WSJ", "@FT", "@TheEconomist", "@Bloomberg", "@bloomberg", "@business","@BloombergLive", "@BloombergAsia"]);
 
   const loadMoreTopics = () => {
     setVisibleTopicsIndex((prev) => (prev + 17 < filteredNews.length ? prev + 17 : 0));
@@ -66,6 +67,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         setLoading(true);
 
         const apiUrls = [
+          `${API_URL}/cPYquBGvvKRmMEaI.json`,
           `${API_URL}/HT0JSFWTWAj9nUz7.json`,
           `${API_URL}/3eGNoAav9HTQVA0T.json`,
           `${API_URL}/ZSur507lWxtcLfZO.json`,
@@ -79,8 +81,8 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         let sno = 1;
         dataArr.forEach((data) => {
           if (data && data.items) {
-            const formattedNews: NewsItem[] = data.items.map(
-              (item: any, index: number) => ({
+            const formattedNews: NewsItem[] = data.items
+              .map((item: any, index: number) => ({
                 sno: sno++,
                 text: item.title,
                 url: item.url,
@@ -90,13 +92,13 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
                 orgUrl: item.url,
                 date_published: item.date_published,
                 time: formatTime(item.date_published),
-              })
-            );
-
+              }))
+              .filter((item:any) => allowedSources.has(item.bn)); // Filter by allowed sources
+        
             allNews = [...allNews, ...formattedNews];
           }
         });
-
+        
         setNews(allNews);
         setFilteredNews(allNews);
         setReload(false);
@@ -117,8 +119,13 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       
     }},
      [timeLeft]);
-  const allAuthors = new Set(news.flatMap((item) => item.bn));
-  allTopics = Array.from(allAuthors);
+
+     const allAuthors = new Set(
+       news.flatMap((item) => item.bn).filter((author) => allowedSources.has(author))
+     );
+     
+     const allTopics = Array.from(allAuthors);
+     
 
   const handleSelectTopic = (topic: string) => {
     setSelectedTopic(topic);

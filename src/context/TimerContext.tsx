@@ -9,25 +9,34 @@ interface TimerContextProps {
 const TimerContext = createContext<TimerContextProps | undefined>(undefined);
 
 export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const savedInterval = Number(localStorage.getItem("selectedInterval")) || 600000; // Default 10 minutes
-  const expirationTime = Number(localStorage.getItem("expirationTime")) || Date.now() + savedInterval;
-  const initialTimeLeft = Math.max(expirationTime - Date.now(), 0);
+  const DEFAULT_INTERVAL = 600000; // 10 minutes
+  const savedInterval = Number(localStorage.getItem("selectedInterval")) || DEFAULT_INTERVAL;
+  
+  // Check if expiration time exists and is valid
+  let expirationTime = Number(localStorage.getItem("expirationTime"));
+  if (!expirationTime || expirationTime < Date.now()) {
+    expirationTime = Date.now() + savedInterval;
+    localStorage.setItem("expirationTime", expirationTime.toString());
+  }
 
-  const [timeLeft, setTimeLeft] = useState(initialTimeLeft);
+  const [timeLeft, setTimeLeft] = useState(Math.max(expirationTime - Date.now(), 0));
   const [selectedInterval, setSelectedInterval] = useState(savedInterval);
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      const interval = setInterval(() => {
-        setTimeLeft((prev) => {
-          const newTime = prev - 1000;
-          return newTime <= 0 ? 0 : newTime;
-        });
-      }, 1000);
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1000) {
+          // Reset to 10 min when timer hits 0
+          const newExpirationTime = Date.now() + DEFAULT_INTERVAL;
+          localStorage.setItem("expirationTime", newExpirationTime.toString());
+          return DEFAULT_INTERVAL;
+        }
+        return prev - 1000;
+      });
+    }, 1000);
 
-      return () => clearInterval(interval);
-    }
-  }, [timeLeft]);
+    return () => clearInterval(interval);
+  }, []);
 
   const setIntervalValue = (value: number) => {
     const newExpirationTime = Date.now() + value;

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useTimer } from "../context/TimerContext";
 
 const TimerDisplay: React.FC = () => {
-  const { timeLeft, setIntervalValue } = useTimer();
-  const [lastUpdated, setLastUpdated] = useState<number>(
+  const { timeLeft } = useTimer();
+  const [lastUpdated, setLastUpdated] = useState(
     Number(localStorage.getItem("lastUpdated")) || Date.now()
   );
 
@@ -14,32 +14,23 @@ const TimerDisplay: React.FC = () => {
   };
 
   const getElapsedMinutes = () => {
-    const elapsed = Math.floor((Date.now() - lastUpdated) / 60000);
+    const elapsed = Math.floor((Date.now() - lastUpdated) / 6000);
     return elapsed === 0 ? "just now" : `${elapsed} min ago`;
   };
 
   useEffect(() => {
     if (timeLeft === 0) {
-      setLastUpdated(Date.now());
-      localStorage.setItem("lastUpdated", Date.now().toString());
-      setIntervalValue(600000); // 10 minutes
-      window.location.reload(); // Immediate reload when timer hits 0
+      const now = Date.now();
+      setLastUpdated(now);
+      localStorage.setItem("lastUpdated", now.toString());
     }
-  }, [timeLeft, setIntervalValue]);
+  }, [timeLeft]);
 
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === "r") {
-        window.location.reload();
-      }
-    };
-    window.addEventListener("keydown", handleKeyPress);
-    return () => {
-      window.removeEventListener("keydown", handleKeyPress);
-    };
-  }, []);
-
-  return <p className="text-gray-500">Last updated {getElapsedMinutes()}</p>;
+  return (
+    <div>
+      <p className="text-gray-500">Last updated {getElapsedMinutes()}</p>
+    </div>
+  );
 };
 
 export default TimerDisplay;
