@@ -6,10 +6,21 @@ const Timer: React.FC = () => {
   const [lastUpdated, setLastUpdated] = useState<number>(() => {
     const stored = localStorage.getItem('lastUpdated');
     if (!stored) {
-      localStorage.setItem('lastUpdated', Date.now().toString());
+      const now = Date.now();
+      localStorage.setItem('lastUpdated', now.toString());
       return 0;
     }
-    const timeDiff = Math.floor((Date.now() - parseInt(stored)) / 60000);
+    
+    // Check if stored time is too old (more than 10 minutes)
+    const storedTime = parseInt(stored);
+    const timeDiff = Math.floor((Date.now() - storedTime) / 60000);
+    if (timeDiff > 10) {
+      // If too old, reset to current time
+      const now = Date.now();
+      localStorage.setItem('lastUpdated', now.toString());
+      return 0;
+    }
+    
     return Math.max(0, timeDiff);
   });
 
@@ -23,12 +34,21 @@ const Timer: React.FC = () => {
   }, [timeLeft]);
 
   useEffect(() => {
-    // Update the minutes counter every 5 seconds for more responsive updates
+    // Update the minutes counter every 5 seconds
     const interval = setInterval(() => {
       const stored = localStorage.getItem('lastUpdated');
       if (stored) {
-        const timeDiff = Math.floor((Date.now() - parseInt(stored)) / 60000);
-        setLastUpdated(Math.max(0, timeDiff));
+        const storedTime = parseInt(stored);
+        const timeDiff = Math.floor((Date.now() - storedTime) / 60000);
+        
+        // If time difference is more than 10 minutes, reset the timer
+        if (timeDiff > 10) {
+          const now = Date.now();
+          localStorage.setItem('lastUpdated', now.toString());
+          setLastUpdated(0);
+        } else {
+          setLastUpdated(Math.max(0, timeDiff));
+        }
       }
     }, 5000);
 
