@@ -19,32 +19,29 @@ export interface NewsContextType {
   loading: boolean;
   keywords: string;
   error: string | null;
-
-  setTickers: (tickers: string) => void;
   selectedTopic: string;
   handleSelectTopic: (topic: string) => void;
-
   setTopics: (topics: string) => void;
-
   setKeywords: any;
   handleSearchChange: (searchTerm: string) => void;
-
   setDateRange: (dateRange: [Date | null, Date | null]) => void;
-
   setSort: (sort: "LATEST" | "EARLIEST" | "RELEVANCE") => void;
-
-  setLimit: (limit: number) => void;
-
   visibleTopics: string[];
-
   setVisibleTopicsIndex: (index: number) => void;
-
   allTopics: string[];
   setReload: (reload: boolean) => void;
   loadMoreTopics: () => void;
   loadNewerTopics?: () => void;
   setRankedReload: (reload: boolean) => void;
   dateRange: [Date | null, Date | null];
+  paginationInfo: {
+    totalItems: number;
+    currentPage: number;
+    totalPages: number;
+    itemsPerPage: number;
+    startIndex: number;
+    endIndex: number;
+  };
 }
 
 export type ModalKey = "dateSelector" | "topicSelector" | "sortSelector";

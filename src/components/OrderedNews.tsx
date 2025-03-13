@@ -55,7 +55,6 @@ const OrderedNews = () => {
     news.length,
     setCurrentIndex,
     setPopupOpen,
-    news.length,
     handleKeyDown,
     activeList,
     currentIndex,

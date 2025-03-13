@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useContext, useState } from "react";
+import { useEffect, useCallback, useContext } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
 import { useSelection } from "../context/SelectionContext";
@@ -23,8 +23,6 @@ const RankedNews = () => {
   const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
   const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
 
-  const [lastUpdated, setLastUpdated] = useState<number>(0);
-
   const handleRowClick = useCallback(
     (index: number) => {
       setActiveList("ranked");
@@ -38,8 +36,6 @@ const RankedNews = () => {
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
- 
-
       if (event.key === "Escape") {
         setPopupOpen(false);
         setCurrentIndex(3);
@@ -69,16 +65,8 @@ const RankedNews = () => {
     handleRowClick,
     loadMoreTopics,
     loadNewerTopics,
+    setReload
   ]);
-
-  useEffect(() => {
-    setLastUpdated(0);
-    const interval = setInterval(() => {
-      setLastUpdated((prev) => prev + 1);
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [news]);
 
   const handleClose = () => {
     setPopupOpen(false);
@@ -132,10 +120,9 @@ const RankedNews = () => {
           <Timer />
         </div>
       </div>
-      {/* <div className="ml-2 flex items-center justify-center max-sm:mb-[6px] md:hidden">
-        Last updated {lastUpdated} minutes ago
-      </div> */}
-      {/* fff */}
+      <div className="ml-2 flex items-center justify-center max-sm:mb-[6px] md:hidden">
+        <Timer />
+      </div>
 
       <div className="flex flex-col max-sm:gap-[16px] py-[9px] lg:px-4">
         {rankednews.map((item, index) => (

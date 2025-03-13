@@ -1,48 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { useTimer } from "../context/TimerContext";
 
-const TimerDisplay: React.FC = () => {
+const Timer: React.FC = () => {
   const { timeLeft } = useTimer();
-  const [lastUpdated, setLastUpdated] = useState(
-    Number(localStorage.getItem("lastUpdated")) || Date.now()
-  );
-
-  const formatTime = (ms: number) => {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
-
-  const getElapsedMinutes = () => {
-    const elapsed = Math.floor((Date.now() - lastUpdated) / 60000);
-    return elapsed === 0 ? "just now" : `${elapsed} min ago`;
-  };
+  const [lastUpdated, setLastUpdated] = useState<number>(0);
 
   useEffect(() => {
+    // Reset lastUpdated when timer hits 0
     if (timeLeft === 0) {
-      const now = Date.now();
-      setLastUpdated(now);
-      localStorage.setItem("lastUpdated", now.toString());
+      setLastUpdated(0);
     }
-  }, [timeLeft]);
 
-  useEffect(() => {
+    // Update the "minutes ago" counter every minute
     const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - lastUpdated) / 60000);
-      if (elapsed >= 10) {
-        localStorage.removeItem("lastUpdated");
-        window.location.reload();
-      }
-    }, 1000);
+      setLastUpdated(prev => prev + 1);
+    }, 60000);
 
     return () => clearInterval(interval);
-  }, [lastUpdated]);
+  }, [timeLeft]);
+
+  const getDisplayText = () => {
+    if (lastUpdated === 0) {
+      return "Last updated just now";
+    }
+    return `Last updated ${lastUpdated} ${lastUpdated === 1 ? 'minute' : 'minutes'} ago`;
+  };
 
   return (
-    <div>
-      <p className="text-gray-500">Last updated {getElapsedMinutes()}</p>
+    <div className=" text-[#747678]">
+      {getDisplayText()}
     </div>
   );
 };
 
-export default TimerDisplay;
+export default Timer;

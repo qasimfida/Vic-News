@@ -87,23 +87,14 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [filteredNews, setFilteredNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [tickers, setTickers] = useState<string>("");
   const [topics, setTopics] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
-  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
-    "LATEST"
-  );
-  const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
-  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(
-    DEFAULT_VISIBLE_TOPICS
-  );
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
+  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
+  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(DEFAULT_VISIBLE_TOPICS);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [reload, setReload] = useState<boolean>(false);
-
+  
   const { timeLeft, setIntervalValue } = useTimer();
   const [startDate, endDate] = dateRange;
   const initialDataFetched = useRef(false);
@@ -364,12 +355,10 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       news: currentPageNews,
       loading,
       error,
-      setTickers,
       setTopics,
       setKeywords,
       setDateRange,
       setSort,
-      setLimit,
       selectedTopic,
       handleSelectTopic,
       loadNewerTopics,
@@ -383,7 +372,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       keywords,
       setReload,
       setRankedReload: setReload,
-      paginationInfo, // Add pagination info to context
+      paginationInfo,
     }),
     [
       currentPageNews,
