@@ -4,7 +4,6 @@ import Popup from "./Popup";
 import useNews from "../hooks/useNews";
 import { useSelection } from "../context/SelectionContext";
 import Loader from "./Loader";
-import useRankedNews from "../hooks/useRankedNews";
 const OrderedNews = () => {
   const {
     currentIndex,
@@ -16,7 +15,6 @@ const OrderedNews = () => {
     handleKeyDown,
   } = useSelection();
   const { news, loading, error } = useNews();
-  const { rankednews } = useRankedNews();
 
   const handleRowClick = useCallback(
     (index: number) => {
@@ -40,7 +38,7 @@ const OrderedNews = () => {
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
-      handleKeyDown(event, news.length, rankednews.length, () => {
+      handleKeyDown(event, news.length, 3,  () => {
         if (currentIndex !== null) {
           activeList === "ordered" && handleRowClick(currentIndex as number);
         }
@@ -57,7 +55,7 @@ const OrderedNews = () => {
     news.length,
     setCurrentIndex,
     setPopupOpen,
-    rankednews.length,
+    news.length,
     handleKeyDown,
     activeList,
     currentIndex,

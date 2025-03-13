@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import { NewsProvider } from "./context/NewsContext";
 import { ModalProvider } from "./context/ModalContext";
-import { RankedNewsProvider } from "./context/RankedNewsContext";
 import { TimerProvider } from "./context/TimerContext";
 
 const root = ReactDOM.createRoot(
@@ -15,9 +14,7 @@ root.render(
     <TimerProvider>
     <NewsProvider>
       <ModalProvider>
-        <RankedNewsProvider>
           <App />
-        </RankedNewsProvider>
       </ModalProvider>
     </NewsProvider>
     </TimerProvider>

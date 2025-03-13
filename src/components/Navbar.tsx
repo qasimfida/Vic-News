@@ -10,7 +10,6 @@ import SourceDropDown from "./SourceDropDown";
 import CrossIcon from "../assets/icons/CrossIcon";
 
 const Navbar: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const newsContext = useContext(NewsContext);
@@ -18,7 +17,6 @@ const Navbar: React.FC = () => {
   const handleSearch = useCallback(
     (e: any) => {
       const value = e.target.value;
-      setSearchTerm(value);
       newsContext?.handleSearchChange(value);
     },
     [newsContext]
@@ -40,10 +38,9 @@ const Navbar: React.FC = () => {
 
   if (!newsContext) return null;
 
-  const { handleSearchChange, setTopics } = newsContext;
+  const { handleSearchChange, setTopics, keywords } = newsContext;
 
   const handleClearSearch = () => {
-    setSearchTerm("");
     handleSearchChange("");
     setTopics("");
   };
@@ -58,12 +55,12 @@ const Navbar: React.FC = () => {
         <input
           type="text"
           placeholder="Search"
-          value={searchTerm}
+          value={keywords}
           onChange={handleSearch}
           className="bg-transparent placeholder:text-white px-[16px] focus:outline-none text-white text-[16px] font-medium flex-grow"
         />
         <div className="pr-4 flex items-center gap-2">
-          {!searchTerm ? (
+          {!keywords ? (
             <SearchIcon stroke="white" />
           ) : (
             <button

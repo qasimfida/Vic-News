@@ -1,7 +1,6 @@
 import { useEffect, useCallback, useContext, useState } from "react";
 import RowItem from "./RowItem";
 import Popup from "./Popup";
-import useRankedNews from "../hooks/useRankedNews";
 import { useSelection } from "../context/SelectionContext";
 import Loader from "./Loader";
 import useNews from "../hooks/useNews";
@@ -19,8 +18,7 @@ const RankedNews = () => {
     setActiveList,
     handleKeyDown,
   } = useSelection();
-  const { rankednews, loading, error, setRankedReload } = useRankedNews();
-  const { news, setReload } = useNews();
+  const { news, setReload, rankednews, error, loading } = useNews();
   const newsContext = useContext(NewsContext);
   const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
   const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
@@ -40,11 +38,7 @@ const RankedNews = () => {
 
   useEffect(() => {
     const keyListener = (event: KeyboardEvent) => {
-      handleKeyDown(event, news.length, rankednews.length, () => {
-        if (currentIndex !== null && activeList === "ranked") {
-          handleRowClick(currentIndex);
-        }
-      });
+ 
 
       if (event.key === "Escape") {
         setPopupOpen(false);
@@ -58,7 +52,6 @@ const RankedNews = () => {
       }
       if (event.key === "r" || event.key === "R") {
         setReload(true);
-        setRankedReload(true);
       }
     };
 
@@ -69,7 +62,6 @@ const RankedNews = () => {
   }, [
     handleKeyDown,
     news.length,
-    rankednews.length,
     setPopupOpen,
     setCurrentIndex,
     currentIndex,
@@ -86,7 +78,7 @@ const RankedNews = () => {
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [rankednews]);
+  }, [news]);
 
   const handleClose = () => {
     setPopupOpen(false);

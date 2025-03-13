@@ -10,13 +10,14 @@ export interface NewsItem {
   date_published: any;
   orgUrl: string;
   contentImage: string;
+  isRanked?: boolean;
 }
 
 export interface NewsContextType {
   news: NewsItem[];
   rankednews: NewsItem[];
   loading: boolean;
-
+  keywords: string;
   error: string | null;
 
   setTickers: (tickers: string) => void;

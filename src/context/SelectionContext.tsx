@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import useNews from "../hooks/useNews";
-import useRankedNews from "../hooks/useRankedNews";
 
 interface SelectionContextType {
   currentIndex: number | null;
@@ -29,7 +28,6 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeList, setActiveList] = useState<"ordered" | "ranked">("ordered");
   const [isPopupOpen, setPopupOpen] = useState(false);
   const { news } = useNews();
-  const { rankednews } = useRankedNews();
 
   const navigateNext = (orderedLength: number, rankedLength: number) => {
     if (
@@ -81,8 +79,8 @@ export const SelectionProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const swipeHandlers = useSwipeable({
-    onSwipedUp: () => navigateNext(news.length, rankednews.length),
-    onSwipedDown: () => navigatePrev(news.length, rankednews.length),
+    onSwipedUp: () => navigateNext(news.length, news.length),
+    onSwipedDown: () => navigatePrev(news.length, news.length),
     preventScrollOnSwipe: true,
     trackTouch: isPopupOpen,
   });
