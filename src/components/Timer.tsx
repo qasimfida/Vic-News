@@ -6,7 +6,6 @@ const Timer: React.FC = () => {
   const [lastUpdated, setLastUpdated] = useState<number>(() => {
     const stored = localStorage.getItem('lastUpdated');
     if (!stored) {
-      // If no stored time exists, store current time
       localStorage.setItem('lastUpdated', Date.now().toString());
       return 0;
     }
@@ -15,8 +14,8 @@ const Timer: React.FC = () => {
   });
 
   useEffect(() => {
-    // When timer resets (hits 1000ms), update the last updated time
-    if (timeLeft === 1000) {
+    // When timer resets (hits 10 minutes), update the last updated time
+    if (timeLeft === 600000) {
       const now = Date.now();
       localStorage.setItem('lastUpdated', now.toString());
       setLastUpdated(0);
@@ -24,14 +23,14 @@ const Timer: React.FC = () => {
   }, [timeLeft]);
 
   useEffect(() => {
-    // Update the minutes counter every 10 seconds for more responsive updates
+    // Update the minutes counter every 5 seconds for more responsive updates
     const interval = setInterval(() => {
       const stored = localStorage.getItem('lastUpdated');
       if (stored) {
         const timeDiff = Math.floor((Date.now() - parseInt(stored)) / 60000);
         setLastUpdated(Math.max(0, timeDiff));
       }
-    }, 10000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -43,7 +42,6 @@ const Timer: React.FC = () => {
     return `Last updated ${lastUpdated} ${lastUpdated === 1 ? 'minute' : 'minutes'} ago`;
   };
 
-  console.log(lastUpdated, timeLeft);
   return (
     <div className="text-[#747678]">
       {getDisplayText()}

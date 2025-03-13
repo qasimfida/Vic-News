@@ -24,15 +24,18 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1000) {
-          // Reset to 10 min when timer hits 0
-          const newExpirationTime = Date.now() + DEFAULT_INTERVAL;
-          localStorage.setItem("expirationTime", newExpirationTime.toString());
-          return DEFAULT_INTERVAL;
-        }
-        return prev - 1000;
-      });
+      const now = Date.now();
+      const expTime = Number(localStorage.getItem("expirationTime"));
+      const remaining = Math.max(expTime - now, 0);
+
+      if (remaining <= 1000) {
+        // Reset timer to 10 minutes
+        const newExpirationTime = now + DEFAULT_INTERVAL;
+        localStorage.setItem("expirationTime", newExpirationTime.toString());
+        setTimeLeft(DEFAULT_INTERVAL);
+      } else {
+        setTimeLeft(remaining);
+      }
     }, 1000);
 
     return () => clearInterval(interval);
