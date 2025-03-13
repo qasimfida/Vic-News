@@ -20,8 +20,8 @@ const RankedNews = () => {
   } = useSelection();
   const { news, setReload, rankednews, error, loading } = useNews();
   const newsContext = useContext(NewsContext);
-  const loadMoreTopics = newsContext?.loadMoreTopics || (() => {});
-  const loadNewerTopics = newsContext?.loadNewerTopics || (() => {});
+  const loadMoreTopics = newsContext?.loadMoreTopics;
+  const loadNewerTopics = newsContext?.loadNewerTopics;
 
   const handleRowClick = useCallback(
     (index: number) => {
@@ -41,9 +41,9 @@ const RankedNews = () => {
         setCurrentIndex(3);
       }
 
-      if (event.key === "ArrowRight") {
+      if (event.key === "ArrowRight" && loadMoreTopics) {
         loadMoreTopics();
-      } else if (event.key === "ArrowLeft") {
+      } else if (event.key === "ArrowLeft" && loadNewerTopics) {
         loadNewerTopics();
       }
       if (event.key === "r" || event.key === "R") {
@@ -56,13 +56,8 @@ const RankedNews = () => {
       document.removeEventListener("keydown", keyListener);
     };
   }, [
-    handleKeyDown,
-    news.length,
     setPopupOpen,
     setCurrentIndex,
-    currentIndex,
-    activeList,
-    handleRowClick,
     loadMoreTopics,
     loadNewerTopics,
     setReload

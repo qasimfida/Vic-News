@@ -305,43 +305,23 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     );
   }, [news]);
 
-  // Modify rankedNews to ensure it always has sno 1-3
+  // Remove filteredAndSortedNews since it's not being used
   const rankedNews = useMemo(() => {
     const topNews = news.slice(0, RANKED_NEWS_LIMIT);
-    // Ensure ranked news always has sno 1-3
     return topNews.map((item, index) => ({
       ...item,
       sno: String(index + 1),
     }));
   }, [news]);
 
-  // Remove the filteredAndSortedNews memo since we handle everything in the filter effect
-  const filteredAndSortedNews = useMemo(() => {
-    return applyFilters(news, { keywords, topics });
-  }, [news, keywords, topics]);
-
-  // Add pagination info to help with debugging
-  const paginationInfo = useMemo(
-    () => ({
-      totalItems: filteredNews.length,
-      currentPage: Math.floor(visibleTopicsIndex / ITEMS_PER_PAGE) + 1,
-      totalPages: Math.ceil(filteredNews.length / ITEMS_PER_PAGE),
-      itemsPerPage: ITEMS_PER_PAGE,
-      startIndex: visibleTopicsIndex,
-      endIndex: Math.min(
-        visibleTopicsIndex + ITEMS_PER_PAGE,
-        filteredNews.length
-      ),
-    }),
-    [filteredNews.length, visibleTopicsIndex]
-  );
-
-  // Debug pagination
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      console.log("Pagination updated:", paginationInfo);
-    }
-  }, [paginationInfo]);
+  const paginationInfo = useMemo(() => ({
+    totalItems: filteredNews.length,
+    currentPage: Math.floor(visibleTopicsIndex / ITEMS_PER_PAGE) + 1,
+    totalPages: Math.ceil(filteredNews.length / ITEMS_PER_PAGE),
+    itemsPerPage: ITEMS_PER_PAGE,
+    startIndex: visibleTopicsIndex,
+    endIndex: Math.min(visibleTopicsIndex + ITEMS_PER_PAGE, filteredNews.length),
+  }), [filteredNews.length, visibleTopicsIndex]);
 
   const currentPageNews = useMemo(() => {
     return filteredNews.slice(
@@ -376,7 +356,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     }),
     [
       currentPageNews,
-      visibleTopicsIndex,
       loading,
       error,
       selectedTopic,
@@ -387,13 +366,14 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       handleSearchChange,
       allAuthors,
       rankedNews,
-      setReload,
       keywords,
       paginationInfo,
     ]
   );
 
   return (
-    <NewsContext.Provider value={contextValue}>{children}</NewsContext.Provider>
+    <NewsContext.Provider value={contextValue}>
+      {children}
+    </NewsContext.Provider>
   );
 };
