@@ -315,7 +315,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   }, [news]);
 
   const currentPageNews = useMemo(() => {
-    // Filter out ranked news (items with sno 1-3) from the paginated display
     const regularNews = filteredNews.filter(item => parseInt(item.sno) > RANKED_NEWS_LIMIT);
     return regularNews.slice(
       visibleTopicsIndex,
