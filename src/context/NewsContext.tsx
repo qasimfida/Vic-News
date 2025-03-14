@@ -184,7 +184,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unknown error");
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }, []);
 
