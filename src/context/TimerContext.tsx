@@ -8,18 +8,22 @@ interface TimerContextProps {
 
 const TimerContext = createContext<TimerContextProps | undefined>(undefined);
 
-export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const DEFAULT_INTERVAL = 600000; // 10 minutes
-  const savedInterval = Number(localStorage.getItem("selectedInterval")) || DEFAULT_INTERVAL;
-  
-  // Check if expiration time exists and is valid
+export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const DEFAULT_INTERVAL = 600000;
+  const savedInterval =
+    Number(localStorage.getItem("selectedInterval")) || DEFAULT_INTERVAL;
+
   let expirationTime = Number(localStorage.getItem("expirationTime"));
   if (!expirationTime || expirationTime < Date.now()) {
     expirationTime = Date.now() + savedInterval;
     localStorage.setItem("expirationTime", expirationTime.toString());
   }
 
-  const [timeLeft, setTimeLeft] = useState(Math.max(expirationTime - Date.now(), 0));
+  const [timeLeft, setTimeLeft] = useState(
+    Math.max(expirationTime - Date.now(), 0)
+  );
   const [selectedInterval, setSelectedInterval] = useState(savedInterval);
 
   useEffect(() => {
@@ -29,7 +33,6 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const remaining = Math.max(expTime - now, 0);
 
       if (remaining <= 1000) {
-        // Reset timer to 10 minutes
         const newExpirationTime = now + DEFAULT_INTERVAL;
         localStorage.setItem("expirationTime", newExpirationTime.toString());
         setTimeLeft(DEFAULT_INTERVAL);
@@ -50,7 +53,9 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <TimerContext.Provider value={{ timeLeft, selectedInterval, setIntervalValue }}>
+    <TimerContext.Provider
+      value={{ timeLeft, selectedInterval, setIntervalValue }}
+    >
       {children}
     </TimerContext.Provider>
   );

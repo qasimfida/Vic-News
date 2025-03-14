@@ -30,21 +30,23 @@ const Popup: React.FC<PopupProps> = ({
     [onClose]
   );
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    // Check if "t" key is pressed and orgUrl exists
-    if (event.key === "t" && orgUrl) {
-      window.open(orgUrl, "_blank");
-    }
-  }, [orgUrl]);
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "t" && orgUrl) {
+        window.open(orgUrl, "_blank");
+      }
+    },
+    [orgUrl]
+  );
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleKeyDown); // Add event listener for keydown
+    document.addEventListener("keydown", handleKeyDown); 
     document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleKeyDown); // Clean up the event listener
+      document.removeEventListener("keydown", handleKeyDown); 
       document.body.style.overflow = "";
     };
   }, [handleClickOutside, handleKeyDown]);
