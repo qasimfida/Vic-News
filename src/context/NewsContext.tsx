@@ -137,7 +137,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
           const formattedNews = data.items
             .filter((item: any) => ALLOWED_SOURCES.has(item.authors[0]?.name))
             .map((item: any) => ({
-              sno: "0", // Temporary sno, will be set correctly later
+              sno: "0", 
               text: item.title,
               url: item.url,
               bn: item.authors[0]?.name || "Unknown",
@@ -314,20 +314,26 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     }));
   }, [news]);
 
-  const paginationInfo = useMemo(() => ({
-    totalItems: filteredNews.length,
-    currentPage: Math.floor(visibleTopicsIndex / ITEMS_PER_PAGE) + 1,
-    totalPages: Math.ceil(filteredNews.length / ITEMS_PER_PAGE),
-    itemsPerPage: ITEMS_PER_PAGE,
-    startIndex: visibleTopicsIndex,
-    endIndex: Math.min(visibleTopicsIndex + ITEMS_PER_PAGE, filteredNews.length),
-  }), [filteredNews.length, visibleTopicsIndex]);
-
   const currentPageNews = useMemo(() => {
-    return filteredNews.slice(
+    // Filter out ranked news (items with sno 1-3) from the paginated display
+    const regularNews = filteredNews.filter(item => parseInt(item.sno) > RANKED_NEWS_LIMIT);
+    return regularNews.slice(
       visibleTopicsIndex,
       visibleTopicsIndex + ITEMS_PER_PAGE
     );
+  }, [filteredNews, visibleTopicsIndex]);
+
+  const paginationInfo = useMemo(() => {
+    // Calculate pagination based on regular news only
+    const regularNewsLength = filteredNews.filter(item => parseInt(item.sno) > RANKED_NEWS_LIMIT).length;
+    return {
+      totalItems: regularNewsLength,
+      currentPage: Math.floor(visibleTopicsIndex / ITEMS_PER_PAGE) + 1,
+      totalPages: Math.ceil(regularNewsLength / ITEMS_PER_PAGE),
+      itemsPerPage: ITEMS_PER_PAGE,
+      startIndex: visibleTopicsIndex,
+      endIndex: Math.min(visibleTopicsIndex + ITEMS_PER_PAGE, regularNewsLength),
+    };
   }, [filteredNews, visibleTopicsIndex]);
 
   const contextValue = useMemo(

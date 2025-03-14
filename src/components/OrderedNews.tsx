@@ -100,7 +100,7 @@ const OrderedNews = () => {
           >
             {item.sno && (
               <RowItem
-                sno={item.sno}
+                sno={item.sno }
                 text={item.text}
                 bn={item.bn}
                 time={item.time}
