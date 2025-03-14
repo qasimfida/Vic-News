@@ -89,12 +89,19 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [topics, setTopics] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
-  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(DEFAULT_VISIBLE_TOPICS);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
+    "LATEST"
+  );
+  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(
+    DEFAULT_VISIBLE_TOPICS
+  );
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [reload, setReload] = useState<boolean>(false);
-  
+
   const { timeLeft, setIntervalValue } = useTimer();
   const [startDate, endDate] = dateRange;
   const initialDataFetched = useRef(false);
@@ -166,7 +173,7 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
 
       // Set sno 1-3 for ranked items
       rankedItems.forEach((item, index) => {
-        item.sno = String(index + 1);
+        item.sno = String(index + 3);
       });
 
       // Set sno starting from 4 for regular items
@@ -177,12 +184,12 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       const finalNews = [...rankedItems, ...regularItems];
       setNews(finalNews);
       setFilteredNews(finalNews);
-      setReload(false);
+      setReload(true);
       initialDataFetched.current = true;
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   }, []);
 
@@ -314,14 +321,20 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     }));
   }, [news]);
 
-  const paginationInfo = useMemo(() => ({
-    totalItems: filteredNews.length,
-    currentPage: Math.floor(visibleTopicsIndex / ITEMS_PER_PAGE) + 1,
-    totalPages: Math.ceil(filteredNews.length / ITEMS_PER_PAGE),
-    itemsPerPage: ITEMS_PER_PAGE,
-    startIndex: visibleTopicsIndex,
-    endIndex: Math.min(visibleTopicsIndex + ITEMS_PER_PAGE, filteredNews.length),
-  }), [filteredNews.length, visibleTopicsIndex]);
+  const paginationInfo = useMemo(
+    () => ({
+      totalItems: filteredNews.length,
+      currentPage: Math.floor(visibleTopicsIndex / ITEMS_PER_PAGE) + 1,
+      totalPages: Math.ceil(filteredNews.length / ITEMS_PER_PAGE),
+      itemsPerPage: ITEMS_PER_PAGE,
+      startIndex: visibleTopicsIndex,
+      endIndex: Math.min(
+        visibleTopicsIndex + ITEMS_PER_PAGE,
+        filteredNews.length
+      ),
+    }),
+    [filteredNews.length, visibleTopicsIndex]
+  );
 
   const currentPageNews = useMemo(() => {
     return filteredNews.slice(
@@ -372,8 +385,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   );
 
   return (
-    <NewsContext.Provider value={contextValue}>
-      {children}
-    </NewsContext.Provider>
+    <NewsContext.Provider value={contextValue}>{children}</NewsContext.Provider>
   );
 };
