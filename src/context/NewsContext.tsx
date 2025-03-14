@@ -30,7 +30,6 @@ const DEFAULT_VISIBLE_TOPICS = 3;
 const DEFAULT_LIMIT = 50;
 const RANKED_NEWS_LIMIT = 3;
 
-// Utility functions for filtering
 const filterByKeyword = (item: NewsItem, keyword: string): boolean => {
   if (!keyword) return true;
   const searchTerm = keyword.toLowerCase();
@@ -89,12 +88,19 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
   const [topics, setTopics] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">("LATEST");
-  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(DEFAULT_VISIBLE_TOPICS);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [sort, setSort] = useState<"LATEST" | "EARLIEST" | "RELEVANCE">(
+    "LATEST"
+  );
+  const [visibleTopicsIndex, setVisibleTopicsIndex] = useState<number>(
+    DEFAULT_VISIBLE_TOPICS
+  );
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   const [reload, setReload] = useState<boolean>(false);
-  
+
   const { timeLeft, setIntervalValue } = useTimer();
   const [startDate, endDate] = dateRange;
   const initialDataFetched = useRef(false);
@@ -153,23 +159,19 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         []
       );
 
-      // Sort news by date before setting state
       const sortedNews = allNews.sort(
         (a, b) =>
           new Date(b.date_published).getTime() -
           new Date(a.date_published).getTime()
       );
 
-      // Assign correct sno values
       const rankedItems = sortedNews.slice(0, RANKED_NEWS_LIMIT);
       const regularItems = sortedNews.slice(RANKED_NEWS_LIMIT);
 
-      // Set sno 1-3 for ranked items
       rankedItems.forEach((item, index) => {
-        item.sno = String(index + 1);
+        item.sno = String(index + 3);
       });
 
-      // Set sno starting from 4 for regular items
       regularItems.forEach((item, index) => {
         item.sno = String(index + RANKED_NEWS_LIMIT + 1);
       });
@@ -177,29 +179,26 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       const finalNews = [...rankedItems, ...regularItems];
       setNews(finalNews);
       setFilteredNews(finalNews);
-      setReload(false);
+      setReload(true);
       initialDataFetched.current = true;
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unknown error");
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   }, []);
 
-  // Initial fetch and reload only
   useEffect(() => {
     if (!initialDataFetched.current || reload) {
       fetchNews();
     }
   }, [fetchNews, reload]);
 
-  // Combined filter effect
   useEffect(() => {
     if (!initialDataFetched.current) return;
 
     let filtered = [...news];
 
-    // Apply keyword filter
     if (keywords) {
       filtered = filtered.filter(
         (item) =>
@@ -209,14 +208,12 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       );
     }
 
-    // Apply topic filter
     if (topics) {
       filtered = filtered.filter((item) =>
         item.bn.toLowerCase().includes(topics.toLowerCase())
       );
     }
 
-    // Apply date range filter
     if (startDate || endDate) {
       filtered = filtered.filter((item) => {
         const itemDate = new Date(item.date_published);
@@ -233,7 +230,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
       });
     }
 
-    // Apply sorting while preserving ranked news order
     const rankedItems = filtered.filter(
       (item) => parseInt(item.sno) <= RANKED_NEWS_LIMIT
     );
@@ -271,14 +267,12 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
         break;
     }
 
-    // Combine ranked and regular items while preserving sno
     filtered = [...rankedItems, ...regularItems];
 
     setFilteredNews(filtered);
-    setVisibleTopicsIndex(0); // Reset pagination when filters change
+    setVisibleTopicsIndex(0);
   }, [news, keywords, topics, startDate, endDate, sort]);
 
-  // Timer effect
   useEffect(() => {
     if (timeLeft === 1000) {
       setReload(true);
@@ -305,7 +299,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
     );
   }, [news]);
 
-  // Remove filteredAndSortedNews since it's not being used
   const rankedNews = useMemo(() => {
     const topNews = news.slice(0, RANKED_NEWS_LIMIT);
     return topNews.map((item, index) => ({
@@ -377,8 +370,6 @@ export const NewsProvider: React.FC<NewsProviderProps> = ({ children }) => {
   );
 
   return (
-    <NewsContext.Provider value={contextValue}>
-      {children}
-    </NewsContext.Provider>
+    <NewsContext.Provider value={contextValue}>{children}</NewsContext.Provider>
   );
 };
